@@ -8,18 +8,10 @@
 import UIKit
 
 class OverviewViewCell: UICollectionViewCell {
-    var imageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
-    
     var setupTask: Task<Void, Never>?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        setupViews()
     }
     
     @available(*, unavailable)
@@ -30,15 +22,13 @@ class OverviewViewCell: UICollectionViewCell {
     func setup(with art: Art) {
         setupTask = Task {
             do {
-                try await setImage(for: art)
+                try await setBackgroundImage(for: art)
             } catch is CancellationError, URLError.cancelled {
                 reset()
             } catch ImageWorkerError.unexpectedData {
                 // TODO: handle unexpected image data error
-                imageView.backgroundColor = .orange
             } catch {
                 // TODO: handle image task error, consider retrying
-                imageView.backgroundColor = .red
             }
         }
     }
@@ -53,7 +43,15 @@ class OverviewViewCell: UICollectionViewCell {
 }
 
 private extension OverviewViewCell {
-    func setImage(for art: Art) async throws {
+    func imageView(image: UIImage) -> UIImageView {
+        let view = UIImageView(image: image)
+        view.contentMode = .scaleAspectFit
+        return view
+    }
+    
+    func setBackgroundImage(for art: Art) async throws {
+        backgroundView = OverviewViewCellLoadingView()
+
         let image = try await ImageWorker().image(
             from: art.webImage.url,
             thumbnailSize: contentView.bounds.size,
@@ -62,32 +60,45 @@ private extension OverviewViewCell {
         
         // Explicitly check cancellation
         try Task.checkCancellation()
-        
+
+        // TODO: present the prepared image in the content view with its title
         let preparedImage = await image.byPreparingForDisplay()
-        imageView.image = preparedImage
-        imageView.backgroundColor = nil
+        backgroundView = imageView(image: preparedImage ?? image)
     }
     
     func reset() {
-        imageView.backgroundColor = nil
-        imageView.image = nil
+        backgroundView = nil
     }
 }
 
-extension OverviewViewCell {
-    func setupViews() {
-        addImageView()
+class OverviewViewCellLoadingView: UIView {
+    var activityIndicator: UIActivityIndicatorView = {
+        let activity = UIActivityIndicatorView()
+        activity.hidesWhenStopped = false
+        activity.style = .medium
+        return activity
+    }()
+    
+    init() {
+        super.init(frame: .zero)
+        
+        setupViews()
     }
     
-    func addImageView() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(imageView)
-        
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupViews() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+        
+        activityIndicator.startAnimating()
     }
 }
