@@ -20,9 +20,13 @@ class OverviewViewCell: UICollectionViewCell {
     }
     
     func setup(with art: Art) {
+        guard let imageURL = art.webImage?.url else {
+            return
+        }
+        
         setupTask = Task {
             do {
-                try await setBackgroundImage(for: art)
+                try await setBackgroundImage(from: imageURL)
             } catch is CancellationError, URLError.cancelled {
                 reset()
             } catch ImageWorkerError.unexpectedData {
@@ -49,11 +53,11 @@ private extension OverviewViewCell {
         return view
     }
     
-    func setBackgroundImage(for art: Art) async throws {
+    func setBackgroundImage(from url: URL) async throws {
         backgroundView = OverviewViewCellLoadingView()
 
         let image = try await ImageWorker().image(
-            from: art.webImage.url,
+            from: url,
             thumbnailSize: contentView.bounds.size,
             prefersThumbnail: true
         )

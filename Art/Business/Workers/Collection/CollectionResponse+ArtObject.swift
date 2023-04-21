@@ -18,8 +18,8 @@ extension CollectionResponse {
         let longTitle: String
         let showImage: Bool
         let permitDownload: Bool
-        let webImage: Image
-        let headerImage: Image
+        let webImage: Image?
+        let headerImage: Image?
         let productionPlaces: [String]
     }
 }
@@ -36,11 +36,11 @@ extension CollectionResponse.ArtObject {
     }
     
     struct Image: Decodable, Hashable {
-        let guid: String
+        let guid: String?
         let offsetPercentageX: CGFloat
         let offsetPercentageY: CGFloat
         let width: CGFloat
         let height: CGFloat
-        let url: URL
+        let url: URL?
     }
 }
