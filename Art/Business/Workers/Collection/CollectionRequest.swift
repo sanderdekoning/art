@@ -17,6 +17,7 @@ struct CollectionRequest {
         [
             api.authorizationURLQueryItem,
             URLQueryItem(name: "involvedMaker", value: involvedMaker),
+            URLQueryItem(name: "imgonly", value: String(true)),
             URLQueryItem(name: "ps", value: String(resultsPerPage)),
             URLQueryItem(name: "p", value: String(page))
         ]
