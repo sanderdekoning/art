@@ -31,11 +31,11 @@ class OverviewViewCell: UICollectionViewCell {
         setupTask = Task {
             do {
                 try await setImage(for: art)
+            } catch is CancellationError, URLError.cancelled {
+                reset()
             } catch ImageWorkerError.unexpectedData {
                 // TODO: handle unexpected image data error
                 imageView.backgroundColor = .orange
-            } catch is CancellationError {
-                reset()
             } catch {
                 // TODO: handle image task error, consider retrying
                 imageView.backgroundColor = .red
