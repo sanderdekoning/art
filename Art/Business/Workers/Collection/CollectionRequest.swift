@@ -10,11 +10,15 @@ import Foundation
 struct CollectionRequest {
     let api = API()
     let involvedMaker: String
+    let resultsPerPage: Int
+    let page: Int
 
     private var urlQueryItems: [URLQueryItem] {
         [
             api.authorizationURLQueryItem,
-            URLQueryItem(name: "involvedMaker", value: involvedMaker)
+            URLQueryItem(name: "involvedMaker", value: involvedMaker),
+            URLQueryItem(name: "ps", value: String(resultsPerPage)),
+            URLQueryItem(name: "p", value: String(page))
         ]
     }
     

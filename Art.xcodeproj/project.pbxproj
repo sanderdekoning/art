@@ -33,6 +33,7 @@
 		C5D8362629F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362529F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift */; };
 		C5D8362829F281B100FEE5D6 /* ImageWorkerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */; };
 		C5D8362A29F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */; };
+		C5D8362C29F342F000FEE5D6 /* CollectionPageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362B29F342F000FEE5D6 /* CollectionPageResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		C5D8362529F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCache+ArtImageThumbnailCache.swift"; sourceTree = "<group>"; };
 		C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorkerError.swift; sourceTree = "<group>"; };
 		C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Art.swift"; sourceTree = "<group>"; };
+		C5D8362B29F342F000FEE5D6 /* CollectionPageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPageResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +245,7 @@
 				C50A1D4F29F15E8F00C6AB99 /* CollectionRequest.swift */,
 				C50A1D4D29F15D7300C6AB99 /* CollectionResponse.swift */,
 				C50A1D4A29F15BBF00C6AB99 /* CollectionResponse+ArtObject.swift */,
+				C5D8362B29F342F000FEE5D6 /* CollectionPageResponse.swift */,
 			);
 			path = Collection;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				C5D8362129F1BBBF00FEE5D6 /* ImageWorker.swift in Sources */,
 				C50A1D4B29F15BBF00C6AB99 /* CollectionResponse+ArtObject.swift in Sources */,
 				C50A1D5629F1669600C6AB99 /* Art.swift in Sources */,
+				C5D8362C29F342F000FEE5D6 /* CollectionPageResponse.swift in Sources */,
 				C50A1D0929F06A4C00C6AB99 /* AppDelegate.swift in Sources */,
 				C50A1D4E29F15D7300C6AB99 /* CollectionResponse.swift in Sources */,
 				C50A1D5229F1619700C6AB99 /* CollectionWorker.swift in Sources */,

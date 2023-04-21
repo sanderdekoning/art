@@ -63,7 +63,7 @@ class OverviewView: UICollectionView {
         var snapshot = NSDiffableDataSourceSnapshot<OverviewView.Section, Art>()
         snapshot.appendSections(OverviewView.Section.allCases)
         snapshot.appendItems(art, toSection: .art)
-        diffableDataSource.apply(snapshot)
+        diffableDataSource.applySnapshotUsingReloadData(snapshot)
     }
 }
 

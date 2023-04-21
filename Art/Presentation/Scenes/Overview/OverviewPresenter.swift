@@ -10,7 +10,7 @@ import Foundation
 @MainActor protocol OverviewPresenterProtocol: AnyObject {
     func willFetchCollection()
     func failedFetchCollection(with error: Error)
-    func didFetch(collection: CollectionResponse)
+    func didFetch(responses: [Int: CollectionResponse?])
 }
 
 class OverviewPresenter {
@@ -30,13 +30,19 @@ class OverviewPresenter {
         output?.failedFetchCollection(with: error)
     }
     
-    func didFetch(collection: CollectionResponse) {
-        output?.didRetrieve(art: collection.artObjects)
+    func didFetch(responses: [Int: CollectionResponse?]) {
+        let art = responses.sorted {
+            $0.key < $1.key
+        }.compactMap {
+            $0.value?.artObjects
+        }.flatMap { $0 }
+
+        output?.display(art: art)
     }
 }
 
 @MainActor protocol OverviewPresenterOutputProtocol: AnyObject {
     func willRetrieveCollection()
     func failedFetchCollection(with error: Error)
-    func didRetrieve(art: [Art])
+    func display(art: [Art])
 }

@@ -25,31 +25,49 @@ class OverviewViewController: UIViewController {
 
         setupViews()
 
-        retrieveCollection(of: involvedMaker)
+        refresh()
     }
 
     func setupViews() {
         title = involvedMaker
 
+        overviewView?.delegate = self
+        
         overviewView?.refreshControl?.addAction(refreshAction, for: .primaryActionTriggered)
     }
 }
 
 private extension OverviewViewController {
-    func retrieveCollection(of involvedMaker: String) {
+    func refresh() {
         Task(priority: .userInitiated) {
             do {
-                try await interactor?.retrieveCollection(of: involvedMaker)
+                try await interactor?.refresh(with: involvedMaker)
             } catch {
-                // TODO: handle retrieve collection error
-                print(error)
+                // TODO: determine refresh failure scenario
             }
         }
     }
-
+    
     var refreshAction: UIAction {
         UIAction { [unowned self] _ in
-            retrieveCollection(of: involvedMaker)
+            refresh()
+        }
+    }
+}
+
+extension OverviewViewController: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        Task(priority: .userInitiated) {
+            do {
+                try await interactor?.willDisplayArt(at: indexPath, for: involvedMaker)
+            } catch {
+                // TODO: handle pagination fetch collection error
+                print(error)
+            }
         }
     }
 }
@@ -64,7 +82,7 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
         overviewView?.endRefreshing()
     }
     
-    func didRetrieve(art: [Art]) {
+    func display(art: [Art]) {
         overviewView?.setupDataSource(art: art)
         overviewView?.endRefreshing()
     }
