@@ -60,7 +60,9 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
             return
         }
         
-        refreshControl.beginRefreshing()
+        if !refreshControl.isRefreshing {
+            refreshControl.beginRefreshing()
+        }
     }
 
     func failedFetchCollection(with error: Error) {
