@@ -22,9 +22,21 @@ class OverviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupViews()
 
+        retrieveCollection(of: involvedMaker)
+    }
+
+    func setupViews() {
+        title = involvedMaker
+
+        overviewView?.refreshControl?.addAction(refreshAction, for: .primaryActionTriggered)
+    }
+}
+
+private extension OverviewViewController {
+    func retrieveCollection(of involvedMaker: String) {
         Task(priority: .userInitiated) {
             do {
                 try await interactor?.retrieveCollection(of: involvedMaker)
@@ -34,18 +46,25 @@ class OverviewViewController: UIViewController {
             }
         }
     }
-    
-    func setupViews() {
-        title = involvedMaker
+
+    var refreshAction: UIAction {
+        UIAction { [unowned self] _ in
+            retrieveCollection(of: involvedMaker)
+        }
     }
 }
 
 extension OverviewViewController: OverviewPresenterOutputProtocol {
     func willRetrieveCollection() {
-        // TODO: show loading indicator
+        guard let refreshControl = overviewView?.refreshControl else {
+            return
+        }
+        
+        refreshControl.beginRefreshing()
     }
-    
+
     func didRetrieve(art: [Art]) {
         overviewView?.setupDataSource(art: art)
+        overviewView?.refreshControl?.endRefreshing()
     }
 }

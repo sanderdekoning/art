@@ -39,6 +39,8 @@ class OverviewView: UICollectionView {
         alwaysBounceVertical = true
         
         dataSource = diffableDataSource
+        
+        refreshControl = UIRefreshControl()
     }
     
     func setupDataSource(art: [Art]) {
