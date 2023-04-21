@@ -56,21 +56,16 @@ private extension OverviewViewController {
 
 extension OverviewViewController: OverviewPresenterOutputProtocol {
     func willRetrieveCollection() {
-        guard let refreshControl = overviewView?.refreshControl else {
-            return
-        }
-        
-        if !refreshControl.isRefreshing {
-            refreshControl.beginRefreshing()
-        }
+        // TODO: determine whether we want to always scroll to top on refreshes
+        overviewView?.beginRefreshing(wantsRefreshControlVisible: true)
     }
 
     func failedFetchCollection(with error: Error) {
-        overviewView?.refreshControl?.endRefreshing()
+        overviewView?.endRefreshing()
     }
     
     func didRetrieve(art: [Art]) {
         overviewView?.setupDataSource(art: art)
-        overviewView?.refreshControl?.endRefreshing()
+        overviewView?.endRefreshing()
     }
 }
