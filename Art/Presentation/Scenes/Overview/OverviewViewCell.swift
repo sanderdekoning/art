@@ -40,6 +40,7 @@ class OverviewViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         setupTask?.cancel()
+        setupTask = nil
         
         reset()
     }

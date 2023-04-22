@@ -10,8 +10,8 @@ import UIKit
 extension UICollectionViewLayout {
     static var art: UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),
-            heightDimension: .fractionalHeight(0.5)
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
         ))
         
         let group = NSCollectionLayoutGroup.horizontal(
@@ -20,7 +20,7 @@ extension UICollectionViewLayout {
                 heightDimension: .fractionalWidth(1)
             ),
             repeatingSubitem: item,
-            count: 2
+            count: 1
         )
         group.interItemSpacing = .fixed(4)
         

@@ -19,10 +19,7 @@ import UIKit
     
     init(collectionView: UICollectionView, imageWorker: any ImageWorkerProtocol) {
         let cellRegistration = CellRegistration { cell, _, art in
-            guard let imageURL = art.webImage?.url else {
-                return
-            }
-            cell.setup(with: imageURL, worker: imageWorker)
+            cell.setup(with: art.webImage.url, worker: imageWorker)
         }
         
         let cellProvider: DiffableDataSource.CellProvider = { collectionView, indexPath, art in

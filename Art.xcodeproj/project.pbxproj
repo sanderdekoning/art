@@ -29,8 +29,7 @@
 		C50A1D5A29F1888E00C6AB99 /* OverviewViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D5929F1888E00C6AB99 /* OverviewViewCell.swift */; };
 		C5D8361D29F19BBC00FEE5D6 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8361C29F19BBC00FEE5D6 /* API.swift */; };
 		C5D8362129F1BBBF00FEE5D6 /* ImageWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */; };
-		C5D8362429F2818400FEE5D6 /* URLCache+ArtImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362329F2818400FEE5D6 /* URLCache+ArtImageCache.swift */; };
-		C5D8362629F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362529F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift */; };
+		C5D8362629F2819400FEE5D6 /* ImageRequestCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362529F2819400FEE5D6 /* ImageRequestCache.swift */; };
 		C5D8362829F281B100FEE5D6 /* ImageWorkerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */; };
 		C5D8362A29F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */; };
 		C5D8362C29F342F000FEE5D6 /* CollectionPageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362B29F342F000FEE5D6 /* CollectionPageResponse.swift */; };
@@ -83,8 +82,7 @@
 		C50A1D5929F1888E00C6AB99 /* OverviewViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewCell.swift; sourceTree = "<group>"; };
 		C5D8361C29F19BBC00FEE5D6 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorker.swift; sourceTree = "<group>"; };
-		C5D8362329F2818400FEE5D6 /* URLCache+ArtImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLCache+ArtImageCache.swift"; sourceTree = "<group>"; };
-		C5D8362529F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCache+ArtImageThumbnailCache.swift"; sourceTree = "<group>"; };
+		C5D8362529F2819400FEE5D6 /* ImageRequestCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequestCache.swift; sourceTree = "<group>"; };
 		C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorkerError.swift; sourceTree = "<group>"; };
 		C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Art.swift"; sourceTree = "<group>"; };
 		C5D8362B29F342F000FEE5D6 /* CollectionPageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPageResponse.swift; sourceTree = "<group>"; };
@@ -264,6 +262,7 @@
 			children = (
 				C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */,
 				C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */,
+				C5D8362529F2819400FEE5D6 /* ImageRequestCache.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -271,8 +270,6 @@
 		C5D8362229F2817700FEE5D6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C5D8362329F2818400FEE5D6 /* URLCache+ArtImageCache.swift */,
-				C5D8362529F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift */,
 				C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */,
 			);
 			path = Extensions;
@@ -410,7 +407,6 @@
 			files = (
 				C5D8362A29F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift in Sources */,
 				C50A1D0D29F06A4C00C6AB99 /* OverviewViewController.swift in Sources */,
-				C5D8362429F2818400FEE5D6 /* URLCache+ArtImageCache.swift in Sources */,
 				C50A1D4229F0754000C6AB99 /* OverviewConfigurator.swift in Sources */,
 				C50A1D4029F071AB00C6AB99 /* OverviewPresenter.swift in Sources */,
 				C5D8363229F43FE300FEE5D6 /* OverviewViewCellLoadingView.swift in Sources */,
@@ -428,7 +424,7 @@
 				C50A1D0B29F06A4C00C6AB99 /* SceneDelegate.swift in Sources */,
 				C5D8362E29F4026E00FEE5D6 /* OverviewViewDataSource.swift in Sources */,
 				C50A1D5429F1646300C6AB99 /* CollectionWorkerError.swift in Sources */,
-				C5D8362629F2819400FEE5D6 /* NSCache+ArtImageThumbnailCache.swift in Sources */,
+				C5D8362629F2819400FEE5D6 /* ImageRequestCache.swift in Sources */,
 				C50A1D4429F0757E00C6AB99 /* OverviewView.swift in Sources */,
 				C50A1D5029F15E8F00C6AB99 /* CollectionRequest.swift in Sources */,
 				C5D8361D29F19BBC00FEE5D6 /* API.swift in Sources */,

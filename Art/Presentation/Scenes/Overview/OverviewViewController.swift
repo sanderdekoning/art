@@ -57,6 +57,8 @@ private extension OverviewViewController {
 }
 
 extension OverviewViewController: UICollectionViewDelegate {
+    // FIXME: There is a known scenario where willDisplay does not get called after applying a
+    // snapshot if pagination page size is smaller or equal to number of items that fit on screen
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,

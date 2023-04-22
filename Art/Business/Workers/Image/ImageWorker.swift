@@ -17,22 +17,14 @@ protocol ImageWorkerProtocol {
 
 class ImageWorker: ImageWorkerProtocol {
     let session: URLSession
-    let artImageCache: URLCache
-    let artImageThumbnailCache: NSCache<AnyObject, UIImage>
+    let thumbnailCache: ImageRequestCacheProtocol
 
     init(
         session: URLSession,
-        artImageCache: URLCache,
-        artImageThumbnailCache: NSCache<AnyObject, UIImage>
+        thumbnailCache: any ImageRequestCacheProtocol
     ) {
         self.session = session
-        self.artImageCache = artImageCache
-        self.artImageThumbnailCache = artImageThumbnailCache
-    }
-    
-    private func request(for url: URL) -> URLRequest {
-        // TODO: consider server cache-control
-        URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
+        self.thumbnailCache = thumbnailCache
     }
     
     func image(
@@ -40,17 +32,16 @@ class ImageWorker: ImageWorkerProtocol {
         thumbnailSize: CGSize,
         prefersThumbnail: Bool
     ) async throws -> UIImage {
-        let request = request(for: url)
+        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
 
-        if let cachedImage = try cachedImage(for: request, prefersThumbnail: prefersThumbnail) {
-            return cachedImage
+        if prefersThumbnail, let thumbnail = thumbnailCache.cached(request: request) {
+            return thumbnail
         }
 
-        let (data, response) = try await session.data(for: request)
+        let (data, _) = try await session.data(for: request)
 
-        return try await cacheImageAndThumbnail(
+        return try await cacheThumbnail(
             from: request,
-            response: response,
             data: data,
             thumbnailSize: thumbnailSize,
             prefersThumbnail: prefersThumbnail
@@ -59,32 +50,13 @@ class ImageWorker: ImageWorkerProtocol {
 }
 
 private extension ImageWorker {
-    func cachedImage(for request: URLRequest, prefersThumbnail: Bool) throws -> UIImage? {
-        if prefersThumbnail, let thumbnail = artImageThumbnailCache.object(
-            forKey: request as AnyObject
-        ) {
-            return thumbnail
-        }
-        
-        guard let cachedResponse = artImageCache.cachedResponse(for: request) else {
-            return nil
-        }
-        
-        return try image(from: cachedResponse.data)
-    }
-    
-    func cacheImageAndThumbnail(
+    func cacheThumbnail(
         from request: URLRequest,
-        response: URLResponse,
         data: Data,
         thumbnailSize: CGSize,
         prefersThumbnail: Bool
     ) async throws -> UIImage {
         let image = try image(from: data)
-        
-        // TODO: consider whether we want to always cache before the thumbnail
-        let cached = CachedURLResponse(response: response, data: data)
-        artImageCache.storeCachedResponse(cached, for: request)
         
         // Explicitly check cancellation before preparing thumbnail
         try Task.checkCancellation()
@@ -93,7 +65,7 @@ private extension ImageWorker {
         let thumbnail = await image.byPreparingThumbnail(ofSize: thumbnailSize)
         
         if let thumbnail {
-            artImageThumbnailCache.setObject(thumbnail, forKey: request as AnyObject)
+            thumbnailCache.set(image: thumbnail, for: request)
         }
         
         guard prefersThumbnail else {

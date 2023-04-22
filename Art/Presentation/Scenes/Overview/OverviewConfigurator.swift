@@ -24,8 +24,7 @@ import UIKit
 
         let imageWorker = ImageWorker(
             session: .shared,
-            artImageCache: .artImageCache,
-            artImageThumbnailCache: .artImageThumbnailCache
+            thumbnailCache: ImageRequestCache.sharedThumbnail
         )
         let dataSource = OverviewViewDataSource(collectionView: view, imageWorker: imageWorker)
         
