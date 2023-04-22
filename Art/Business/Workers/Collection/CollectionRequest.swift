@@ -10,14 +10,13 @@ import Foundation
 struct CollectionRequest {
     let api = API()
     let decoder = JSONDecoder()
-    let involvedMaker: String
     let resultsPerPage: Int
     let page: Int
 
     private var urlQueryItems: [URLQueryItem] {
         [
             api.authorizationURLQueryItem,
-            URLQueryItem(name: "involvedMaker", value: involvedMaker),
+            URLQueryItem(name: "s", value: "artist"),
             URLQueryItem(name: "imgonly", value: String(true)),
             URLQueryItem(name: "ps", value: String(resultsPerPage)),
             URLQueryItem(name: "p", value: String(page))

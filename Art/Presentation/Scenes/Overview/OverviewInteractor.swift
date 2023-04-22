@@ -8,8 +8,8 @@
 import Foundation
 
 protocol OverviewInteractorProtocol: AnyObject {
-    func refresh(with involvedMaker: String) async throws
-    func willDisplayArt(at indexPath: IndexPath, forInvolvedMaker: String) async throws
+    func refresh() async throws
+    func willDisplayArt(at indexPath: IndexPath) async throws
 }
 
 class OverviewInteractor {
@@ -33,18 +33,17 @@ class OverviewInteractor {
 }
 
 extension OverviewInteractor: OverviewInteractorProtocol {
-    func refresh(with involvedMaker: String) async throws {
+    func refresh() async throws {
         await collectionPageResponse.removeAll()
         
         let request = CollectionRequest(
-            involvedMaker: involvedMaker,
             resultsPerPage: paginationConfig.resultsPerPage,
             page: paginationConfig.firstPageIndex
         )
         try await fetchCollection(for: request)
     }
     
-    func willDisplayArt(at indexPath: IndexPath, forInvolvedMaker involvedMaker: String) async throws {
+    func willDisplayArt(at indexPath: IndexPath) async throws {
         guard let numberOfPages = await numberOfPages else {
             return
         }
@@ -60,7 +59,6 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         }
         
         let request = CollectionRequest(
-            involvedMaker: involvedMaker,
             resultsPerPage: paginationConfig.resultsPerPage,
             page: nextPage
         )

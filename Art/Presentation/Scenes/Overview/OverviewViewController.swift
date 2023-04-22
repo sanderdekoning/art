@@ -13,8 +13,6 @@ class OverviewViewController: UIViewController {
     var interactor: OverviewInteractor?
     var router: OverviewRouter?
 
-    let involvedMaker = "Vincent van Gogh"
-
     override func loadView() {
         super.loadView()
 
@@ -30,7 +28,7 @@ class OverviewViewController: UIViewController {
     }
 
     func setupViews() {
-        title = involvedMaker
+        title = NSLocalizedString("Art", comment: "")
 
         overviewView?.delegate = self
         
@@ -42,7 +40,7 @@ private extension OverviewViewController {
     func refresh() {
         Task(priority: .userInitiated) {
             do {
-                try await interactor?.refresh(with: involvedMaker)
+                try await interactor?.refresh()
             } catch {
                 // TODO: determine refresh failure scenario
             }
@@ -66,7 +64,7 @@ extension OverviewViewController: UICollectionViewDelegate {
     ) {
         Task(priority: .userInitiated) {
             do {
-                try await interactor?.willDisplayArt(at: indexPath, forInvolvedMaker: involvedMaker)
+                try await interactor?.willDisplayArt(at: indexPath)
             } catch {
                 // TODO: handle pagination fetch collection error
                 print(error)
