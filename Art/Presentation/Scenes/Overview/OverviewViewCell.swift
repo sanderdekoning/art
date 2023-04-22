@@ -9,6 +9,7 @@ import UIKit
 
 class OverviewViewCell: UICollectionViewCell {
     var setupTask: Task<Void, Never>?
+    var imageWorker: ImageWorkerProtocol?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,14 +20,12 @@ class OverviewViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(with art: Art) {
-        guard let imageURL = art.webImage?.url else {
-            return
-        }
+    func setup(with imageURL: URL, worker: any ImageWorkerProtocol) {
+        imageWorker = worker
         
         setupTask = Task {
             do {
-                try await setBackgroundImage(from: imageURL)
+                try await setBackgroundImage(from: imageURL, worker: worker)
             } catch is CancellationError, URLError.cancelled {
                 reset()
             } catch ImageWorkerError.unexpectedData {
@@ -53,10 +52,10 @@ private extension OverviewViewCell {
         return view
     }
     
-    func setBackgroundImage(from url: URL) async throws {
+    func setBackgroundImage(from url: URL, worker: any ImageWorkerProtocol) async throws {
         backgroundView = OverviewViewCellLoadingView()
 
-        let image = try await ImageWorker().image(
+        let image = try await worker.image(
             from: url,
             thumbnailSize: contentView.bounds.size,
             prefersThumbnail: true

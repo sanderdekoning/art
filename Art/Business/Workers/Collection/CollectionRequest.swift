@@ -9,6 +9,7 @@ import Foundation
 
 struct CollectionRequest {
     let api = API()
+    let decoder = JSONDecoder()
     let involvedMaker: String
     let resultsPerPage: Int
     let page: Int

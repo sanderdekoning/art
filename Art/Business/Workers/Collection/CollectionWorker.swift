@@ -12,8 +12,7 @@ protocol CollectionWorkerProtocol {
 }
 
 struct CollectionWorker: CollectionWorkerProtocol {
-    let session = URLSession.shared
-    let decoder = JSONDecoder()
+    let session: URLSession
     
     func collection(for collectionRequest: CollectionRequest) async throws -> CollectionResponse {
         let (data, response) = try await session.data(for: collectionRequest.request)
@@ -26,6 +25,6 @@ struct CollectionWorker: CollectionWorkerProtocol {
             throw CollectionWorkerError.unexpectedStatusCode(httpResponse.statusCode)
         }
         
-        return try decoder.decode(CollectionResponse.self, from: data)
+        return try collectionRequest.decoder.decode(CollectionResponse.self, from: data)
     }
 }

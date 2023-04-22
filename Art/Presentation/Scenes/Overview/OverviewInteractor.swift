@@ -15,15 +15,20 @@ protocol OverviewInteractorProtocol: AnyObject {
 class OverviewInteractor {
     let presenter: OverviewPresenterProtocol
     
-    private let collectionWorker = CollectionWorker()
-    private var collectionPageResponse = CollectionPageResponse()
+    private let collectionWorker: CollectionWorkerProtocol
+    private let collectionPageResponse: CollectionPageResponseProtocol
+    private let paginationConfig: OverviewInteractorPaginationConfigProtocol
     
-    // The API page index starts at 1 rather than 0
-    private let firstPageIndex = 1
-    private let resultsPerPage = 4
-    
-    init(presenter: any OverviewPresenterProtocol) {
+    init(
+        presenter: any OverviewPresenterProtocol,
+        collectionWorker: any CollectionWorkerProtocol,
+        collectionPageResponse: any CollectionPageResponseProtocol,
+        paginationConfig: any OverviewInteractorPaginationConfigProtocol
+    ) {
         self.presenter = presenter
+        self.collectionWorker = collectionWorker
+        self.collectionPageResponse = collectionPageResponse
+        self.paginationConfig = paginationConfig
     }
 }
 
@@ -33,39 +38,40 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         
         let request = CollectionRequest(
             involvedMaker: involvedMaker,
-            resultsPerPage: resultsPerPage,
-            page: firstPageIndex
+            resultsPerPage: paginationConfig.resultsPerPage,
+            page: paginationConfig.firstPageIndex
         )
         try await fetchCollection(for: request)
     }
     
     func willDisplayArt(at indexPath: IndexPath, for involvedMaker: String) async throws {
-        guard let nextPath = await pageToFetchAfter(index: indexPath.item) else {
+        guard let numberOfPages = await numberOfPages else {
             return
         }
         
-        guard await shouldFetch(for: nextPath) else {
+        let index = indexPath.item
+        let nextPage = paginationConfig.pageToFetchAfter(index: index, numberOfPages: numberOfPages)
+        guard let nextPage else {
+            return
+        }
+        
+        guard await shouldFetch(page: nextPage, afterIndex: index) else {
             return
         }
         
         let request = CollectionRequest(
             involvedMaker: involvedMaker,
-            resultsPerPage: resultsPerPage,
-            page: nextPath
+            resultsPerPage: paginationConfig.resultsPerPage,
+            page: nextPage
         )
         try await fetchCollection(for: request)
     }
 }
 
 private extension OverviewInteractor {
-    func page(for index: Int) -> Int {
-        let pageFraction = Double(index + 1) / Double(resultsPerPage)
-        let page = Int(floor(pageFraction))
-        return page
-    }
-    
     var largestTotalCount: Int? {
         get async {
+            // Get the largest total count from all the collection responses
             await collectionPageResponse.responses.compactMap { $0.value?.count }.max()
         }
     }
@@ -76,29 +82,18 @@ private extension OverviewInteractor {
                 return nil
             }
 
-            let pageFraction = Double(largestTotalCount) / Double(resultsPerPage)
+            let pageFraction = Double(largestTotalCount) / Double(paginationConfig.resultsPerPage)
             let pages = Int(ceil(pageFraction))
             return pages
         }
     }
     
-    func pageToFetchAfter(index: Int) async -> Int? {
-        guard let numberOfPages = await numberOfPages else {
-            return nil
+    func shouldFetch(page: Int, afterIndex index: Int) async -> Bool {
+        guard await paginationConfig.shouldFetch(page: page, afterIndex: index) else {
+            return false
         }
 
-        let pageFraction = Double(index + firstPageIndex) / Double(resultsPerPage)
-        let page = Int(floor(pageFraction))
-        
-        let nextPage = page + 1
-        guard nextPage <= numberOfPages else {
-            return nil
-        }
-        return nextPage
-    }
-    
-    func shouldFetch(for page: Int) async -> Bool {
-        await collectionPageResponse.contains(page: page) == false
+        return await collectionPageResponse.contains(page: page) == false
     }
 }
 

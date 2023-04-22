@@ -16,10 +16,20 @@ protocol ImageWorkerProtocol {
 }
 
 class ImageWorker: ImageWorkerProtocol {
-    let session = URLSession.shared
-    let artImageCache: URLCache = .artImageCache
-    let artImageThumbnailCache: NSCache<AnyObject, UIImage> = .artImageThumbnailCache
+    let session: URLSession
+    let artImageCache: URLCache
+    let artImageThumbnailCache: NSCache<AnyObject, UIImage>
 
+    init(
+        session: URLSession,
+        artImageCache: URLCache,
+        artImageThumbnailCache: NSCache<AnyObject, UIImage>
+    ) {
+        self.session = session
+        self.artImageCache = artImageCache
+        self.artImageThumbnailCache = artImageThumbnailCache
+    }
+    
     private func request(for url: URL) -> URLRequest {
         // TODO: consider server cache-control
         URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
@@ -36,7 +46,7 @@ class ImageWorker: ImageWorkerProtocol {
             return cachedImage
         }
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await session.data(for: request)
 
         return try await cacheImageAndThumbnail(
             from: request,

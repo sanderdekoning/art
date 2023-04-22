@@ -8,6 +8,7 @@
 import UIKit
 
 class OverviewViewController: UIViewController {
+    var dataSource: OverviewViewDataSource?
     var overviewView: OverviewView?
     var interactor: OverviewInteractor?
     var router: OverviewRouter?
@@ -82,8 +83,8 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
         overviewView?.endRefreshing()
     }
     
-    func display(art: [Art]) {
-        overviewView?.setupDataSource(art: art)
+    func display(art: [Art]) async {
+        await dataSource?.update(to: art, animated: true)
         overviewView?.endRefreshing()
     }
 }

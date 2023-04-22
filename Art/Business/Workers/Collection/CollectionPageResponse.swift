@@ -7,7 +7,16 @@
 
 import Foundation
 
-actor CollectionPageResponse {
+protocol CollectionPageResponseProtocol: Actor {
+    func set(page: Int, response: CollectionResponse?)
+    func remove(page: Int)
+    func removeAll()
+    func contains(page: Int) -> Bool
+    
+    var responses: [Int: CollectionResponse?] { get }
+}
+
+actor CollectionPageResponse: CollectionPageResponseProtocol {
     private var values = [Int: CollectionResponse?]()
     
     func set(page: Int, response: CollectionResponse?) {

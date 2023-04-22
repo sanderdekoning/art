@@ -11,11 +11,28 @@ import UIKit
     static func configureScene(viewController: OverviewViewController) {
         let view = OverviewView()
         let presenter = OverviewPresenter(output: viewController)
-        let interactor = OverviewInteractor(presenter: presenter)
+        
+        let collectionWorker = CollectionWorker(session: .shared)
+        let pageResponse = CollectionPageResponse()
+        let paginationConfig = OverviewInteractorPaginationConfig()
+        let interactor = OverviewInteractor(
+            presenter: presenter,
+            collectionWorker: collectionWorker,
+            collectionPageResponse: pageResponse,
+            paginationConfig: paginationConfig
+        )
 
+        let imageWorker = ImageWorker(
+            session: .shared,
+            artImageCache: .artImageCache,
+            artImageThumbnailCache: .artImageThumbnailCache
+        )
+        let dataSource = OverviewViewDataSource(collectionView: view, imageWorker: imageWorker)
+        
         let router = OverviewRouter()
         router.navigationController = viewController.navigationController
 
+        viewController.dataSource = dataSource
         viewController.overviewView = view
         viewController.router = router
         viewController.interactor = interactor
