@@ -75,7 +75,7 @@ extension OverviewViewController: UICollectionViewDelegate {
 extension OverviewViewController: OverviewPresenterOutputProtocol {
     func willRetrieveCollection() {
         // TODO: determine whether we want to always scroll to top on refreshes
-        overviewView?.beginRefreshing(wantsRefreshControlVisible: true)
+        overviewView?.beginRefreshing(wantsRefreshControlVisible: false)
     }
 
     func failedFetchCollection(with error: Error) {

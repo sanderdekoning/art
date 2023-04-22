@@ -48,7 +48,11 @@ class OverviewView: UICollectionView {
     }
     
     func endRefreshing() {
-        refreshControl?.endRefreshing()
+        guard let refreshControl, refreshControl.isRefreshing else {
+            return
+        }
+        
+        refreshControl.endRefreshing()
     }
     
     func setupViews() {
