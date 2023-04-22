@@ -9,7 +9,7 @@ import Foundation
 
 protocol OverviewInteractorProtocol: AnyObject {
     func refresh(with involvedMaker: String) async throws
-    func willDisplayArt(at indexPath: IndexPath, for involvedMaker: String) async throws
+    func willDisplayArt(at indexPath: IndexPath, forInvolvedMaker: String) async throws
 }
 
 class OverviewInteractor {
@@ -44,7 +44,7 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         try await fetchCollection(for: request)
     }
     
-    func willDisplayArt(at indexPath: IndexPath, for involvedMaker: String) async throws {
+    func willDisplayArt(at indexPath: IndexPath, forInvolvedMaker involvedMaker: String) async throws {
         guard let numberOfPages = await numberOfPages else {
             return
         }

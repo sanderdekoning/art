@@ -64,7 +64,7 @@ extension OverviewViewController: UICollectionViewDelegate {
     ) {
         Task(priority: .userInitiated) {
             do {
-                try await interactor?.willDisplayArt(at: indexPath, for: involvedMaker)
+                try await interactor?.willDisplayArt(at: indexPath, forInvolvedMaker: involvedMaker)
             } catch {
                 // TODO: handle pagination fetch collection error
                 print(error)
