@@ -16,12 +16,11 @@ class OverviewViewController: UIViewController {
     { [weak self] cell, _, artPage in
         cell.setup(with: artPage.art, worker: ImageWorker.sharedThumbnail)
         
-        Task(priority: .userInitiated) {
+        Task {
             do {
                 try await self?.interactor?.didSetupCell(for: artPage)
             } catch {
                 // TODO: handle pagination fetch collection error
-                print(error)
             }
         }
     }
@@ -95,34 +94,14 @@ private extension OverviewViewController {
     }
 }
 
-extension OverviewViewController {
-    func showLoadingActivity() {
-        guard navigationItem.rightBarButtonItem == nil else {
-            return
-        }
-        
-        let acitivityIndicatorView = UIActivityIndicatorView()
-        acitivityIndicatorView.hidesWhenStopped = true
-        acitivityIndicatorView.startAnimating()
-        
-        let button = UIBarButtonItem(customView: acitivityIndicatorView)
-        
-        navigationItem.rightBarButtonItem = button
-    }
-    
-    func hideLoadingActivity() {
-        navigationItem.rightBarButtonItem = nil
-        
-        overviewView?.endRefreshing()
-    }
-}
-
 extension OverviewViewController: OverviewPresenterOutputProtocol {
     func willLoadInitialData() {
         overviewView?.beginRefreshing()
     }
     
-    func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
+    func didLoadInitialData(
+        dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>
+    ) async {
         await dataSource?.update(to: dataSourceSnapshot, animated: true)
         overviewView?.endRefreshing()
     }
@@ -142,5 +121,27 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
     func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
         await dataSource?.update(to: dataSourceSnapshot, animated: true)
         hideLoadingActivity()
+    }
+}
+
+extension OverviewViewController {
+    func showLoadingActivity() {
+        guard navigationItem.rightBarButtonItem == nil else {
+            return
+        }
+        
+        let acitivityIndicatorView = UIActivityIndicatorView()
+        acitivityIndicatorView.hidesWhenStopped = true
+        acitivityIndicatorView.startAnimating()
+        
+        let button = UIBarButtonItem(customView: acitivityIndicatorView)
+        
+        navigationItem.rightBarButtonItem = button
+    }
+    
+    func hideLoadingActivity() {
+        navigationItem.rightBarButtonItem = nil
+        
+        overviewView?.endRefreshing()
     }
 }
