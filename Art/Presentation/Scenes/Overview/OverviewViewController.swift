@@ -25,6 +25,13 @@ class OverviewViewController: UIViewController {
             }
         }
     }
+    
+    private lazy var sectionHeaderProvider = OverviewViewDataSource.SupplementaryViewRegistration(
+        elementKind: UICollectionView.elementKindSectionHeader
+    ) { [weak self] headerView, _, indexPath in
+        let headerItem = self?.dataSource?.diffable.snapshot().sectionIdentifiers[indexPath.section]
+        headerView.setup(withTitle: headerItem)
+    }
 
     private lazy var dataSource: OverviewViewDataSource? = {
         guard let overviewView else {
@@ -33,7 +40,8 @@ class OverviewViewController: UIViewController {
         
         return OverviewViewDataSource(
             collectionView: overviewView,
-            cellRegistration: cellRegistration
+            cellRegistration: cellRegistration,
+            supplementaryViewRegistration: sectionHeaderProvider
         )
     }()
     

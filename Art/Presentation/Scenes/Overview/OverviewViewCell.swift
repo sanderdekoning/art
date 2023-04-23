@@ -49,6 +49,7 @@ class OverviewViewCell: UICollectionViewCell {
 private extension OverviewViewCell {
     func imageView(image: UIImage) -> UIImageView {
         let view = UIImageView(image: image)
+        view.backgroundColor = .secondarySystemBackground
         view.contentMode = .scaleAspectFit
         return view
     }
