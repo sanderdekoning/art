@@ -14,7 +14,7 @@ class OverviewViewController: UIViewController {
     
     private lazy var cellRegistration = OverviewViewDataSource.CellRegistration
     { [weak self] cell, _, artPage in
-        cell.setup(with: artPage.art.webImage.url, worker: ImageWorker.sharedThumbnail)
+        cell.setup(with: artPage.art, worker: ImageWorker.sharedThumbnail)
         
         Task(priority: .userInitiated) {
             do {

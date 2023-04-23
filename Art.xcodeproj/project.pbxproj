@@ -38,6 +38,7 @@
 		C5D8363629F55CCB00FEE5D6 /* CollectionPageResponseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363529F55CCB00FEE5D6 /* CollectionPageResponseStore.swift */; };
 		C5D8363829F55CDC00FEE5D6 /* CollectionRequestsPending.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363729F55CDC00FEE5D6 /* CollectionRequestsPending.swift */; };
 		C5D8363A29F5BA2800FEE5D6 /* OverviewViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363929F5BA2800FEE5D6 /* OverviewViewHeader.swift */; };
+		C5D8363C29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363B29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		C5D8363529F55CCB00FEE5D6 /* CollectionPageResponseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPageResponseStore.swift; sourceTree = "<group>"; };
 		C5D8363729F55CDC00FEE5D6 /* CollectionRequestsPending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRequestsPending.swift; sourceTree = "<group>"; };
 		C5D8363929F5BA2800FEE5D6 /* OverviewViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewHeader.swift; sourceTree = "<group>"; };
+		C5D8363B29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewCellArtView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 				C5D8362D29F4026E00FEE5D6 /* OverviewViewDataSource.swift */,
 				C5D8363929F5BA2800FEE5D6 /* OverviewViewHeader.swift */,
 				C50A1D5929F1888E00C6AB99 /* OverviewViewCell.swift */,
+				C5D8363B29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift */,
 				C5D8363129F43FE300FEE5D6 /* OverviewViewCellLoadingView.swift */,
 				C50A1D0C29F06A4C00C6AB99 /* OverviewViewController.swift */,
 			);
@@ -425,6 +428,7 @@
 				C5D8362129F1BBBF00FEE5D6 /* ImageWorker.swift in Sources */,
 				C50A1D4B29F15BBF00C6AB99 /* CollectionResponse+ArtObject.swift in Sources */,
 				C50A1D5629F1669600C6AB99 /* Art.swift in Sources */,
+				C5D8363C29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift in Sources */,
 				C50A1D0929F06A4C00C6AB99 /* AppDelegate.swift in Sources */,
 				C5D8363829F55CDC00FEE5D6 /* CollectionRequestsPending.swift in Sources */,
 				C50A1D4E29F15D7300C6AB99 /* CollectionResponse.swift in Sources */,

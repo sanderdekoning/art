@@ -27,6 +27,8 @@ class OverviewViewCellLoadingView: UIView {
     }
     
     private func setupViews() {
+        backgroundColor = .secondarySystemBackground
+        
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         addSubview(activityIndicator)
         

@@ -20,12 +20,12 @@ class OverviewViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(with imageURL: URL, worker: any ImageWorkerProtocol) {
+    func setup(with art: Art, worker: any ImageWorkerProtocol) {
         imageWorker = worker
         
         setupTask = Task {
             do {
-                try await setBackgroundImage(from: imageURL, worker: worker)
+                try await setArtView(for: art, worker: worker)
             } catch is CancellationError, URLError.cancelled {
                 reset()
             } catch ImageWorkerError.unexpectedData {
@@ -47,18 +47,11 @@ class OverviewViewCell: UICollectionViewCell {
 }
 
 private extension OverviewViewCell {
-    func imageView(image: UIImage) -> UIImageView {
-        let view = UIImageView(image: image)
-        view.backgroundColor = .secondarySystemBackground
-        view.contentMode = .scaleAspectFit
-        return view
-    }
-    
-    func setBackgroundImage(from url: URL, worker: any ImageWorkerProtocol) async throws {
+    func setArtView(for art: Art, worker: any ImageWorkerProtocol) async throws {
         backgroundView = OverviewViewCellLoadingView()
-
+        
         let image = try await worker.image(
-            from: url,
+            from: art.webImage.url,
             thumbnailSize: contentView.bounds.size,
             prefersThumbnail: true
         )
@@ -68,10 +61,24 @@ private extension OverviewViewCell {
 
         // TODO: present the prepared image in the content view with its title
         let preparedImage = await image.byPreparingForDisplay()
-        backgroundView = imageView(image: preparedImage ?? image)
+        
+        backgroundView = nil
+        
+        let artView = OverviewViewCellArtView(image: preparedImage, title: art.title)
+        artView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(artView)
+        
+        NSLayoutConstraint.activate([
+            artView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            artView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            artView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            artView.leftAnchor.constraint(equalTo: contentView.leftAnchor)
+        ])
     }
     
     func reset() {
         backgroundView = nil
+        
+        contentView.subviews.forEach { $0.removeFromSuperview() }
     }
 }
