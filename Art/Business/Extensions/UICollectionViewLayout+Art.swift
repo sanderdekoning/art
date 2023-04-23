@@ -40,7 +40,7 @@ extension UICollectionViewLayout {
         section.interGroupSpacing = 4
 
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 200
+        config.interSectionSpacing = 180
 
         let layout = UICollectionViewCompositionalLayout(section: section, configuration: config)
         return layout
