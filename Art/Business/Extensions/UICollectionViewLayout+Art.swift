@@ -24,7 +24,6 @@ extension UICollectionViewLayout {
         )
         group.interItemSpacing = .fixed(4)
         
-        
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(50)
@@ -41,7 +40,7 @@ extension UICollectionViewLayout {
         section.interGroupSpacing = 4
 
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 140
+        config.interSectionSpacing = 200
 
         let layout = UICollectionViewCompositionalLayout(section: section, configuration: config)
         return layout

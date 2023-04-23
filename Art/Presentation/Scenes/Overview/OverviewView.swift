@@ -39,5 +39,7 @@ class OverviewView: UICollectionView {
         alwaysBounceVertical = true
         
         refreshControl = UIRefreshControl()
+        
+        contentInset.bottom = 160
     }
 }

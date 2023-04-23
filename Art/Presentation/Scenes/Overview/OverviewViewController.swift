@@ -51,7 +51,7 @@ class OverviewViewController: UIViewController {
 
         view = overviewView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,6 +61,8 @@ class OverviewViewController: UIViewController {
     }
 
     func setupViews() {
+        overrideUserInterfaceStyle = .dark
+        
         title = NSLocalizedString("Art", comment: "")
         
         overviewView?.refreshControl?.addAction(refreshAction, for: .primaryActionTriggered)
