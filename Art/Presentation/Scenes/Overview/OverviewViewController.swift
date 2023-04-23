@@ -13,12 +13,12 @@ class OverviewViewController: UIViewController {
     var router: OverviewRouter?
     
     private lazy var cellRegistration = OverviewViewDataSource.CellRegistration
-    { [weak self] cell, indexPath, artPage in
+    { [weak self] cell, _, artPage in
         cell.setup(with: artPage.art.webImage.url, worker: ImageWorker.sharedThumbnail)
         
         Task(priority: .userInitiated) {
             do {
-                try await self?.interactor?.didSetupCell(for: artPage, at: indexPath)
+                try await self?.interactor?.didSetupCell(for: artPage)
             } catch {
                 // TODO: handle pagination fetch collection error
                 print(error)
@@ -26,10 +26,11 @@ class OverviewViewController: UIViewController {
         }
     }
     
-    private lazy var sectionHeaderProvider = OverviewViewDataSource.SupplementaryViewRegistration(
+    private lazy var sectionHeaderProvider = OverviewViewDataSource.HeaderViewRegistration(
         elementKind: UICollectionView.elementKindSectionHeader
     ) { [weak self] headerView, _, indexPath in
-        let headerItem = self?.dataSource?.diffable.snapshot().sectionIdentifiers[indexPath.section]
+        let dataSourceSnapshot = self?.dataSource?.diffable.snapshot()
+        let headerItem = dataSourceSnapshot?.sectionIdentifiers[indexPath.section]
         headerView.setup(withTitle: headerItem)
     }
 
@@ -56,7 +57,7 @@ class OverviewViewController: UIViewController {
 
         setupViews()
 
-        refresh()
+        loadInitialData()
     }
 
     func setupViews() {
@@ -67,6 +68,16 @@ class OverviewViewController: UIViewController {
 }
 
 private extension OverviewViewController {
+    func loadInitialData() {
+        Task(priority: .userInitiated) {
+            do {
+                try await interactor?.loadInitialData()
+            } catch {
+                // TODO: determine intial data load failure scenario
+            }
+        }
+    }
+    
     func refresh() {
         Task(priority: .userInitiated) {
             do {
@@ -84,18 +95,52 @@ private extension OverviewViewController {
     }
 }
 
+extension OverviewViewController {
+    func showLoadingActivity() {
+        guard navigationItem.rightBarButtonItem == nil else {
+            return
+        }
+        
+        let acitivityIndicatorView = UIActivityIndicatorView()
+        acitivityIndicatorView.hidesWhenStopped = true
+        acitivityIndicatorView.startAnimating()
+        
+        let button = UIBarButtonItem(customView: acitivityIndicatorView)
+        
+        navigationItem.rightBarButtonItem = button
+    }
+    
+    func hideLoadingActivity() {
+        navigationItem.rightBarButtonItem = nil
+        
+        overviewView?.endRefreshing()
+    }
+}
+
 extension OverviewViewController: OverviewPresenterOutputProtocol {
+    func willLoadInitialData() {
+        overviewView?.beginRefreshing()
+    }
+    
+    func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
+        await dataSource?.update(to: dataSourceSnapshot, animated: true)
+        overviewView?.endRefreshing()
+    }
+    
+    func failedLoadInitialData(with error: Error) {
+        overviewView?.endRefreshing()
+    }
+    
     func willRetrieveCollection() {
-        // TODO: determine whether we want to always scroll to top on refreshes
-        overviewView?.beginRefreshing(wantsRefreshControlVisible: false)
+        showLoadingActivity()
     }
 
     func failedFetchCollection(with error: Error) {
-        overviewView?.endRefreshing()
+        hideLoadingActivity()
     }
 
     func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
         await dataSource?.update(to: dataSourceSnapshot, animated: true)
-        overviewView?.endRefreshing()
+        hideLoadingActivity()
     }
 }

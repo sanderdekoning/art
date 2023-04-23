@@ -19,16 +19,12 @@ class OverviewView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func beginRefreshing(wantsRefreshControlVisible: Bool = true) {
+    func beginRefreshing() {
         guard let refreshControl, !refreshControl.isRefreshing else {
             return
         }
         
         refreshControl.beginRefreshing()
-        
-        if wantsRefreshControlVisible {
-            scrollRectToVisible(refreshControl.frame, animated: true)
-        }
     }
     
     func endRefreshing() {

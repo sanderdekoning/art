@@ -8,9 +8,13 @@
 import UIKit
 
 @MainActor protocol OverviewPresenterProtocol: AnyObject {
+    func willLoadInitialData()
+    func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async
+    func failedLoadInitialData(with error: Error)
+
     func willFetchCollection()
     func failedFetchCollection(with error: Error)
-    func didFetch(responseStore: CollectionPageResponseStoreProtocol) async
+    func present(responseStore: CollectionPageResponseStoreProtocol) async
 }
 
 class OverviewPresenter {
@@ -24,6 +28,19 @@ class OverviewPresenter {
 }
 
 @MainActor extension OverviewPresenter: OverviewPresenterProtocol {
+    func willLoadInitialData() {
+        output?.willLoadInitialData()
+    }
+    
+    func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async {
+        let dataSourceSnapshot = await dataSourceSnapshot(for: responseStore)
+        await output?.didLoadInitialData(dataSourceSnapshot: dataSourceSnapshot)
+    }
+    
+    func failedLoadInitialData(with error: Error) {
+        output?.failedLoadInitialData(with: error)
+    }
+    
     func willFetchCollection() {
         output?.willRetrieveCollection()
     }
@@ -32,10 +49,9 @@ class OverviewPresenter {
         output?.failedFetchCollection(with: error)
     }
     
-    func didFetch(responseStore: CollectionPageResponseStoreProtocol) async {
-        let sortedArtByPage = await sortedArtByPage(responseStore: responseStore)
-        let snapshot = dataSource(for: sortedArtByPage, groupedByKeyPath: collectionGroupKeyPath)
-        await output?.display(dataSourceSnapshot: snapshot)
+    func present(responseStore: CollectionPageResponseStoreProtocol) async {
+        let dataSourceSnapshot = await dataSourceSnapshot(for: responseStore)
+        await output?.display(dataSourceSnapshot: dataSourceSnapshot)
     }
 }
 
@@ -54,7 +70,7 @@ private extension OverviewPresenter {
         return artPages
     }
     
-    func dataSource(
+    func dataSourceSnapshot(
         for artPages: [ArtPage],
         groupedByKeyPath: KeyPath<Art, String>
     ) -> NSDiffableDataSourceSnapshot<String, ArtPage> {
@@ -71,9 +87,25 @@ private extension OverviewPresenter {
         
         return snapshot
     }
+    
+    func dataSourceSnapshot(
+        for responseStore: CollectionPageResponseStoreProtocol
+    ) async -> NSDiffableDataSourceSnapshot<String, ArtPage>{
+        let sortedArtByPage = await sortedArtByPage(responseStore: responseStore)
+        let dataSourceSnapshot = dataSourceSnapshot(
+            for: sortedArtByPage,
+            groupedByKeyPath: collectionGroupKeyPath
+        )
+        return dataSourceSnapshot
+    }
 }
 
 @MainActor protocol OverviewPresenterOutputProtocol: AnyObject {
+    func willLoadInitialData()
+    func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async
+    func failedLoadInitialData(with error: Error)
+    
+    
     func willRetrieveCollection()
     func failedFetchCollection(with error: Error)
     func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async

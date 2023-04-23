@@ -8,8 +8,9 @@
 import Foundation
 
 protocol OverviewInteractorProtocol: AnyObject {
+    func loadInitialData() async throws
     func refresh() async throws
-    func didSetupCell(for artPage: ArtPage, at indexPath: IndexPath) async throws
+    func didSetupCell(for artPage: ArtPage) async throws
 }
 
 class OverviewInteractor {
@@ -36,18 +37,29 @@ class OverviewInteractor {
 }
 
 extension OverviewInteractor: OverviewInteractorProtocol {
+    func loadInitialData() async throws {
+        do {
+            if await shouldFetch(request: initialRequest) {
+                await presenter.willLoadInitialData()
+                try await fetchCollection(for: initialRequest)
+            }
+            await presenter.didLoadInitialData(responseStore: collectionPageResponseStore)
+        } catch {
+            await presenter.failedLoadInitialData(with: error)
+
+            throw error
+        }
+    }
+    
     func refresh() async throws {
         await collectionPageResponseStore.removeAll()
         await collectionRequestsPending.removeAll()
         
-        let request = CollectionRequest(
-            resultsPerPage: paginationConfig.resultsPerPage,
-            page: paginationConfig.firstPageIndex
-        )
-        try await fetchCollection(for: request)
+        try await fetchCollection(for: initialRequest)
+        await presenter.present(responseStore: collectionPageResponseStore)
     }
     
-    func didSetupCell(for artPage: ArtPage, at indexPath: IndexPath) async throws {
+    func didSetupCell(for artPage: ArtPage) async throws {
         guard let totalPages = await collectionPageResponseStore.maxResponseTotalCount else {
             return
         }
@@ -63,16 +75,24 @@ extension OverviewInteractor: OverviewInteractorProtocol {
             resultsPerPage: paginationConfig.resultsPerPage,
             page: nextPage
         )
-        guard await shouldFetch(request: nextPageRequest, afterIndex: indexPath.item) else {
+        guard await shouldFetch(request: nextPageRequest) else {
             return
         }
         
         try await fetchCollection(for: nextPageRequest)
+        await presenter.present(responseStore: collectionPageResponseStore)
     }
 }
 
 private extension OverviewInteractor {
-    func shouldFetch(request: CollectionRequest, afterIndex index: Int) async -> Bool {
+    var initialRequest: CollectionRequest {
+        CollectionRequest(
+            resultsPerPage: paginationConfig.resultsPerPage,
+            page: paginationConfig.firstPageIndex
+        )
+    }
+
+    func shouldFetch(request: CollectionRequest) async -> Bool {
         let hasResponse = await collectionPageResponseStore.hasResponse(forPage: request.page)
         let isPendingResponse = await collectionRequestsPending.isPending(request: request)
         return hasResponse == false && isPendingResponse == false
@@ -86,7 +106,6 @@ private extension OverviewInteractor {
             let pageResponse = try await collectionWorker.collection(for: request)
 
             await collectionPageResponseStore.store(response: pageResponse)
-            await presenter.didFetch(responseStore: collectionPageResponseStore)
         } catch {
             await collectionRequestsPending.remove(request: request)
             
