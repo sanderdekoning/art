@@ -8,23 +8,25 @@
 import Foundation
 
 protocol CollectionWorkerProtocol {
-    func collection(for collectionRequest: CollectionRequest) async throws -> CollectionResponse
+    func collection(for request: CollectionRequest) async throws -> CollectionPageResponse
 }
 
 struct CollectionWorker: CollectionWorkerProtocol {
     let session: URLSession
-    
-    func collection(for collectionRequest: CollectionRequest) async throws -> CollectionResponse {
-        let (data, response) = try await session.data(for: collectionRequest.request)
+    private let decoder = JSONDecoder()
+
+    func collection(for request: CollectionRequest) async throws -> CollectionPageResponse {
+        let (data, urlResponse) = try await session.data(for: request.request)
         
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw CollectionWorkerError.unexpectedResponse(response)
+        guard let httpResponse = urlResponse as? HTTPURLResponse else {
+            throw CollectionWorkerError.unexpectedResponse(urlResponse)
         }
         
         guard httpResponse.statusCode == 200 else {
             throw CollectionWorkerError.unexpectedStatusCode(httpResponse.statusCode)
         }
         
-        return try collectionRequest.decoder.decode(CollectionResponse.self, from: data)
+        let response = try decoder.decode(CollectionResponse.self, from: data)
+        return CollectionPageResponse(page: request.page, response: response)
     }
 }

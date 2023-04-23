@@ -7,15 +7,13 @@
 
 import Foundation
 
-struct CollectionRequest {
-    let api = API()
-    let decoder = JSONDecoder()
+struct CollectionRequest: Hashable {
     let resultsPerPage: Int
     let page: Int
 
     private var urlQueryItems: [URLQueryItem] {
         [
-            api.authorizationURLQueryItem,
+            API().authorizationURLQueryItem,
             URLQueryItem(name: "s", value: "artist"),
             URLQueryItem(name: "imgonly", value: String(true)),
             URLQueryItem(name: "ps", value: String(resultsPerPage)),
@@ -25,7 +23,7 @@ struct CollectionRequest {
     
     var url: URL {
         get throws {
-            var url = api.collectionURL
+            var url = API().collectionURL
             
             url.append(queryItems: urlQueryItems)
             

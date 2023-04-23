@@ -34,18 +34,30 @@ class ImageWorker: ImageWorkerProtocol {
     ) async throws -> UIImage {
         let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
 
+        // Check for a cached thumbnail
         if prefersThumbnail, let thumbnail = thumbnailCache.cached(request: request) {
             return thumbnail
         }
 
         let (data, _) = try await session.data(for: request)
 
+        // Check again for a cached thumbnail after awaiting request
+        if prefersThumbnail, let thumbnail = thumbnailCache.cached(request: request) {
+            return thumbnail
+        }
+        
         return try await cacheThumbnail(
             from: request,
             data: data,
             thumbnailSize: thumbnailSize,
             prefersThumbnail: prefersThumbnail
         )
+    }
+}
+
+extension ImageWorker {
+    static var sharedThumbnail: ImageWorker {
+        ImageWorker(session: .shared, thumbnailCache: ImageRequestCache.sharedThumbnail)
     }
 }
 

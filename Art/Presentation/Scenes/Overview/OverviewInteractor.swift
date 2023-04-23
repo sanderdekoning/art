@@ -9,32 +9,36 @@ import Foundation
 
 protocol OverviewInteractorProtocol: AnyObject {
     func refresh() async throws
-    func willDisplayArt(at indexPath: IndexPath) async throws
+    func didSetupCell(for artPage: ArtPage, at indexPath: IndexPath) async throws
 }
 
 class OverviewInteractor {
     let presenter: OverviewPresenterProtocol
     
     private let collectionWorker: CollectionWorkerProtocol
-    private let collectionPageResponse: CollectionPageResponseProtocol
+    private var collectionPageResponseStore: CollectionPageResponseStoreProtocol
+    private var collectionRequestsPending: CollectionRequestsPendingProtocol
     private let paginationConfig: OverviewInteractorPaginationConfigProtocol
     
     init(
         presenter: any OverviewPresenterProtocol,
         collectionWorker: any CollectionWorkerProtocol,
-        collectionPageResponse: any CollectionPageResponseProtocol,
+        collectionPageResponseStore: any CollectionPageResponseStoreProtocol,
+        collectionRequestsPending: any CollectionRequestsPendingProtocol,
         paginationConfig: any OverviewInteractorPaginationConfigProtocol
     ) {
         self.presenter = presenter
         self.collectionWorker = collectionWorker
-        self.collectionPageResponse = collectionPageResponse
+        self.collectionPageResponseStore = collectionPageResponseStore
+        self.collectionRequestsPending = collectionRequestsPending
         self.paginationConfig = paginationConfig
     }
 }
 
 extension OverviewInteractor: OverviewInteractorProtocol {
     func refresh() async throws {
-        await collectionPageResponse.removeAll()
+        await collectionPageResponseStore.removeAll()
+        await collectionRequestsPending.removeAll()
         
         let request = CollectionRequest(
             resultsPerPage: paginationConfig.resultsPerPage,
@@ -43,69 +47,48 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         try await fetchCollection(for: request)
     }
     
-    func willDisplayArt(at indexPath: IndexPath) async throws {
-        guard let numberOfPages = await numberOfPages else {
+    func didSetupCell(for artPage: ArtPage, at indexPath: IndexPath) async throws {
+        guard let totalPages = await collectionPageResponseStore.maxResponseTotalCount else {
             return
         }
-        
-        let index = indexPath.item
-        let nextPage = paginationConfig.pageToFetchAfter(index: index, numberOfPages: numberOfPages)
-        guard let nextPage else {
+
+        guard let nextPage = paginationConfig.pageToFetchAfter(
+            page: artPage.page,
+            numberOfPages: totalPages
+        ) else {
             return
         }
-        
-        guard await shouldFetch(page: nextPage, afterIndex: index) else {
-            return
-        }
-        
-        let request = CollectionRequest(
+
+        let nextPageRequest = CollectionRequest(
             resultsPerPage: paginationConfig.resultsPerPage,
             page: nextPage
         )
-        try await fetchCollection(for: request)
+        guard await shouldFetch(request: nextPageRequest, afterIndex: indexPath.item) else {
+            return
+        }
+        
+        try await fetchCollection(for: nextPageRequest)
     }
 }
 
 private extension OverviewInteractor {
-    var largestTotalCount: Int? {
-        get async {
-            // Get the largest total count from all the collection responses
-            await collectionPageResponse.responses.compactMap { $0.value?.count }.max()
-        }
+    func shouldFetch(request: CollectionRequest, afterIndex index: Int) async -> Bool {
+        let hasResponse = await collectionPageResponseStore.hasResponse(forPage: request.page)
+        let isPendingResponse = await collectionRequestsPending.isPending(request: request)
+        return hasResponse == false && isPendingResponse == false
     }
     
-    var numberOfPages: Int? {
-        get async {
-            guard let largestTotalCount = await largestTotalCount else {
-                return nil
-            }
-
-            let pageFraction = Double(largestTotalCount) / Double(paginationConfig.resultsPerPage)
-            let pages = Int(ceil(pageFraction))
-            return pages
-        }
-    }
-    
-    func shouldFetch(page: Int, afterIndex index: Int) async -> Bool {
-        guard await paginationConfig.shouldFetch(page: page, afterIndex: index) else {
-            return false
-        }
-
-        return await collectionPageResponse.contains(page: page) == false
-    }
-}
-
-private extension OverviewInteractor {
-    func fetchCollection(for collectionRequest: CollectionRequest) async throws {
-        await collectionPageResponse.set(page: collectionRequest.page, response: nil)
+    func fetchCollection(for request: CollectionRequest) async throws {
+        await collectionRequestsPending.add(request: request)
         await presenter.willFetchCollection()
         
         do {
-            let collection = try await collectionWorker.collection(for: collectionRequest)
-            await collectionPageResponse.set(page: collectionRequest.page, response: collection)
-            await presenter.didFetch(responses: collectionPageResponse.responses)
+            let pageResponse = try await collectionWorker.collection(for: request)
+
+            await collectionPageResponseStore.store(response: pageResponse)
+            await presenter.didFetch(responseStore: collectionPageResponseStore)
         } catch {
-            await collectionPageResponse.remove(page: collectionRequest.page)
+            await collectionRequestsPending.remove(request: request)
             
             await presenter.failedFetchCollection(with: error)
             throw error

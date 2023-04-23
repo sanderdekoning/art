@@ -10,6 +10,7 @@ import UIKit
 protocol ImageRequestCacheProtocol {
     func set(image: UIImage, for request: URLRequest)
     func cached(request: URLRequest) -> UIImage?
+    func removeAll()
 }
 
 class ImageRequestCache: ImageRequestCacheProtocol {
@@ -28,5 +29,9 @@ class ImageRequestCache: ImageRequestCacheProtocol {
     
     func cached(request: URLRequest) -> UIImage? {
         cache.object(forKey: request as AnyObject)
+    }
+    
+    func removeAll() {
+        cache.removeAllObjects()
     }
 }

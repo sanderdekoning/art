@@ -9,3 +9,8 @@ import Foundation
 
 // Defining as an alias of the response object; in reality this will likely have its own schema
 typealias Art = CollectionResponse.ArtObject
+
+struct ArtPage: Hashable {
+    let art: Art
+    let page: Int
+}

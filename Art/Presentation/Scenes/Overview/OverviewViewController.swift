@@ -8,11 +8,35 @@
 import UIKit
 
 class OverviewViewController: UIViewController {
-    var dataSource: OverviewViewDataSource?
     var overviewView: OverviewView?
     var interactor: OverviewInteractor?
     var router: OverviewRouter?
+    
+    private lazy var cellRegistration = OverviewViewDataSource.CellRegistration
+    { [weak self] cell, indexPath, artPage in
+        cell.setup(with: artPage.art.webImage.url, worker: ImageWorker.sharedThumbnail)
+        
+        Task(priority: .userInitiated) {
+            do {
+                try await self?.interactor?.didSetupCell(for: artPage, at: indexPath)
+            } catch {
+                // TODO: handle pagination fetch collection error
+                print(error)
+            }
+        }
+    }
 
+    private lazy var dataSource: OverviewViewDataSource? = {
+        guard let overviewView else {
+            return nil
+        }
+        
+        return OverviewViewDataSource(
+            collectionView: overviewView,
+            cellRegistration: cellRegistration
+        )
+    }()
+    
     override func loadView() {
         super.loadView()
 
@@ -29,8 +53,6 @@ class OverviewViewController: UIViewController {
 
     func setupViews() {
         title = NSLocalizedString("Art", comment: "")
-
-        overviewView?.delegate = self
         
         overviewView?.refreshControl?.addAction(refreshAction, for: .primaryActionTriggered)
     }
@@ -54,25 +76,6 @@ private extension OverviewViewController {
     }
 }
 
-extension OverviewViewController: UICollectionViewDelegate {
-    // FIXME: There is a known scenario where willDisplay does not get called after applying a
-    // snapshot if pagination page size is smaller or equal to number of items that fit on screen
-    func collectionView(
-        _ collectionView: UICollectionView,
-        willDisplay cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        Task(priority: .userInitiated) {
-            do {
-                try await interactor?.willDisplayArt(at: indexPath)
-            } catch {
-                // TODO: handle pagination fetch collection error
-                print(error)
-            }
-        }
-    }
-}
-
 extension OverviewViewController: OverviewPresenterOutputProtocol {
     func willRetrieveCollection() {
         // TODO: determine whether we want to always scroll to top on refreshes
@@ -82,9 +85,9 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
     func failedFetchCollection(with error: Error) {
         overviewView?.endRefreshing()
     }
-    
-    func display(art: [Art]) async {
-        await dataSource?.update(to: art, animated: true)
+
+    func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
+        await dataSource?.update(to: dataSourceSnapshot, animated: true)
         overviewView?.endRefreshing()
     }
 }
