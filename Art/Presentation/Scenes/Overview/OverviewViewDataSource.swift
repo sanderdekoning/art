@@ -7,19 +7,12 @@
 
 import UIKit
 
-@MainActor protocol OverviewViewDataSourceProtocol {
-    func update(
-        to dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>,
-        animated: Bool
-    ) async
-}
-
 @MainActor class OverviewViewDataSource {
-    let diffable: UICollectionViewDiffableDataSource<String, ArtPage>
-    
+    private let diffable: DiffableDataSource
+    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<String, ArtPage>
+
     typealias CellRegistration = UICollectionView.CellRegistration<OverviewViewCell, ArtPage>
     typealias HeaderViewRegistration = UICollectionView.SupplementaryRegistration<OverviewViewHeader>
-    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<String, ArtPage>
 
     init(
         collectionView: UICollectionView,
@@ -58,11 +51,15 @@ import UIKit
     }
 }
 
-extension OverviewViewDataSource: OverviewViewDataSourceProtocol {
+extension OverviewViewDataSource {
     func update(
         to dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>,
         animated: Bool
     ) async {
         await diffable.apply(dataSourceSnapshot, animatingDifferences: animated)
+    }
+    
+    func snapshot() -> NSDiffableDataSourceSnapshot<String, ArtPage> {
+        diffable.snapshot()
     }
 }

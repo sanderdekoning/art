@@ -7,7 +7,7 @@
 
 import UIKit
 
-@MainActor protocol OverviewPresenterProtocol: AnyObject {
+protocol OverviewPresenterProtocol: AnyObject {
     func willLoadInitialData()
     func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async
     func failedLoadInitialData(with error: Error)
@@ -27,14 +27,14 @@ class OverviewPresenter {
     }
 }
 
-@MainActor extension OverviewPresenter: OverviewPresenterProtocol {
+extension OverviewPresenter: OverviewPresenterProtocol {
     func willLoadInitialData() {
         output?.willLoadInitialData()
     }
     
     func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async {
         let dataSourceSnapshot = await dataSourceSnapshot(for: responseStore)
-        await output?.didLoadInitialData(dataSourceSnapshot: dataSourceSnapshot)
+        output?.didLoadInitialData(dataSourceSnapshot: dataSourceSnapshot)
     }
     
     func failedLoadInitialData(with error: Error) {
@@ -100,9 +100,9 @@ private extension OverviewPresenter {
     }
 }
 
-@MainActor protocol OverviewPresenterOutputProtocol: AnyObject {
+protocol OverviewPresenterOutputProtocol: AnyObject {
     func willLoadInitialData()
-    func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async
+    func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>)
     func failedLoadInitialData(with error: Error)
     
     

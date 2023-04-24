@@ -40,12 +40,12 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     func loadInitialData() async throws {
         do {
             if await shouldFetch(request: initialRequest) {
-                await presenter.willLoadInitialData()
+                presenter.willLoadInitialData()
                 try await fetchCollection(for: initialRequest)
             }
             await presenter.didLoadInitialData(responseStore: collectionPageResponseStore)
         } catch {
-            await presenter.failedLoadInitialData(with: error)
+            presenter.failedLoadInitialData(with: error)
 
             throw error
         }
@@ -100,7 +100,7 @@ private extension OverviewInteractor {
     
     func fetchCollection(for request: CollectionRequest) async throws {
         await collectionRequestsPending.add(request: request)
-        await presenter.willFetchCollection()
+        presenter.willFetchCollection()
         
         do {
             let pageResponse = try await collectionWorker.collection(for: request)
@@ -109,7 +109,7 @@ private extension OverviewInteractor {
         } catch {
             await collectionRequestsPending.remove(request: request)
             
-            await presenter.failedFetchCollection(with: error)
+            presenter.failedFetchCollection(with: error)
             throw error
         }
     }

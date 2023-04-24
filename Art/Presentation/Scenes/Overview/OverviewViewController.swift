@@ -28,7 +28,7 @@ class OverviewViewController: UIViewController {
     private lazy var sectionHeaderProvider = OverviewViewDataSource.HeaderViewRegistration(
         elementKind: UICollectionView.elementKindSectionHeader
     ) { [weak self] headerView, _, indexPath in
-        let dataSourceSnapshot = self?.dataSource?.diffable.snapshot()
+        let dataSourceSnapshot = self?.dataSource?.snapshot()
         let headerItem = dataSourceSnapshot?.sectionIdentifiers[indexPath.section]
         headerView.setup(withTitle: headerItem)
     }
@@ -93,27 +93,37 @@ private extension OverviewViewController {
 }
 
 extension OverviewViewController: OverviewPresenterOutputProtocol {
-    func willLoadInitialData() {
-        overviewView?.beginRefreshing()
+    nonisolated func willLoadInitialData() {
+        Task { @MainActor in
+            overviewView?.beginRefreshing()
+        }
     }
     
-    func didLoadInitialData(
+    nonisolated func didLoadInitialData(
         dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>
-    ) async {
-        await dataSource?.update(to: dataSourceSnapshot, animated: true)
-        overviewView?.endRefreshing()
+    ) {
+        Task { @MainActor in
+            await dataSource?.update(to: dataSourceSnapshot, animated: true)
+            overviewView?.endRefreshing()
+        }
     }
     
-    func failedLoadInitialData(with error: Error) {
-        overviewView?.endRefreshing()
+    nonisolated func failedLoadInitialData(with error: Error) {
+        Task { @MainActor in
+            overviewView?.endRefreshing()
+        }
     }
     
-    func willRetrieveCollection() {
-        showLoadingActivity()
+    nonisolated func willRetrieveCollection() {
+        Task { @MainActor in
+            showLoadingActivity()
+        }
     }
 
-    func failedFetchCollection(with error: Error) {
-        hideLoadingActivity()
+    nonisolated func failedFetchCollection(with error: Error) {
+        Task { @MainActor in
+            hideLoadingActivity()
+        }
     }
 
     func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
