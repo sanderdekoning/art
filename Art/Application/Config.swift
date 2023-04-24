@@ -10,6 +10,7 @@ import Foundation
 enum Config {
     private enum Keys: String {
         case apiKey = "API_KEY"
+        case apiBaseURL = "API_BASE_URL"
     }
     
     private static let infoDictionary: [String: Any] = {
@@ -25,9 +26,22 @@ enum Config {
 extension Config {
     static let apiKey: String = {
         guard let key = Config.infoDictionary[Keys.apiKey.rawValue] as? String else {
-            // TODO: handle missing API key error
+            // TODO: handle missing API key
             fatalError()
         }
         return key
+    }()
+    
+    static let apiBaseURL: URL = {
+        guard let urlString = Config.infoDictionary[Keys.apiBaseURL.rawValue] as? String else {
+            // TODO: handle missing API base URL string
+            fatalError()
+        }
+        guard let url = URL(string: urlString) else {
+            // TODO: handle API base URL string error
+            fatalError()
+        }
+        
+        return url
     }()
 }

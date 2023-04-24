@@ -10,16 +10,12 @@ import Foundation
 struct API {
     // For demonstration purposes hardcoding the API key and culture
     let key = Config.apiKey
-    let culture = "en"
     
     var baseURL: URL {
-        guard let url = URL(string: "https://www.rijksmuseum.nl/api/") else {
-            // TODO: consider using optionals or handling unexpected API base url
-            fatalError()
-        }
-        
-        return url
+        Config.apiBaseURL
     }
+    
+    let culture: Culture
     
     var cultureURL: URL {
         guard let url = URL(string: "\(culture)/", relativeTo: baseURL) else {
@@ -43,3 +39,11 @@ struct API {
         URLQueryItem(name: "key", value: key)
     }
 }
+
+extension API {
+    enum Culture: String {
+        case en
+        case nl
+    }
+}
+
