@@ -9,7 +9,7 @@ import Foundation
 
 struct API {
     // For demonstration purposes hardcoding the API key and culture
-    let key = "0fiuZFh4"
+    let key = Config.apiKey
     let culture = "en"
     
     var baseURL: URL {
