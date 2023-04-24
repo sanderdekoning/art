@@ -24,9 +24,19 @@ struct CollectionRequest: Hashable {
     var url: URL {
         get throws {
             var url = API().collectionURL
+
+            guard #available(iOS 16.0, *) else {
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+                components?.queryItems = urlQueryItems
+                
+                guard let url = components?.url else {
+                    throw URLError(.badURL)
+                }
+
+                return url
+            }
             
             url.append(queryItems: urlQueryItems)
-            
             return url
         }
     }

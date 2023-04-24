@@ -8,20 +8,36 @@
 import UIKit
 
 extension UICollectionViewLayout {
+    private static func group(
+        repeatingItem item: NSCollectionLayoutItem
+    ) -> NSCollectionLayoutGroup {
+        let layoutSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalWidth(1)
+        )
+        
+        if #available(iOS 16.0, *) {
+            return NSCollectionLayoutGroup.horizontal(
+                layoutSize: layoutSize,
+                repeatingSubitem: item,
+                count: 1
+            )
+        } else {
+            return NSCollectionLayoutGroup.horizontal(
+                layoutSize: layoutSize,
+                subitem: item,
+                count: 1
+            )
+        }
+    }
+    
     static var art: UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1)
         ))
         
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalWidth(1)
-            ),
-            repeatingSubitem: item,
-            count: 1
-        )
+        let group = group(repeatingItem: item)
         group.interItemSpacing = .fixed(4)
         
         let headerSize = NSCollectionLayoutSize(

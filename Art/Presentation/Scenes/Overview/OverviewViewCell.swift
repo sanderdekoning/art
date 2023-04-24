@@ -47,6 +47,17 @@ class OverviewViewCell: UICollectionViewCell {
 }
 
 private extension OverviewViewCell {
+    /// Prepares the image for efficient display by an image view. Reduces any synchronous processing required for rendering
+    ///  in an image view. This particularly helps in table/collection views where large amounts of data can be present on screen at once
+    ///  and high speed scroll view interactions occur
+    private func imagePreparedForDisplay(image: UIImage) async -> UIImage? {
+        guard #available(iOS 15.0, *) else {
+            return nil
+        }
+        
+        return await image.byPreparingForDisplay()
+    }
+    
     func setArtView(for art: Art, worker: any ImageWorkerProtocol) async throws {
         backgroundView = OverviewViewCellLoadingView()
         
@@ -59,12 +70,9 @@ private extension OverviewViewCell {
         // Explicitly check cancellation
         try Task.checkCancellation()
 
-        // TODO: present the prepared image in the content view with its title
-        let preparedImage = await image.byPreparingForDisplay()
+        let preparedImage = await imagePreparedForDisplay(image: image)
         
-        backgroundView = nil
-        
-        let artView = OverviewViewCellArtView(image: preparedImage, title: art.title)
+        let artView = OverviewViewCellArtView(image: preparedImage ?? image, title: art.title)
         artView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(artView)
         
@@ -74,6 +82,8 @@ private extension OverviewViewCell {
             artView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             artView.leftAnchor.constraint(equalTo: contentView.leftAnchor)
         ])
+        
+        backgroundView = nil
     }
     
     func reset() {
