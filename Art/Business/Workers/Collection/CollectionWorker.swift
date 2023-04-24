@@ -19,7 +19,7 @@ struct CollectionWorker: CollectionWorkerProtocol {
         let (data, urlResponse) = try await session.data(for: request.request)
         
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            throw CollectionWorkerError.unexpectedResponse(urlResponse)
+            throw CollectionWorkerError.unexpectedResponse(urlResponse.url)
         }
         
         guard httpResponse.statusCode == 200 else {

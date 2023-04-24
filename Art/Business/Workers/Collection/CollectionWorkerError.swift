@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CollectionWorkerError: LocalizedError {
+enum CollectionWorkerError: LocalizedError, Equatable {
     case unexpectedStatusCode(Int)
-    case unexpectedResponse(URLResponse)
+    case unexpectedResponse(URL?)
 }
