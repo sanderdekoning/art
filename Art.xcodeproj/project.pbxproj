@@ -232,6 +232,7 @@
 		C50A1D4729F148BB00C6AB99 /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				C5D8364E29F694D800FEE5D6 /* Services */,
 				C5D8362229F2817700FEE5D6 /* Extensions */,
 				C50A1D4929F148E900C6AB99 /* Models */,
 				C50A1D4829F148C500C6AB99 /* Workers */,
@@ -252,7 +253,6 @@
 			isa = PBXGroup;
 			children = (
 				C50A1D5529F1669600C6AB99 /* Art.swift */,
-				C5D8361C29F19BBC00FEE5D6 /* API.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -287,6 +287,14 @@
 				C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C5D8364E29F694D800FEE5D6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C5D8361C29F19BBC00FEE5D6 /* API.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
