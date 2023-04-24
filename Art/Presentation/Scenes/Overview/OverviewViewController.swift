@@ -46,8 +46,6 @@ class OverviewViewController: UIViewController {
     }()
     
     override func loadView() {
-        super.loadView()
-
         view = overviewView
     }
 
