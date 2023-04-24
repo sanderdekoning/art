@@ -14,15 +14,26 @@ class OverviewViewController: UIViewController {
     
     private lazy var cellRegistration = OverviewViewDataSource.CellRegistration
     { [weak self] cell, _, artPage in
-        cell.setup(with: artPage.art, worker: ImageWorker.sharedThumbnail)
-        
         Task {
             do {
-                try await self?.interactor?.didSetupCell(for: artPage)
+                try await self?.interactor?.willSetupCell(for: artPage)
             } catch {
                 // TODO: handle pagination fetch collection error
             }
         }
+        
+        let cellTask = Task(priority: .userInitiated) { [weak self, weak cell] in
+            guard let self, let cell else {
+                return
+            }
+
+            do {
+                try await self.interactor?.setup(cell: cell, with: artPage.art)
+            } catch {
+                // TODO: handle cell setup error
+            }
+        }
+        cell.setup(with: cellTask)
     }
     
     private lazy var sectionHeaderProvider = OverviewViewDataSource.HeaderViewRegistration(
@@ -47,6 +58,8 @@ class OverviewViewController: UIViewController {
     
     override func loadView() {
         view = overviewView
+        
+        overviewView?.delegate = self
     }
 
     override func viewDidLoad() {
@@ -61,6 +74,16 @@ class OverviewViewController: UIViewController {
         title = NSLocalizedString("Art", comment: "")
         
         overviewView?.refreshControl?.addAction(refreshAction, for: .primaryActionTriggered)
+    }
+}
+
+extension OverviewViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let artPage = dataSource?.artPage(for: indexPath) else {
+            return
+        }
+        
+        router?.showDetail(for: artPage.art)
     }
 }
 
@@ -93,6 +116,12 @@ private extension OverviewViewController {
 }
 
 extension OverviewViewController: OverviewPresenterOutputProtocol {
+    nonisolated func setArtView(for cell: OverviewViewCell, with art: Art, thumbnail: UIImage) {
+        Task { @MainActor in
+            cell.setArtView(for: art, image: thumbnail)
+        }
+    }
+    
     nonisolated func willLoadInitialData() {
         Task { @MainActor in
             overviewView?.beginRefreshing()

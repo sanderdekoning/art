@@ -14,9 +14,6 @@ protocol ImageRequestCacheProtocol {
 }
 
 class ImageRequestCache: ImageRequestCacheProtocol {
-    // TODO: evaluate cache limits
-    static let sharedThumbnail = ImageRequestCache(countLimit: 500)
-    
     private let cache = NSCache<AnyObject, UIImage>()
     
     init(countLimit: Int) {

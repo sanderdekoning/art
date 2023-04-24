@@ -13,18 +13,21 @@ import UIKit
         let presenter = OverviewPresenter(output: viewController)
         
         let collectionWorker = CollectionWorker(session: .shared)
+        let imageWorker = ImageWorker.sharedDefaultThumbnail
         let collectionPageResponseStore = CollectionPageResponseStore()
         let collectionRequestsPending = CollectionRequestsPending()
         let paginationConfig = OverviewInteractorPaginationConfig()
+
         let interactor = OverviewInteractor(
             presenter: presenter,
             collectionWorker: collectionWorker,
+            imageWorker: imageWorker,
             collectionPageResponseStore: collectionPageResponseStore,
             collectionRequestsPending: collectionRequestsPending,
             paginationConfig: paginationConfig
         )
         
-        let router = OverviewRouter()
+        let router = OverviewRouter(imageWorker: imageWorker)
         router.navigationController = viewController.navigationController
 
         viewController.overviewView = view

@@ -8,6 +8,8 @@
 import UIKit
 
 protocol OverviewPresenterProtocol: AnyObject {
+    func setup(cell: OverviewViewCell, with art: Art, thumbnail: UIImage) async throws
+    
     func willLoadInitialData()
     func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async
     func failedLoadInitialData(with error: Error)
@@ -28,6 +30,11 @@ class OverviewPresenter {
 }
 
 extension OverviewPresenter: OverviewPresenterProtocol {
+    func setup(cell: OverviewViewCell, with art: Art, thumbnail: UIImage) async {
+        let preparedThumbnail = await thumbnail.preparedForDisplay
+        output?.setArtView(for: cell, with: art, thumbnail: preparedThumbnail ?? thumbnail)
+    }
+    
     func willLoadInitialData() {
         output?.willLoadInitialData()
     }
@@ -101,6 +108,8 @@ private extension OverviewPresenter {
 }
 
 protocol OverviewPresenterOutputProtocol: AnyObject {
+    func setArtView(for cell: OverviewViewCell, with art: Art, thumbnail: UIImage)
+    
     func willLoadInitialData()
     func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>)
     func failedLoadInitialData(with error: Error)

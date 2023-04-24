@@ -10,90 +10,99 @@ import UIKit
 protocol ImageWorkerProtocol {
     func image(
         from url: URL,
-        thumbnailSize: CGSize,
         prefersThumbnail: Bool
     ) async throws -> UIImage
+    
+    func cachedThumbnail(from url: URL) -> UIImage?
 }
 
-class ImageWorker: ImageWorkerProtocol {
+class ImageWorker {
     let session: URLSession
     let thumbnailCache: ImageRequestCacheProtocol
+    let thumbnailSize: CGSize
 
     init(
         session: URLSession,
-        thumbnailCache: any ImageRequestCacheProtocol
+        thumbnailCache: any ImageRequestCacheProtocol,
+        thumbnailSize: CGSize
     ) {
         self.session = session
         self.thumbnailCache = thumbnailCache
+        self.thumbnailSize = thumbnailSize
     }
-    
+}
+
+extension ImageWorker: ImageWorkerProtocol {
     func image(
         from url: URL,
-        thumbnailSize: CGSize,
         prefersThumbnail: Bool
     ) async throws -> UIImage {
-        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
+        let request = request(for: url)
 
         // Check for a cached thumbnail
-        if prefersThumbnail, let thumbnail = thumbnailCache.cached(request: request) {
+        if prefersThumbnail, let thumbnail = cachedThumbnail(for: request) {
             return thumbnail
         }
 
         let (data, _) = try await session.data(for: request)
-
-        // Check again for a cached thumbnail after awaiting request
-        if prefersThumbnail, let thumbnail = thumbnailCache.cached(request: request) {
+        let image = try image(from: data)
+        let thumbnail = try await createAndCacheThumbnail(from: request, image: image)
+        
+        if prefersThumbnail, let thumbnail {
             return thumbnail
         }
         
-        return try await cacheThumbnail(
-            from: request,
-            data: data,
-            thumbnailSize: thumbnailSize,
-            prefersThumbnail: prefersThumbnail
-        )
+        return image
     }
-}
-
-extension ImageWorker {
-    static var sharedThumbnail: ImageWorker {
-        ImageWorker(session: .shared, thumbnailCache: ImageRequestCache.sharedThumbnail)
+    
+    func cachedThumbnail(from url: URL) -> UIImage? {
+        let request = request(for: url)
+        return thumbnailCache.cached(request: request)
+    }
+    
+    func cachedThumbnail(for request: URLRequest) -> UIImage? {
+        thumbnailCache.cached(request: request)
     }
 }
 
 private extension ImageWorker {
-    func cacheThumbnail(
-        from request: URLRequest,
-        data: Data,
-        thumbnailSize: CGSize,
-        prefersThumbnail: Bool
-    ) async throws -> UIImage {
-        let image = try image(from: data)
-        
-        // Explicitly check cancellation before preparing thumbnail
-        try Task.checkCancellation()
+    func request(for url: URL) -> URLRequest {
+        URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func createAndCacheThumbnail(from request: URLRequest, image: UIImage) async throws -> UIImage? {
+        if let cached = cachedThumbnail(for: request) {
+            return cached
+        }
         
         // TODO: consider whether failure to create a thumbnail needs specific requirements
         let thumbnail = await image.byPreparingThumbnail(ofSize: thumbnailSize)
         
-        if let thumbnail {
-            thumbnailCache.set(image: thumbnail, for: request)
+        guard let thumbnail else {
+            return nil
         }
         
-        guard prefersThumbnail else {
-            return image
-        }
-        
-        return thumbnail ?? image
+        thumbnailCache.set(image: thumbnail, for: request)
+        return thumbnail
     }
-}
-
-private extension ImageWorker {
+    
     func image(from data: Data) throws -> UIImage {
         guard let image = UIImage(data: data) else {
             throw ImageWorkerError.unexpectedData(data)
         }
         
         return image
+    }
+}
+
+extension ImageWorker {
+    static var sharedDefaultThumbnail: ImageWorker {
+        ImageWorker(
+            session: .shared,
+            // TODO: evaluate cache limits
+            thumbnailCache: ImageRequestCache(countLimit: 500),
+            // TODO: evaluate thumbnail size
+            thumbnailSize: CGSize(width: 1200, height: 1200)
+        )
     }
 }

@@ -9,8 +9,30 @@ import UIKit
 
 protocol OverviewRouterProtocol {
     var navigationController: UINavigationController? { get }
+    
+    @MainActor func showDetail(for art: Art)
 }
 
 class OverviewRouter: OverviewRouterProtocol {
     weak var navigationController: UINavigationController?
+    
+    let imageWorker: ImageWorkerProtocol
+    
+    init(imageWorker: any ImageWorkerProtocol) {
+        self.imageWorker = imageWorker
+    }
+    
+    @MainActor func showDetail(for art: Art) {
+        guard let thumbnailImage = imageWorker.cachedThumbnail(from: art.webImage.url) else {
+            return
+        }
+
+        let detailViewController = DetailViewController()
+        DetailConfigurator.configureScene(
+            viewController: detailViewController,
+            art: art,
+            thumbnailImage: thumbnailImage
+        )
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }

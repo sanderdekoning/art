@@ -62,4 +62,8 @@ extension OverviewViewDataSource {
     func snapshot() -> NSDiffableDataSourceSnapshot<String, ArtPage> {
         diffable.snapshot()
     }
+    
+    func artPage(for indexPath: IndexPath) -> ArtPage? {
+        diffable.itemIdentifier(for: indexPath)
+    }
 }

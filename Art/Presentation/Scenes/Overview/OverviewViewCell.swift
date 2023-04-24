@@ -8,8 +8,7 @@
 import UIKit
 
 class OverviewViewCell: UICollectionViewCell {
-    var setupTask: Task<Void, Never>?
-    var imageWorker: ImageWorkerProtocol?
+    private var setupTask: Task<Void, Never>?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,22 +17,6 @@ class OverviewViewCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setup(with art: Art, worker: any ImageWorkerProtocol) {
-        imageWorker = worker
-        
-        setupTask = Task {
-            do {
-                try await setArtView(for: art, worker: worker)
-            } catch is CancellationError, URLError.cancelled {
-                reset()
-            } catch ImageWorkerError.unexpectedData {
-                // TODO: handle unexpected image data error
-            } catch {
-                // TODO: handle image task error, consider retrying
-            }
-        }
     }
     
     override func prepareForReuse() {
@@ -46,33 +29,27 @@ class OverviewViewCell: UICollectionViewCell {
     }
 }
 
-private extension OverviewViewCell {
-    /// Prepares the image for efficient display by an image view. Reduces any synchronous processing required for rendering
-    ///  in an image view. This particularly helps in table/collection views where large amounts of data can be present on screen at once
-    ///  and high speed scroll view interactions occur
-    private func imagePreparedForDisplay(image: UIImage) async -> UIImage? {
-        guard #available(iOS 15.0, *) else {
-            return nil
-        }
+extension OverviewViewCell {
+    func setup(with task: Task<Void, Never>) {
+        setupTask = task
         
-        return await image.byPreparingForDisplay()
+        showLoadingActivityView()
     }
     
-    func setArtView(for art: Art, worker: any ImageWorkerProtocol) async throws {
+    func showLoadingActivityView() {
+        reset()
+        
         backgroundView = OverviewViewCellLoadingView()
+    }
+    
+    func removeLoadingActivityView() {
+        reset()
+    }
+    
+    func setArtView(for art: Art, image: UIImage) {
+        reset()
         
-        let image = try await worker.image(
-            from: art.webImage.url,
-            thumbnailSize: contentView.bounds.size,
-            prefersThumbnail: true
-        )
-        
-        // Explicitly check cancellation
-        try Task.checkCancellation()
-
-        let preparedImage = await imagePreparedForDisplay(image: image)
-        
-        let artView = OverviewViewCellArtView(image: preparedImage ?? image, title: art.title)
+        let artView = OverviewViewCellArtView(image: image, title: art.title)
         artView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(artView)
         
@@ -82,10 +59,10 @@ private extension OverviewViewCell {
             artView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             artView.leftAnchor.constraint(equalTo: contentView.leftAnchor)
         ])
-        
-        backgroundView = nil
     }
-    
+}
+
+private extension OverviewViewCell {
     func reset() {
         backgroundView = nil
         

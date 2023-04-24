@@ -10,26 +10,31 @@ import Foundation
 protocol OverviewInteractorProtocol: AnyObject {
     func loadInitialData() async throws
     func refresh() async throws
-    func didSetupCell(for artPage: ArtPage) async throws
+    
+    func willSetupCell(for artPage: ArtPage) async throws
+    func setup(cell: OverviewViewCell, with art: Art) async throws
 }
 
 class OverviewInteractor {
     let presenter: OverviewPresenterProtocol
     
     private let collectionWorker: CollectionWorkerProtocol
-    private var collectionPageResponseStore: CollectionPageResponseStoreProtocol
-    private var collectionRequestsPending: CollectionRequestsPendingProtocol
+    private let imageWorker: ImageWorkerProtocol
+    private let collectionPageResponseStore: CollectionPageResponseStoreProtocol
+    private let collectionRequestsPending: CollectionRequestsPendingProtocol
     private let paginationConfig: OverviewInteractorPaginationConfigProtocol
     
     init(
         presenter: any OverviewPresenterProtocol,
         collectionWorker: any CollectionWorkerProtocol,
+        imageWorker: any ImageWorkerProtocol,
         collectionPageResponseStore: any CollectionPageResponseStoreProtocol,
         collectionRequestsPending: any CollectionRequestsPendingProtocol,
         paginationConfig: any OverviewInteractorPaginationConfigProtocol
     ) {
         self.presenter = presenter
         self.collectionWorker = collectionWorker
+        self.imageWorker = imageWorker
         self.collectionPageResponseStore = collectionPageResponseStore
         self.collectionRequestsPending = collectionRequestsPending
         self.paginationConfig = paginationConfig
@@ -59,7 +64,7 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         await presenter.present(responseStore: collectionPageResponseStore)
     }
     
-    func didSetupCell(for artPage: ArtPage) async throws {
+    func willSetupCell(for artPage: ArtPage) async throws {
         guard let totalPages = await collectionPageResponseStore.maxResponseTotalCount else {
             return
         }
@@ -81,6 +86,17 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         
         try await fetchCollection(for: nextPageRequest)
         await presenter.present(responseStore: collectionPageResponseStore)
+    }
+    
+    func setup(cell: OverviewViewCell, with art: Art) async throws {
+        let thumbnail = try await imageWorker.image(
+            from: art.webImage.url,
+            prefersThumbnail: true
+        )
+
+        try Task.checkCancellation()
+        
+        try await presenter.setup(cell: cell, with: art, thumbnail: thumbnail)
     }
 }
 
