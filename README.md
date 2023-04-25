@@ -1,7 +1,14 @@
 # Art
 Uses [Rijksmuseum API](https://data.rijksmuseum.nl/object-metadata/api/) to display art grouped by principal artist/first maker.
 
-## Architecture
+## Table of contents
+
+* Architecture
+* Screenshots
+* Swift Technologies
+* Prerequisites Source Code
+
+# Architecture
 ![](Images/architecture-vip.png)
 
 Most principles of VIP have been adhered to. One consideration is to pass view models to View/ViewController instead of the simple callbacks at this time of writing. This could allow for more expectable view states and more thorough (snapshot) UI testing scenarios.
@@ -51,3 +58,41 @@ At this time of writing only the collection worker is fully tested. In the curre
 ![](Images/art-overview.png)
 ## Detail
 ![](Images/art-detail.png)
+
+# Swift Technologies
+* [Concurrency async/await](https://developer.apple.com/documentation/swift/concurrency)
+* [Fully concurrent with `Complete Strict Concurrency Checking` enabled in the Swift compiler](https://developer.apple.com/documentation/xcode/build-settings-reference#Strict-Concurrency-Checking)
+* [Actors](https://developer.apple.com/documentation/swift/actor)
+* [Generics](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/)
+* [Protocols](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols)
+* [Decodable](https://developer.apple.com/documentation/swift/decodable/)
+* [Hashable](https://developer.apple.com/documentation/swift/hashable)
+
+## Tests
+* [XCTest](https://developer.apple.com/documentation/xctest/)
+
+## UI
+* [NSLayoutConstraint - no .xib or .storyboard files](https://developer.apple.com/documentation/uikit/nslayoutconstraint/)
+* [UISceneConfiguration](https://developer.apple.com/documentation/uikit/uisceneconfiguration/)
+
+## UICollectionView
+* [UICollectionViewDiffableDataSource](https://developer.apple.com/documentation/uikit/uicollectionviewdiffabledatasource/)
+* [UICollectionViewCompositionalLayout](https://developer.apple.com/documentation/uikit/uicollectionviewcompositionallayout/)
+* [NSCollectionLayoutGroup](https://developer.apple.com/documentation/uikit/nscollectionlayoutgroup/)
+
+## Networking
+* [URLSession](https://developer.apple.com/documentation/foundation/urlsession/)
+* [URLComponents](https://developer.apple.com/documentation/foundation/urlcomponents/)
+* [JSONDecoder](https://developer.apple.com/documentation/foundation/jsondecoder/)
+
+## Caching
+* [URLCache](https://developer.apple.com/documentation/foundation/urlcache/)
+* [NSCache](https://developer.apple.com/documentation/foundation/nscache/)
+
+## Project
+* [XCConfig build configuration](https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project)
+
+# Prerequisites Source Code
+* No memory leaks
+* No syntactic warnings/errors
+* No thread unsafety/data races
