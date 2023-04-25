@@ -57,12 +57,24 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     }
     
     func willSetupCell(for artPage: ArtPage) async throws {
+        try await fetchNextPageIfNeeded(afterPage: artPage.page)
+    }
+    
+    func willDisplayLastCell() async throws {
+        guard let maxPageResponse = await collectionPageResponseStore.maxPageResponse else {
+            return
+        }
+        
+        try await fetchNextPageIfNeeded(afterPage: maxPageResponse)
+    }
+    
+    func fetchNextPageIfNeeded(afterPage page: Int) async throws {
         guard let totalPages = await collectionPageResponseStore.maxResponseTotalCount else {
             return
         }
 
         guard let nextPage = paginationConfig.pageToFetchAfter(
-            page: artPage.page,
+            page: page,
             numberOfPages: totalPages
         ) else {
             return

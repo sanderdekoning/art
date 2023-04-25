@@ -26,6 +26,10 @@ actor CollectionPageResponseStore: CollectionPageResponseStoreProtocol {
         values.contains { $0.page == page }
     }
     
+    var maxPageResponse: Int? {
+        values.map { $0.page }.max()
+    }
+    
     var maxResponseTotalCount: Int? {
         // Get the largest total count from all the responses
         values.map { $0.response.count }.max()

@@ -14,15 +14,7 @@ class OverviewViewController: UIViewController {
     
     private lazy var cellRegistration = OverviewViewDataSource.CellRegistration
     { [weak self] cell, _, artPage in
-        Task {
-            do {
-                try await self?.interactor?.willSetupCell(for: artPage)
-            } catch {
-                // TODO: handle pagination fetch collection error
-            }
-        }
-        
-        let cellTask = Task(priority: .userInitiated) { [weak self, weak cell] in
+        let cellTask = Task(priority: .userInitiated) { [weak cell] in
             guard let self, let cell else {
                 return
             }
@@ -34,6 +26,19 @@ class OverviewViewController: UIViewController {
             }
         }
         cell.setup(with: cellTask)
+        
+        Task {
+            do {
+                try await self?.interactor?.willSetupCell(for: artPage)
+
+                let artPageIsLastItem = self?.dataSource?.artPageIsLastItem(artPage: artPage)
+                if let artPageIsLastItem, artPageIsLastItem {
+                    try await self?.interactor?.willDisplayLastCell()
+                }
+            } catch {
+                // TODO: handle pagination fetch collection error
+            }
+        }
     }
     
     private lazy var sectionHeaderProvider = OverviewViewDataSource.HeaderViewRegistration(

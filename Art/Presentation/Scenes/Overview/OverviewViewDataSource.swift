@@ -66,4 +66,15 @@ extension OverviewViewDataSource {
     func artPage(for indexPath: IndexPath) -> ArtPage? {
         diffable.itemIdentifier(for: indexPath)
     }
+    
+    func artPageIsLastItem(artPage: ArtPage) -> Bool {
+        let artPages = snapshot().itemIdentifiers
+        
+        guard let lastPage = artPages.last else {
+            // Defaulting to true if the current index is not in the snapshot
+            return true
+        }
+
+        return artPage == lastPage
+    }
 }

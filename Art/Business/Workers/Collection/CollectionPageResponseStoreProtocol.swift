@@ -13,5 +13,6 @@ protocol CollectionPageResponseStoreProtocol: Actor {
     func removeAll()
     func hasResponse(forPage page: Int) -> Bool
     
+    var maxPageResponse: Int? { get }
     var maxResponseTotalCount: Int? { get }
 }
