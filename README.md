@@ -6,6 +6,9 @@ Uses [Rijksmuseum API](https://data.rijksmuseum.nl/object-metadata/api/) to disp
 
 Most principles of VIP have been adhered to. One consideration is to pass view models to View/ViewController instead of the simple callbacks at this time of writing. This could allow for more expectable view states and more thorough (snapshot) UI testing scenarios.
 
+## Style Guide
+For this project [Swift Style Guide by Google](https://google.github.io/swift/) is followed. Namely regarding general formatting, formatting specific constructs, naming, and programming practices. Not all are strictly followed; for example regarding [force unwrapping and force casts](https://google.github.io/swift/#force-unwrapping-and-force-casts) it is suggested that force unwraps in tests are acceptable by default. There however are stronger alternatives such as leveraging [XCTUnwrap](https://developer.apple.com/documentation/xctest/3380195-xctunwrap).
+
 ## Pagination
 Collection requests are configured to be 4 items at this time of writing. This is both for demonstration purposes and for network efficiency. Any value between 1 and 100 is supported (100 is the API maximum). One additional page is requested when:
 
@@ -36,7 +39,11 @@ One remaining consideration is that there is a theoretical chance of having subs
 
 
 ## Tests
-At this time of writing only the collection worker is fully tested. In the current state all logic and views should be testable. More tests should be added.
+At this time of writing only the collection worker is fully tested. In the current state all logic and views should be testable. More tests should be added preferably including snapshot tests.
+
+## Todo
+* More unit tests and screenshot/UI automation tests
+* Implement a linter
 
 # Screenshots
 ## Overview
