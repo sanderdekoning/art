@@ -88,7 +88,9 @@ extension OverviewViewController: UICollectionViewDelegate {
             return
         }
         
-        router?.showDetail(for: artPage.art)
+        Task {
+            await router?.showDetail(for: artPage.art)
+        }
     }
 }
 

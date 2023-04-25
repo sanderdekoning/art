@@ -13,5 +13,7 @@ protocol ImageWorkerProtocol {
         prefersThumbnail: Bool
     ) async throws -> UIImage
     
-    func cachedThumbnail(from url: URL) -> UIImage?
+    func cachedThumbnail(from url: URL) async -> UIImage?
+    
+    func clearCache() async
 }

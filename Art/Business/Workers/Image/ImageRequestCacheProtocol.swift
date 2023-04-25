@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ImageRequestCacheProtocol {
+protocol ImageRequestCacheProtocol: Actor {
     func set(image: UIImage, for request: URLRequest)
     func cached(request: URLRequest) -> UIImage?
     func removeAll()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageRequestCache: ImageRequestCacheProtocol {
+actor ImageRequestCache: ImageRequestCacheProtocol {
     private let cache = NSCache<AnyObject, UIImage>()
     
     init(countLimit: Int) {

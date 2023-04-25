@@ -10,5 +10,5 @@ import UIKit
 protocol OverviewRouterProtocol {
     var navigationController: UINavigationController? { get }
     
-    @MainActor func showDetail(for art: Art)
+    @MainActor func showDetail(for art: Art) async
 }

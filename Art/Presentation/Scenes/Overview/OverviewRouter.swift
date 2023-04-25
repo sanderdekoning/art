@@ -16,8 +16,8 @@ class OverviewRouter: OverviewRouterProtocol {
         self.imageWorker = imageWorker
     }
     
-    @MainActor func showDetail(for art: Art) {
-        guard let thumbnailImage = imageWorker.cachedThumbnail(from: art.webImage.url) else {
+    @MainActor func showDetail(for art: Art) async {
+        guard let thumbnailImage = await imageWorker.cachedThumbnail(from: art.webImage.url) else {
             return
         }
 

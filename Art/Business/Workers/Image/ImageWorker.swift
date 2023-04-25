@@ -31,7 +31,7 @@ extension ImageWorker: ImageWorkerProtocol {
         let request = request(for: url)
 
         // Check for a cached thumbnail
-        if prefersThumbnail, let thumbnail = cachedThumbnail(for: request) {
+        if prefersThumbnail, let thumbnail = await cachedThumbnail(for: request) {
             return thumbnail
         }
 
@@ -46,13 +46,17 @@ extension ImageWorker: ImageWorkerProtocol {
         return image
     }
     
-    func cachedThumbnail(from url: URL) -> UIImage? {
+    func cachedThumbnail(from url: URL) async -> UIImage? {
         let request = request(for: url)
-        return thumbnailCache.cached(request: request)
+        return await thumbnailCache.cached(request: request)
     }
     
-    func cachedThumbnail(for request: URLRequest) -> UIImage? {
-        thumbnailCache.cached(request: request)
+    func cachedThumbnail(for request: URLRequest) async -> UIImage? {
+        await thumbnailCache.cached(request: request)
+    }
+    
+    func clearCache() async {
+        await thumbnailCache.removeAll()
     }
 }
 
@@ -62,7 +66,7 @@ private extension ImageWorker {
     }
     
     func createAndCacheThumbnail(from request: URLRequest, image: UIImage) async throws -> UIImage? {
-        if let cached = cachedThumbnail(for: request) {
+        if let cached = await cachedThumbnail(for: request) {
             return cached
         }
         
@@ -73,7 +77,7 @@ private extension ImageWorker {
             return nil
         }
         
-        thumbnailCache.set(image: thumbnail, for: request)
+        await thumbnailCache.set(image: thumbnail, for: request)
         return thumbnail
     }
     
