@@ -7,15 +7,6 @@
 
 import UIKit
 
-protocol ImageWorkerProtocol {
-    func image(
-        from url: URL,
-        prefersThumbnail: Bool
-    ) async throws -> UIImage
-    
-    func cachedThumbnail(from url: URL) -> UIImage?
-}
-
 class ImageWorker {
     let session: URLSession
     let thumbnailCache: ImageRequestCacheProtocol

@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol DetailPresenterProtocol {
-    func show(image: UIImage) async
-}
-
 class DetailPresenter {
     weak var output: DetailPresenterOutputProtocol?
     
@@ -24,8 +20,4 @@ extension DetailPresenter: DetailPresenterProtocol {
         let preparedImage = await image.preparedForDisplay
         output?.show(image: preparedImage ?? image)
     }
-}
-
-protocol DetailPresenterOutputProtocol: AnyObject {
-    func show(image: UIImage)
 }

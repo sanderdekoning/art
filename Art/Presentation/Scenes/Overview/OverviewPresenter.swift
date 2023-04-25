@@ -7,18 +7,6 @@
 
 import UIKit
 
-protocol OverviewPresenterProtocol: AnyObject {
-    func setup(cell: OverviewViewCell, with art: Art, thumbnail: UIImage) async throws
-    
-    func willLoadInitialData()
-    func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async
-    func failedLoadInitialData(with error: Error)
-
-    func willFetchCollection()
-    func failedFetchCollection(with error: Error)
-    func present(responseStore: CollectionPageResponseStoreProtocol) async
-}
-
 class OverviewPresenter {
     weak var output: OverviewPresenterOutputProtocol?
     
@@ -105,17 +93,4 @@ private extension OverviewPresenter {
         )
         return dataSourceSnapshot
     }
-}
-
-protocol OverviewPresenterOutputProtocol: AnyObject {
-    func setArtView(for cell: OverviewViewCell, with art: Art, thumbnail: UIImage)
-    
-    func willLoadInitialData()
-    func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>)
-    func failedLoadInitialData(with error: Error)
-    
-    
-    func willRetrieveCollection()
-    func failedFetchCollection(with error: Error)
-    func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async
 }

@@ -7,12 +7,6 @@
 
 import UIKit
 
-protocol OverviewRouterProtocol {
-    var navigationController: UINavigationController? { get }
-    
-    @MainActor func showDetail(for art: Art)
-}
-
 class OverviewRouter: OverviewRouterProtocol {
     weak var navigationController: UINavigationController?
     

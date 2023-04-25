@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol DetailRouterProtocol {
-    var navigationController: UINavigationController? { get }
-}
-
 class DetailRouter: DetailRouterProtocol {
     weak var navigationController: UINavigationController?
 }

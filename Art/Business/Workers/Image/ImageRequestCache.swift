@@ -7,12 +7,6 @@
 
 import UIKit
 
-protocol ImageRequestCacheProtocol {
-    func set(image: UIImage, for request: URLRequest)
-    func cached(request: URLRequest) -> UIImage?
-    func removeAll()
-}
-
 class ImageRequestCache: ImageRequestCacheProtocol {
     private let cache = NSCache<AnyObject, UIImage>()
     

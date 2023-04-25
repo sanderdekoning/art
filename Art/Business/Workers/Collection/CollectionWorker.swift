@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol CollectionWorkerProtocol {
-    func collection(for request: CollectionRequest) async throws -> CollectionPageResponse
-}
-
 struct CollectionWorker: CollectionWorkerProtocol {
     let session: URLSession
     private let decoder = JSONDecoder()

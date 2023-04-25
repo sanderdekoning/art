@@ -7,13 +7,6 @@
 
 import Foundation
 
-protocol CollectionRequestsPendingProtocol: Actor {
-    func isPending(request: CollectionRequest) -> Bool
-    func add(request: CollectionRequest)
-    func remove(request: CollectionRequest)
-    func removeAll()
-}
-
 actor CollectionRequestsPending: CollectionRequestsPendingProtocol {
     private var values = Set<CollectionRequest>()
     

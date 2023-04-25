@@ -7,12 +7,6 @@
 
 import Foundation
 
-protocol DetailInteractorProtocol {
-    var art: Art { get }
-    
-    func loadArt() async throws
-}
-
 class DetailInteractor {
     var art: Art
     
