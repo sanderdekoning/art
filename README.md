@@ -34,6 +34,10 @@ While there might be a logical reasoning for this behavior from back-end's side;
 
 One remaining consideration is that there is a theoretical chance of having subsequent pages return objects whose artist groups are already in the overview and not at the end. This can make it appear as if no more results are being loaded while they are being inserted in their groups higher up in the list. e.g. If page 1 has artist `Simon Fokke`, and all subsequent pages (2, 3, 4 etc.) only have `Hector Allemand`, then the latter pages always get inserted higher up in the list.
 
+
+## Tests
+At this time of writing only the collection worker is fully tested. In the current state all logic and views should be testable. More should be added.
+
 # Screenshots
 ![](Images/art-overview.png)
 ![](Images/art-detail.png)
