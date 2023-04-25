@@ -13,8 +13,6 @@
 		C50A1D1229F06A4D00C6AB99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C50A1D1129F06A4D00C6AB99 /* Assets.xcassets */; };
 		C50A1D1529F06A4D00C6AB99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C50A1D1329F06A4D00C6AB99 /* LaunchScreen.storyboard */; };
 		C50A1D2029F06A4D00C6AB99 /* CollectionWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D1F29F06A4D00C6AB99 /* CollectionWorkerTests.swift */; };
-		C50A1D2A29F06A4D00C6AB99 /* ArtUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D2929F06A4D00C6AB99 /* ArtUITests.swift */; };
-		C50A1D2C29F06A4D00C6AB99 /* ArtUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D2B29F06A4D00C6AB99 /* ArtUITestsLaunchTests.swift */; };
 		C50A1D3E29F0719A00C6AB99 /* OverviewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D3D29F0719A00C6AB99 /* OverviewInteractor.swift */; };
 		C50A1D4029F071AB00C6AB99 /* OverviewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D3F29F071AB00C6AB99 /* OverviewPresenter.swift */; };
 		C50A1D4229F0754000C6AB99 /* OverviewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1D4129F0754000C6AB99 /* OverviewConfigurator.swift */; };
@@ -76,13 +74,6 @@
 			remoteGlobalIDString = C50A1D0429F06A4C00C6AB99;
 			remoteInfo = Art;
 		};
-		C50A1D2629F06A4D00C6AB99 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C50A1CFD29F06A4C00C6AB99 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C50A1D0429F06A4C00C6AB99;
-			remoteInfo = Art;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -95,9 +86,6 @@
 		C50A1D1629F06A4D00C6AB99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C50A1D1B29F06A4D00C6AB99 /* ArtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50A1D1F29F06A4D00C6AB99 /* CollectionWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionWorkerTests.swift; sourceTree = "<group>"; };
-		C50A1D2529F06A4D00C6AB99 /* ArtUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArtUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C50A1D2929F06A4D00C6AB99 /* ArtUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtUITests.swift; sourceTree = "<group>"; };
-		C50A1D2B29F06A4D00C6AB99 /* ArtUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C50A1D3D29F0719A00C6AB99 /* OverviewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewInteractor.swift; sourceTree = "<group>"; };
 		C50A1D3F29F071AB00C6AB99 /* OverviewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPresenter.swift; sourceTree = "<group>"; };
 		C50A1D4129F0754000C6AB99 /* OverviewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewConfigurator.swift; sourceTree = "<group>"; };
@@ -167,13 +155,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C50A1D2229F06A4D00C6AB99 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -182,7 +163,6 @@
 			children = (
 				C50A1D0729F06A4C00C6AB99 /* Art */,
 				C50A1D1E29F06A4D00C6AB99 /* ArtTests */,
-				C50A1D2829F06A4D00C6AB99 /* ArtUITests */,
 				C50A1D0629F06A4C00C6AB99 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -192,7 +172,6 @@
 			children = (
 				C50A1D0529F06A4C00C6AB99 /* Art.app */,
 				C50A1D1B29F06A4D00C6AB99 /* ArtTests.xctest */,
-				C50A1D2529F06A4D00C6AB99 /* ArtUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -214,15 +193,6 @@
 				C5D8365129F6CCCB00FEE5D6 /* Business */,
 			);
 			path = ArtTests;
-			sourceTree = "<group>";
-		};
-		C50A1D2829F06A4D00C6AB99 /* ArtUITests */ = {
-			isa = PBXGroup;
-			children = (
-				C50A1D2929F06A4D00C6AB99 /* ArtUITests.swift */,
-				C50A1D2B29F06A4D00C6AB99 /* ArtUITestsLaunchTests.swift */,
-			);
-			path = ArtUITests;
 			sourceTree = "<group>";
 		};
 		C50A1D3829F06F5500C6AB99 /* Application */ = {
@@ -453,24 +423,6 @@
 			productReference = C50A1D1B29F06A4D00C6AB99 /* ArtTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C50A1D2429F06A4D00C6AB99 /* ArtUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C50A1D3529F06A4D00C6AB99 /* Build configuration list for PBXNativeTarget "ArtUITests" */;
-			buildPhases = (
-				C50A1D2129F06A4D00C6AB99 /* Sources */,
-				C50A1D2229F06A4D00C6AB99 /* Frameworks */,
-				C50A1D2329F06A4D00C6AB99 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C50A1D2729F06A4D00C6AB99 /* PBXTargetDependency */,
-			);
-			name = ArtUITests;
-			productName = ArtUITests;
-			productReference = C50A1D2529F06A4D00C6AB99 /* ArtUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -485,10 +437,6 @@
 						CreatedOnToolsVersion = 14.3;
 					};
 					C50A1D1A29F06A4D00C6AB99 = {
-						CreatedOnToolsVersion = 14.3;
-						TestTargetID = C50A1D0429F06A4C00C6AB99;
-					};
-					C50A1D2429F06A4D00C6AB99 = {
 						CreatedOnToolsVersion = 14.3;
 						TestTargetID = C50A1D0429F06A4C00C6AB99;
 					};
@@ -509,7 +457,6 @@
 			targets = (
 				C50A1D0429F06A4C00C6AB99 /* Art */,
 				C50A1D1A29F06A4D00C6AB99 /* ArtTests */,
-				C50A1D2429F06A4D00C6AB99 /* ArtUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -529,13 +476,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5D8365A29F6CDD400FEE5D6 /* CollectionResponse.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C50A1D2329F06A4D00C6AB99 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,15 +550,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C50A1D2129F06A4D00C6AB99 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C50A1D2C29F06A4D00C6AB99 /* ArtUITestsLaunchTests.swift in Sources */,
-				C50A1D2A29F06A4D00C6AB99 /* ArtUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -626,11 +557,6 @@
 			isa = PBXTargetDependency;
 			target = C50A1D0429F06A4C00C6AB99 /* Art */;
 			targetProxy = C50A1D1C29F06A4D00C6AB99 /* PBXContainerItemProxy */;
-		};
-		C50A1D2729F06A4D00C6AB99 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C50A1D0429F06A4C00C6AB99 /* Art */;
-			targetProxy = C50A1D2629F06A4D00C6AB99 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -860,42 +786,6 @@
 			};
 			name = Release;
 		};
-		C50A1D3629F06A4D00C6AB99 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VW9E6QEFJM;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ventures.into.ArtUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Art;
-			};
-			name = Debug;
-		};
-		C50A1D3729F06A4D00C6AB99 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VW9E6QEFJM;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ventures.into.ArtUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Art;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -922,15 +812,6 @@
 			buildConfigurations = (
 				C50A1D3329F06A4D00C6AB99 /* Debug */,
 				C50A1D3429F06A4D00C6AB99 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C50A1D3529F06A4D00C6AB99 /* Build configuration list for PBXNativeTarget "ArtUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C50A1D3629F06A4D00C6AB99 /* Debug */,
-				C50A1D3729F06A4D00C6AB99 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
