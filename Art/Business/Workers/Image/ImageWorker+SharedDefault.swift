@@ -1,5 +1,5 @@
 //
-//  ImageWorker+SharedDefaultThumbnail.swift
+//  ImageWorker+SharedDefault.swift
 //  Art
 //
 //  Created by Sander de Koning on 25/04/2023.

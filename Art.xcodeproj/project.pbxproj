@@ -41,6 +41,7 @@
 		C535324B29F7B2C300316727 /* OverviewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324A29F7B2C300316727 /* OverviewPresenterProtocol.swift */; };
 		C535324D29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324C29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift */; };
 		C535324F29F7B2F400316727 /* OverviewRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324E29F7B2F400316727 /* OverviewRouterProtocol.swift */; };
+		C535325129F7B4C700316727 /* ImageWorker+SharedDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535325029F7B4C700316727 /* ImageWorker+SharedDefault.swift */; };
 		C5D8361D29F19BBC00FEE5D6 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8361C29F19BBC00FEE5D6 /* API.swift */; };
 		C5D8362129F1BBBF00FEE5D6 /* ImageWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */; };
 		C5D8362629F2819400FEE5D6 /* ImageRequestCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362529F2819400FEE5D6 /* ImageRequestCache.swift */; };
@@ -123,6 +124,7 @@
 		C535324A29F7B2C300316727 /* OverviewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPresenterProtocol.swift; sourceTree = "<group>"; };
 		C535324C29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPresenterOutputProtocol.swift; sourceTree = "<group>"; };
 		C535324E29F7B2F400316727 /* OverviewRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewRouterProtocol.swift; sourceTree = "<group>"; };
+		C535325029F7B4C700316727 /* ImageWorker+SharedDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageWorker+SharedDefault.swift"; sourceTree = "<group>"; };
 		C5D8361C29F19BBC00FEE5D6 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorker.swift; sourceTree = "<group>"; };
 		C5D8362529F2819400FEE5D6 /* ImageRequestCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequestCache.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */,
+				C535325029F7B4C700316727 /* ImageWorker+SharedDefault.swift */,
 				C535323429F7B1DD00316727 /* ImageWorkerProtocol.swift */,
 				C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */,
 				C5D8362529F2819400FEE5D6 /* ImageRequestCache.swift */,
@@ -590,6 +593,7 @@
 				C5D8365029F6A30000FEE5D6 /* UIImage+PreparedForDisplay.swift in Sources */,
 				C5D8361D29F19BBC00FEE5D6 /* API.swift in Sources */,
 				C535323929F7B20200316727 /* CollectionWorkerProtocol.swift in Sources */,
+				C535325129F7B4C700316727 /* ImageWorker+SharedDefault.swift in Sources */,
 				C50A1D4629F07D9B00C6AB99 /* OverviewRouter.swift in Sources */,
 				C5D8363F29F67DCD00FEE5D6 /* DetailViewController.swift in Sources */,
 			);
