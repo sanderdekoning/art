@@ -48,7 +48,7 @@ final class CollectionWorkerTests: XCTestCase {
         }
     }
     
-    func testCollection_statusCode200_shouldThrowPageResponseError() async throws {
+    func testCollection_statusCode200_shouldReturnExpectedPageAndObjects() async throws {
         let httpResponse = try XCTUnwrap(HTTPURLResponse(
             url: try request.url,
             statusCode: 200,
