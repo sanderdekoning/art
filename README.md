@@ -7,19 +7,19 @@ Uses [Rijksmuseum API](https://data.rijksmuseum.nl/object-metadata/api/) to disp
 Most principles of VIP have been adhered to. One consideration is to pass view models to View/ViewController instead of the simple callbacks at this time of writing. This could allow for more expectable view states and more thorough (snapshot) UI testing scenarios.
 
 ## Pagination
-Collection requests are limited to 4 items at this time of writing. This is both for demonstration purposes and for network efficiency. One additional page is requested when:
+Collection requests are configured to be 4 items at this time of writing. This is both for demonstration purposes and for network efficiency. Any value between 1 and 100 is supported (100 is the API maximum). One additional page is requested when:
 
-(a) When the current shown item is the last item in the overview and the highest page requested so far incremented by one is less than the total number of pages and has not yet been requested.
+(a) The current shown item is the last item in the overview and the highest page requested so far incremented by one is less than or equal to the total number of pages and has not yet been requested.
 
-(b) The page of the current shown item incremented by one is less than the total number of pages and has not yet been requested. Besides likely always having the next page ready for display and thus providing the most seamless user experience, this also ensures that any missing page gaps due to back-end/networking issues only get requested again when they also likely need to be displayed.
+(b) The page of the current shown item incremented by one is less than or equal to the total number of pages and has not yet been requested. Besides likely always having the next page ready for display and thus providing the most seamless user experience, this also ensures that any missing page gaps due to back-end/networking issues only get requested again when they also likely need to be displayed.
 
 An alternative strategy for (b) could be to check the request/response store for any gaps in the pages whenever another page is requested, and then request the missing pages. At this time of writing the strategy of `the current page +1` always fetches one page ahead of the current page, which could be undesired for very large page sizes/large network requests/responses.
 
-This means there are likely always `page size * 2` items ready to be shown. With a maximum of 3-4 items rendered on screen at one time on current iPhones that provides a sufficient buffer and seamless experience. Art images only begin fetching when the art cell is displayed on screen.
+This means there are likely always `page size * 2` items ready to be shown. With a maximum of 3-4 items visible on screen simultaneously that provides a sufficient buffer and seamless experience. Art images only begin fetching when the art cell is displayed on screen. Considering the large file size for images it was deliberately chosen to not prefetch the next assets before the cell is displayed.
 
 ## Image size and caching
 ### Raw image caching
-Raw art images are cached conforming to their URL response cache control protocol. The server response determines the caching behavior such as `Cache-Control: public, max-age=86400, no-transform`.
+Raw art images are cached conforming to their URL response cache control protocol. The server response determines the caching behavior such as `Cache-Control: public, max-age=86400, no-transform`. [URLSession's default implementation](https://developer.apple.com/documentation/foundation/url_loading_system/accessing_cached_data) is leveraged for this.
 
 ### Performance
 As raw art images are high resolution and high fidelity they require signigicant processing to be rendered on screen. Additionally they can show artifacts when rendered in small sizes. Therefor a thumbnail is generated client-side of a smaller size, perfect for display in an overview/list where buttery smooth UI is paramount. Additionally images are prepared for display asynchronously before being rendered.
@@ -36,8 +36,10 @@ One remaining consideration is that there is a theoretical chance of having subs
 
 
 ## Tests
-At this time of writing only the collection worker is fully tested. In the current state all logic and views should be testable. More should be added.
+At this time of writing only the collection worker is fully tested. In the current state all logic and views should be testable. More tests should be added.
 
 # Screenshots
+## Overview
 ![](Images/art-overview.png)
+## Detail
 ![](Images/art-detail.png)
