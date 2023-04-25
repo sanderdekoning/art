@@ -10,6 +10,10 @@ import Foundation
 actor CollectionRequestsPending: CollectionRequestsPendingProtocol {
     private var values = Set<CollectionRequest>()
     
+    var hasPending: Bool {
+        values.isEmpty == false
+    }
+    
     func isPending(request: CollectionRequest) -> Bool {
         values.contains(request)
     }

@@ -36,12 +36,12 @@ extension OverviewPresenter: OverviewPresenterProtocol {
         output?.failedLoadInitialData(with: error)
     }
     
-    func willFetchCollection() {
-        output?.willRetrieveCollection()
+    func showLoadingActivityView() {
+        output?.showLoadingActivityView()
     }
     
-    func failedFetchCollection(with error: Error) {
-        output?.failedFetchCollection(with: error)
+    func removeLoadingActivityView() {
+        output?.removeLoadingActivityView()
     }
     
     func present(responseStore: CollectionPageResponseStoreProtocol) async {

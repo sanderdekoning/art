@@ -13,8 +13,9 @@ protocol OverviewPresenterProtocol: AnyObject {
     func willLoadInitialData()
     func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async
     func failedLoadInitialData(with error: Error)
-    
-    func willFetchCollection()
-    func failedFetchCollection(with error: Error)
+
     func present(responseStore: CollectionPageResponseStoreProtocol) async
+    
+    func showLoadingActivityView()
+    func removeLoadingActivityView()
 }

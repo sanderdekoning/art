@@ -119,18 +119,35 @@ private extension OverviewInteractor {
     }
     
     func fetchCollection(for request: CollectionRequest) async throws {
-        await collectionRequestsPending.add(request: request)
-        presenter.willFetchCollection()
-        
+        await addPending(request: request)
+
         do {
             let pageResponse = try await collectionWorker.collection(for: request)
-
+            await removePending(request: request)
             await collectionPageResponseStore.store(response: pageResponse)
         } catch {
-            await collectionRequestsPending.remove(request: request)
-            
-            presenter.failedFetchCollection(with: error)
+            await removePending(request: request)
             throw error
+        }
+    }
+    
+    func addPending(request: CollectionRequest) async {
+        await collectionRequestsPending.add(request: request)
+        await updateActivityState()
+    }
+    
+    func removePending(request: CollectionRequest) async {
+        await collectionRequestsPending.remove(request: request)
+        await updateActivityState()
+    }
+    
+    func updateActivityState() async {
+        if await collectionRequestsPending.hasPending {
+            presenter.showLoadingActivityView()
+        }
+        
+        if await collectionRequestsPending.hasPending == false {
+            presenter.removeLoadingActivityView()
         }
     }
 }

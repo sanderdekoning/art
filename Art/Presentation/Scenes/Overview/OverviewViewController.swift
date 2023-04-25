@@ -147,14 +147,14 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
             overviewView?.endRefreshing()
         }
     }
-    
-    nonisolated func willRetrieveCollection() {
+
+    nonisolated func showLoadingActivityView() {
         Task { @MainActor in
             showLoadingActivity()
         }
     }
-
-    nonisolated func failedFetchCollection(with error: Error) {
+    
+    nonisolated func removeLoadingActivityView() {
         Task { @MainActor in
             hideLoadingActivity()
         }
@@ -162,7 +162,6 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
 
     func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async {
         await dataSource?.update(to: dataSourceSnapshot, animated: true)
-        hideLoadingActivity()
     }
 }
 
