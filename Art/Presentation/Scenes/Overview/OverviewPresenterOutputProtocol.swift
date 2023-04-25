@@ -14,7 +14,6 @@ protocol OverviewPresenterOutputProtocol: AnyObject {
     func didLoadInitialData(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>)
     func failedLoadInitialData(with error: Error)
     
-    
     func willRetrieveCollection()
     func failedFetchCollection(with error: Error)
     func display(dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>) async
