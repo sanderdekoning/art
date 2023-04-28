@@ -42,7 +42,7 @@ The Rijksmuseum API has sort and page parameters for art collections. Requesting
 
 While there might be a logical reasoning for this behavior from back-end's side; it does require more care and logic from front-end when grouping/sectioning results alphabetically by `principalOrFirstMaker`. Page objects cannot simply be grouped and appended; in order to maintain correct grouping/sectioning objects need to be inserted into their respective group which could be already existing. Extra thoroughness and rigid UI logic is needed for a solid user experience.
 
-One remaining consideration is that there is a theoretical chance of having subsequent pages return objects whose artist groups are already in the overview and not at the end. This can make it appear as if no more results are being loaded while they are being inserted in their groups higher up in the list. e.g. If page 1 has artist `Simon Fokke`, and all subsequent pages (2, 3, 4 etc.) only have `Hector Allemand`, then the latter pages always get inserted higher up in the list.
+One remaining consideration is that there is a theoretical chance of having subsequent pages return objects whose artist groups are already in the overview and not at the end. This can make it appear as if no more results are being loaded while they are being inserted in their groups higher up in the list. e.g. If page 1 has artists `Hector Allemand` followed by `Simon Fokke`, and all subsequent pages (2, 3, 4 etc.) only have `Hector Allemand`, then the latter pages always get inserted higher up in the overview. No sorting is done client-side other than maintaining ascending page order.
 
 
 ## Tests
