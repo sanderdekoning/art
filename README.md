@@ -65,6 +65,7 @@ At this time of writing only the collection worker is fully tested. In the curre
 * [Actors](https://developer.apple.com/documentation/swift/actor)
 * [Generics](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/)
 * [Protocols](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols)
+* [KeyPaths](https://developer.apple.com/documentation/swift/keypath)
 * [Decodable](https://developer.apple.com/documentation/swift/decodable/)
 * [Hashable](https://developer.apple.com/documentation/swift/hashable)
 
