@@ -210,6 +210,7 @@
 		C50A1D3929F06F6900C6AB99 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				C5D8362229F2817700FEE5D6 /* Extensions */,
 				C50A1D3B29F0715300C6AB99 /* Scenes */,
 			);
 			path = Presentation;
@@ -265,7 +266,6 @@
 				C5D8364E29F694D800FEE5D6 /* Services */,
 				C52680C829FD95F2006DD7B4 /* Workers */,
 				C50A1D4929F148E900C6AB99 /* Models */,
-				C5D8362229F2817700FEE5D6 /* Extensions */,
 			);
 			path = Business;
 			sourceTree = "<group>";
