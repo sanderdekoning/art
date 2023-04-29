@@ -7,15 +7,8 @@
 
 import Foundation
 
-struct CollectionResponse: Decodable, Hashable {
+struct CollectionResponse: Decodable {
     let elapsedMilliseconds: Int
     let count: Int
     let artObjects: [ArtObject]
-}
-
-/// CollectionPageResponse is a CollectionResponse with its page request reference. As the API does not provide this in the response
-/// it can be useful for pagination
-struct CollectionPageResponse: Decodable, Hashable {
-    let page: Int
-    let response: CollectionResponse
 }

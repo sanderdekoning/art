@@ -131,6 +131,7 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
     
     nonisolated func willLoadInitialData() {
         Task { @MainActor in
+            showLoadingActivity()
             overviewView?.beginRefreshing()
         }
     }

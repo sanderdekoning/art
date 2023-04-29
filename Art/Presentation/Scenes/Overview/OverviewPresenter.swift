@@ -27,8 +27,8 @@ extension OverviewPresenter: OverviewPresenterProtocol {
         output?.willLoadInitialData()
     }
     
-    func didLoadInitialData(responseStore: CollectionPageResponseStoreProtocol) async {
-        let dataSourceSnapshot = await dataSourceSnapshot(for: responseStore)
+    func didLoadInitialData(responses: any Collection<CollectionPageResponse>) async {
+        let dataSourceSnapshot = await dataSourceSnapshot(for: responses)
         output?.didLoadInitialData(dataSourceSnapshot: dataSourceSnapshot)
     }
     
@@ -44,17 +44,15 @@ extension OverviewPresenter: OverviewPresenterProtocol {
         output?.removeLoadingActivityView()
     }
     
-    func present(responseStore: CollectionPageResponseStoreProtocol) async {
-        let dataSourceSnapshot = await dataSourceSnapshot(for: responseStore)
+    func present(responses: any Collection<CollectionPageResponse>) async {
+        let dataSourceSnapshot = await dataSourceSnapshot(for: responses)
         await output?.display(dataSourceSnapshot: dataSourceSnapshot)
     }
 }
 
 private extension OverviewPresenter {
-    func sortedArtByPage(responseStore: CollectionPageResponseStoreProtocol) async -> [ArtPage] {
-        let responses = await responseStore.responses
-
-        let artPages = Array(responses).sorted {
+    func sortedArtByPage(responses: any Collection<CollectionPageResponse>) async -> [ArtPage] {
+        let artPages = responses.sorted {
             $0.page < $1.page
         }.map { pageResponse in
             pageResponse.response.artObjects.map { art in
@@ -84,9 +82,9 @@ private extension OverviewPresenter {
     }
     
     func dataSourceSnapshot(
-        for responseStore: CollectionPageResponseStoreProtocol
+        for responses: any Collection<CollectionPageResponse>
     ) async -> NSDiffableDataSourceSnapshot<String, ArtPage>{
-        let sortedArtByPage = await sortedArtByPage(responseStore: responseStore)
+        let sortedArtByPage = await sortedArtByPage(responses: responses)
         let dataSourceSnapshot = dataSourceSnapshot(
             for: sortedArtByPage,
             groupedByKeyPath: collectionGroupKeyPath

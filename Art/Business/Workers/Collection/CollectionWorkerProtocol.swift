@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol CollectionWorkerProtocol {
+protocol CollectionWorkerProtocol: Sendable {
     func collection(for request: CollectionRequest) async throws -> CollectionPageResponse
 }

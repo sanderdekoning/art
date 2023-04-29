@@ -10,25 +10,19 @@ import Foundation
 class OverviewInteractor {
     let presenter: OverviewPresenterProtocol
     
-    private let collectionWorker: CollectionWorkerProtocol
+    private let collectionService: CollectionServiceProtocol
     private let imageWorker: ImageWorkerProtocol
-    private let collectionPageResponseStore: CollectionPageResponseStoreProtocol
-    private let collectionRequestsPending: CollectionRequestsPendingProtocol
     private let paginationConfig: OverviewInteractorPaginationConfigProtocol
     
     init(
         presenter: any OverviewPresenterProtocol,
-        collectionWorker: any CollectionWorkerProtocol,
+        collectionService: any CollectionServiceProtocol,
         imageWorker: any ImageWorkerProtocol,
-        collectionPageResponseStore: any CollectionPageResponseStoreProtocol,
-        collectionRequestsPending: any CollectionRequestsPendingProtocol,
         paginationConfig: any OverviewInteractorPaginationConfigProtocol
     ) {
         self.presenter = presenter
-        self.collectionWorker = collectionWorker
+        self.collectionService = collectionService
         self.imageWorker = imageWorker
-        self.collectionPageResponseStore = collectionPageResponseStore
-        self.collectionRequestsPending = collectionRequestsPending
         self.paginationConfig = paginationConfig
     }
 }
@@ -38,9 +32,9 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         do {
             if await shouldFetch(request: initialRequest) {
                 presenter.willLoadInitialData()
-                try await fetchCollection(for: initialRequest)
+                _ = try await collectionService.fetch(request: initialRequest)
             }
-            await presenter.didLoadInitialData(responseStore: collectionPageResponseStore)
+            await presenter.didLoadInitialData(responses: collectionService.statusStore.responses)
         } catch {
             presenter.failedLoadInitialData(with: error)
 
@@ -49,11 +43,12 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     }
     
     func refresh() async throws {
-        await collectionPageResponseStore.removeAll()
-        await collectionRequestsPending.removeAll()
+        await collectionService.statusStore.removeAll()
         
-        try await fetchCollection(for: initialRequest)
-        await presenter.present(responseStore: collectionPageResponseStore)
+        _ = try await collectionService.fetch(request: initialRequest)
+        await presenter.present(responses: collectionService.statusStore.responses)
+        
+        presenter.removeLoadingActivityView()
     }
     
     func willSetupCell(for artPage: ArtPage) async throws {
@@ -61,35 +56,11 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     }
     
     func willDisplayLastCell() async throws {
-        guard let maxPageResponse = await collectionPageResponseStore.maxPageResponse else {
+        guard let maxPageResponse = await maxPageResponse else {
             return
         }
         
         try await fetchNextPageIfNeeded(afterPage: maxPageResponse)
-    }
-    
-    func fetchNextPageIfNeeded(afterPage page: Int) async throws {
-        guard let totalPages = await collectionPageResponseStore.maxResponseTotalCount else {
-            return
-        }
-
-        guard let nextPage = paginationConfig.pageToFetchAfter(
-            page: page,
-            numberOfPages: totalPages
-        ) else {
-            return
-        }
-
-        let nextPageRequest = CollectionRequest(
-            resultsPerPage: paginationConfig.resultsPerPage,
-            page: nextPage
-        )
-        guard await shouldFetch(request: nextPageRequest) else {
-            return
-        }
-        
-        try await fetchCollection(for: nextPageRequest)
-        await presenter.present(responseStore: collectionPageResponseStore)
     }
     
     func setup(cell: OverviewViewCell, with art: Art) async throws {
@@ -112,41 +83,56 @@ private extension OverviewInteractor {
         )
     }
 
-    func shouldFetch(request: CollectionRequest) async -> Bool {
-        let hasResponse = await collectionPageResponseStore.hasResponse(forPage: request.page)
-        let isPendingResponse = await collectionRequestsPending.isPending(request: request)
-        return hasResponse == false && isPendingResponse == false
-    }
-    
-    func fetchCollection(for request: CollectionRequest) async throws {
-        await addPending(request: request)
-
-        do {
-            let pageResponse = try await collectionWorker.collection(for: request)
-            await removePending(request: request)
-            await collectionPageResponseStore.store(response: pageResponse)
-        } catch {
-            await removePending(request: request)
-            throw error
+    var maxPageResponse: Int? {
+        get async {
+            await collectionService.statusStore.responses.map(\.page).max()
         }
     }
     
-    func addPending(request: CollectionRequest) async {
-        await collectionRequestsPending.add(request: request)
-        await updateActivityState()
+    var maxResponseTotalCount: Int? {
+        get async {
+            // Get the largest total count from all the responses
+            await collectionService.statusStore.responses.map(\.response.count).max()
+        }
     }
     
-    func removePending(request: CollectionRequest) async {
-        await collectionRequestsPending.remove(request: request)
-        await updateActivityState()
+    func shouldFetch(request: CollectionRequest) async -> Bool {
+        let didRequest = await collectionService.statusStore.didRequest(request: request)
+        return didRequest == false
     }
     
-    func updateActivityState() async {
-        if await collectionRequestsPending.hasPending {
-            presenter.showLoadingActivityView()
+    func fetchNextPageIfNeeded(afterPage page: Int) async throws {
+        guard let totalPages = await maxResponseTotalCount else {
+            return
         }
         
-        if await collectionRequestsPending.hasPending == false {
+        guard let nextPage = paginationConfig.pageToFetchAfter(
+            page: page,
+            numberOfPages: totalPages
+        ) else {
+            return
+        }
+        
+        let nextPageRequest = CollectionRequest(
+            resultsPerPage: paginationConfig.resultsPerPage,
+            page: nextPage
+        )
+        guard await shouldFetch(request: nextPageRequest) else {
+            return
+        }
+        
+        presenter.showLoadingActivityView()
+        
+        _ = try await collectionService.fetch(request: nextPageRequest)
+        await presenter.present(responses: collectionService.statusStore.responses)
+        
+        await updateActivityViews()
+    }
+    
+    func updateActivityViews() async {
+        if await collectionService.statusStore.hasInProgress {
+            presenter.showLoadingActivityView()
+        } else {
             presenter.removeLoadingActivityView()
         }
     }

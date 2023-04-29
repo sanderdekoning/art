@@ -13,17 +13,18 @@ import UIKit
         let presenter = OverviewPresenter(output: viewController)
         
         let collectionWorker = CollectionWorker(session: .shared)
+        let statusStore = TaskStatusStore<CollectionRequest, CollectionPageResponse>()
+        let collectionService = CollectionService(
+            statusStore: statusStore,
+            worker: collectionWorker
+        )
         let imageWorker = ImageWorker.sharedDefaultThumbnail
-        let collectionPageResponseStore = CollectionPageResponseStore()
-        let collectionRequestsPending = CollectionRequestsPending()
         let paginationConfig = OverviewInteractorPaginationConfig()
 
         let interactor = OverviewInteractor(
             presenter: presenter,
-            collectionWorker: collectionWorker,
+            collectionService: collectionService,
             imageWorker: imageWorker,
-            collectionPageResponseStore: collectionPageResponseStore,
-            collectionRequestsPending: collectionRequestsPending,
             paginationConfig: paginationConfig
         )
         
