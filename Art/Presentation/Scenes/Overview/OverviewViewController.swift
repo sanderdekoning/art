@@ -11,9 +11,8 @@ class OverviewViewController: UIViewController {
     var overviewView: OverviewView?
     var interactor: OverviewInteractor?
     var router: OverviewRouter?
-    
-    private lazy var cellRegistration = OverviewViewDataSource.CellRegistration
-    { [weak self] cell, _, artPage in
+
+    private lazy var cellRegistration = OverviewViewDataSource.CellRegistration { [weak self] cell, _, artPage in
         let cellTask = Task(priority: .userInitiated) { [weak cell] in
             guard let self, let cell else {
                 return
@@ -26,7 +25,7 @@ class OverviewViewController: UIViewController {
             }
         }
         cell.setup(with: cellTask)
-        
+
         Task {
             do {
                 try await self?.interactor?.willSetupCell(for: artPage)
@@ -40,7 +39,7 @@ class OverviewViewController: UIViewController {
             }
         }
     }
-    
+
     private lazy var sectionHeaderProvider = OverviewViewDataSource.HeaderViewRegistration(
         elementKind: UICollectionView.elementKindSectionHeader
     ) { [weak self] headerView, _, indexPath in
@@ -53,17 +52,17 @@ class OverviewViewController: UIViewController {
         guard let overviewView else {
             return nil
         }
-        
+
         return OverviewViewDataSource(
             collectionView: overviewView,
             cellRegistration: cellRegistration,
             supplementaryViewRegistration: sectionHeaderProvider
         )
     }()
-    
+
     override func loadView() {
         view = overviewView
-        
+
         overviewView?.delegate = self
     }
 
@@ -77,7 +76,7 @@ class OverviewViewController: UIViewController {
 
     func setupViews() {
         title = NSLocalizedString("Art", comment: "")
-        
+
         overviewView?.refreshControl?.addAction(refreshAction, for: .primaryActionTriggered)
     }
 }
@@ -87,7 +86,7 @@ extension OverviewViewController: UICollectionViewDelegate {
         guard let artPage = dataSource?.artPage(for: indexPath) else {
             return
         }
-        
+
         Task {
             await router?.showDetail(for: artPage.art)
         }
@@ -104,7 +103,7 @@ private extension OverviewViewController {
             }
         }
     }
-    
+
     func refresh() {
         Task(priority: .userInitiated) {
             do {
@@ -114,7 +113,7 @@ private extension OverviewViewController {
             }
         }
     }
-    
+
     var refreshAction: UIAction {
         UIAction { [unowned self] _ in
             refresh()
@@ -128,14 +127,14 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
             cell.setArtView(for: art, image: thumbnail)
         }
     }
-    
+
     nonisolated func willLoadInitialData() {
         Task { @MainActor in
             showLoadingActivity()
             overviewView?.beginRefreshing()
         }
     }
-    
+
     nonisolated func didLoadInitialData(
         dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, ArtPage>
     ) {
@@ -144,7 +143,7 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
             overviewView?.endRefreshing()
         }
     }
-    
+
     nonisolated func failedLoadInitialData(with error: Error) {
         Task { @MainActor in
             overviewView?.endRefreshing()
@@ -156,7 +155,7 @@ extension OverviewViewController: OverviewPresenterOutputProtocol {
             showLoadingActivity()
         }
     }
-    
+
     nonisolated func removeLoadingActivityView() {
         Task { @MainActor in
             hideLoadingActivity()
@@ -173,19 +172,19 @@ extension OverviewViewController {
         guard navigationItem.rightBarButtonItem == nil else {
             return
         }
-        
+
         let acitivityIndicatorView = UIActivityIndicatorView()
         acitivityIndicatorView.hidesWhenStopped = true
         acitivityIndicatorView.startAnimating()
-        
+
         let button = UIBarButtonItem(customView: acitivityIndicatorView)
-        
+
         navigationItem.rightBarButtonItem = button
     }
-    
+
     func hideLoadingActivity() {
         navigationItem.rightBarButtonItem = nil
-        
+
         overviewView?.endRefreshing()
     }
 }

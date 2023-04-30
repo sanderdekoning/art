@@ -16,7 +16,7 @@ struct OverviewInteractorPaginationConfig: OverviewInteractorPaginationConfigPro
 extension OverviewInteractorPaginationConfig {
     func pageToFetchAfter(page: Int, numberOfPages: Int) -> Int? {
         let nextPage = page + 1
-        
+
         guard nextPage <= numberOfPages else {
             return nil
         }

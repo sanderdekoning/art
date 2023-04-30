@@ -11,7 +11,7 @@ extension URLSession {
     static var mocked: Self {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
-        
+
         return Self(configuration: config)
     }
 }

@@ -38,23 +38,23 @@ extension ImageWorker: ImageWorkerProtocol {
         let (data, _) = try await session.data(for: request)
         let image = try image(from: data)
         let thumbnail = try await createAndCacheThumbnail(from: request, image: image)
-        
+
         if prefersThumbnail, let thumbnail {
             return thumbnail
         }
-        
+
         return image
     }
-    
+
     func cachedThumbnail(from url: URL) async -> UIImage? {
         let request = request(for: url)
         return await thumbnailCache.cached(request: request)
     }
-    
+
     func cachedThumbnail(for request: URLRequest) async -> UIImage? {
         await thumbnailCache.cached(request: request)
     }
-    
+
     func clearCache() async {
         await thumbnailCache.removeAll()
     }
@@ -64,28 +64,28 @@ private extension ImageWorker {
     func request(for url: URL) -> URLRequest {
         URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
     }
-    
+
     func createAndCacheThumbnail(from request: URLRequest, image: UIImage) async throws -> UIImage? {
         if let cached = await cachedThumbnail(for: request) {
             return cached
         }
-        
+
         // TODO: consider whether failure to create a thumbnail needs specific requirements
         let thumbnail = await image.byPreparingThumbnail(ofSize: thumbnailSize)
-        
+
         guard let thumbnail else {
             return nil
         }
-        
+
         await thumbnailCache.set(image: thumbnail, for: request)
         return thumbnail
     }
-    
+
     func image(from data: Data) throws -> UIImage {
         guard let image = UIImage(data: data) else {
             throw ImageWorkerError.unexpectedData(data)
         }
-        
+
         return image
     }
 }

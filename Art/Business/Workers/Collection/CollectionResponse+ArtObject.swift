@@ -28,13 +28,13 @@ extension CollectionResponse.ArtObject {
     struct Links: Decodable, Hashable {
         let api: URL
         let web: URL
-        
+
         enum CodingKeys: String, CodingKey {
             case api = "self"
             case web
         }
     }
-    
+
     struct Image: Decodable, Hashable {
         let guid: String?
         let offsetPercentageX: CGFloat

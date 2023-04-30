@@ -14,7 +14,7 @@ final class CollectionWorkerTests: XCTestCase {
 
     override func setUpWithError() throws {
         executionTimeAllowance = 5
-        
+
         sut = CollectionWorker(session: .mocked)
     }
 
@@ -35,9 +35,9 @@ final class CollectionWorkerTests: XCTestCase {
             response: urlResponse,
             data: try CollectionResponseMock.collection
         )
-        
+
         URLProtocolMock.requestHandler = { _ in response }
-        
+
         let task = Task {
             try await sut.collection(for: request)
         }
@@ -47,7 +47,7 @@ final class CollectionWorkerTests: XCTestCase {
             XCTAssertEqual(error as? CollectionWorkerError, .unexpectedResponse(url))
         }
     }
-    
+
     func testCollection_statusCode200_shouldReturnExpectedPageAndObjects() async throws {
         let httpResponse = try XCTUnwrap(HTTPURLResponse(
             url: try request.url,
@@ -60,17 +60,17 @@ final class CollectionWorkerTests: XCTestCase {
             response: httpResponse,
             data: try CollectionResponseMock.collection
         )
-        
+
         URLProtocolMock.requestHandler = { _ in response }
-        
+
         let collection = try await sut.collection(for: request)
-        
+
         // Asserting against literals as the mock JSON response contains static data
         XCTAssertEqual(collection.page, 1)
         XCTAssertEqual(collection.response.artObjects.count, 50)
         XCTAssertEqual(collection.response.artObjects[42].id, "en-KOG-MP-2-0258")
     }
-    
+
     func testCollection_statusCode400_shouldThrowUnexpectedStatusCode400Error() async throws {
         let httpResponse = try XCTUnwrap(HTTPURLResponse(
             url: try request.url,
@@ -83,7 +83,7 @@ final class CollectionWorkerTests: XCTestCase {
             response: httpResponse,
             data: try CollectionResponseMock.collection
         )
-        
+
         URLProtocolMock.requestHandler = { _ in response }
 
         let task = Task {

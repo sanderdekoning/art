@@ -20,7 +20,7 @@ struct CollectionRequest: Hashable {
             URLQueryItem(name: "p", value: String(page))
         ]
     }
-    
+
     var url: URL {
         get throws {
             var url = API(culture: .en).collectionURL
@@ -28,19 +28,19 @@ struct CollectionRequest: Hashable {
             guard #available(iOS 16.0, *) else {
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
                 components?.queryItems = urlQueryItems
-                
+
                 guard let url = components?.url else {
                     throw URLError(.badURL)
                 }
 
                 return url
             }
-            
+
             url.append(queryItems: urlQueryItems)
             return url
         }
     }
-    
+
     var request: URLRequest {
         get throws {
             var request = try URLRequest(url: url)

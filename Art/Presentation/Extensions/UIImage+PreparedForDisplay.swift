@@ -16,7 +16,7 @@ extension UIImage {
             guard #available(iOS 15.0, *) else {
                 return nil
             }
-            
+
             return await byPreparingForDisplay()
         }
     }

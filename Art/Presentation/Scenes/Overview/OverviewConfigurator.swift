@@ -11,7 +11,7 @@ import UIKit
     static func configureScene(viewController: OverviewViewController) {
         let view = OverviewView()
         let presenter = OverviewPresenter(output: viewController)
-        
+
         let collectionWorker = CollectionWorker(session: .shared)
         let statusStore = TaskStatusStore<CollectionRequest, CollectionPageResponse>()
         let collectionService = CollectionService(
@@ -27,7 +27,7 @@ import UIKit
             imageWorker: imageWorker,
             paginationConfig: paginationConfig
         )
-        
+
         let router = OverviewRouter(imageWorker: imageWorker)
         router.navigationController = viewController.navigationController
 

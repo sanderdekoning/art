@@ -16,12 +16,12 @@ import UIKit
         let presenter = DetailPresenter(output: viewController)
         let imageWorker = ImageWorker.sharedDefaultThumbnail
         let interactor = DetailInteractor(art: art, presenter: presenter, imageWorker: imageWorker)
-        
+
         let view = DetailView(thumbnailImage: thumbnailImage, title: art.title)
-        
+
         let router = DetailRouter()
         router.navigationController = viewController.navigationController
-        
+
         viewController.detailView = view
         viewController.router = router
         viewController.interactor = interactor

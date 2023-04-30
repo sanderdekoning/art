@@ -9,13 +9,13 @@ import UIKit
 
 class OverviewRouter: OverviewRouterProtocol {
     weak var navigationController: UINavigationController?
-    
+
     let imageWorker: ImageWorkerProtocol
-    
+
     init(imageWorker: any ImageWorkerProtocol) {
         self.imageWorker = imageWorker
     }
-    
+
     @MainActor func showDetail(for art: Art) async {
         guard let thumbnailImage = await imageWorker.cachedThumbnail(from: art.webImage.url) else {
             return

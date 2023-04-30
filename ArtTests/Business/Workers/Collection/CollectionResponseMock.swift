@@ -14,7 +14,7 @@ final class CollectionResponseMock {
             withExtension: ".json"
         )!
     }
-    
+
     static var collection: Data {
         get throws {
             try .init(contentsOf: collectionURL)

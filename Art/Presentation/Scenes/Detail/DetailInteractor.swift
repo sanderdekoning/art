@@ -9,10 +9,10 @@ import Foundation
 
 class DetailInteractor {
     var art: Art
-    
+
     private let presenter: DetailPresenterProtocol
     private let imageWorker: ImageWorkerProtocol
-    
+
     init(
         art: Art,
         presenter: any DetailPresenterProtocol,

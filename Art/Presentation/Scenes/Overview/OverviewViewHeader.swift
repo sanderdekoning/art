@@ -15,18 +15,18 @@ class OverviewViewHeader: UICollectionReusableView {
         label.textAlignment = .center
         return label
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        
+
         setupViews()
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setup(withTitle title: String?) {
         label.text = title
     }
@@ -35,10 +35,10 @@ class OverviewViewHeader: UICollectionReusableView {
 private extension OverviewViewHeader {
     func setupViews() {
         backgroundColor = .tertiarySystemBackground
-        
+
         label.translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
-        
+
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor, constant: 2),
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),

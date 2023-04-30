@@ -12,13 +12,13 @@ enum Config {
         case apiKey = "API_KEY"
         case apiBaseURL = "API_BASE_URL"
     }
-    
+
     private static let infoDictionary: [String: Any] = {
         guard let infoDictionary = Bundle.main.infoDictionary else {
             // TODO: handle configuration loading error
             fatalError()
         }
-        
+
         return infoDictionary
     }()
 }
@@ -31,7 +31,7 @@ extension Config {
         }
         return key
     }()
-    
+
     static let apiBaseURL: URL = {
         guard let urlString = Config.infoDictionary[Keys.apiBaseURL.rawValue] as? String else {
             // TODO: handle missing API base URL string
@@ -41,7 +41,7 @@ extension Config {
             // TODO: handle API base URL string error
             fatalError()
         }
-        
+
         return url
     }()
 }

@@ -15,7 +15,7 @@ extension UICollectionViewLayout {
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalWidth(1)
         )
-        
+
         if #available(iOS 16.0, *) {
             return NSCollectionLayoutGroup.horizontal(
                 layoutSize: layoutSize,
@@ -30,16 +30,16 @@ extension UICollectionViewLayout {
             )
         }
     }
-    
+
     static var art: UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1)
         ))
-        
+
         let group = group(repeatingItem: item)
         group.interItemSpacing = .fixed(4)
-        
+
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(50)
@@ -50,7 +50,7 @@ extension UICollectionViewLayout {
             alignment: .top
         )
         header.pinToVisibleBounds = false
-        
+
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [header]
         section.interGroupSpacing = 4

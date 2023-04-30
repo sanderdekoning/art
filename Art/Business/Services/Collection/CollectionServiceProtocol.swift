@@ -11,6 +11,6 @@ protocol CollectionServiceProtocol {
     typealias TaskStore = TaskStatusStore<CollectionRequest, CollectionPageResponse>
 
     var statusStore: TaskStore { get }
-    
+
     func fetch(request: CollectionRequest) async throws -> CollectionPageResponse
 }

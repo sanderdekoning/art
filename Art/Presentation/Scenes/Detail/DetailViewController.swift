@@ -11,16 +11,16 @@ class DetailViewController: UIViewController {
     var detailView: DetailView?
     var interactor: DetailInteractor?
     var router: DetailRouter?
-    
+
     override func loadView() {
         view = detailView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setNeedsUpdateOfHomeIndicatorAutoHidden()
-        
+
         Task {
             do {
                 try await interactor?.loadArt()
@@ -29,7 +29,7 @@ class DetailViewController: UIViewController {
             }
         }
     }
-    
+
     override var prefersHomeIndicatorAutoHidden: Bool {
         true
     }

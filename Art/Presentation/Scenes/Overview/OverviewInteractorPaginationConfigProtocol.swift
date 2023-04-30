@@ -10,6 +10,6 @@ import Foundation
 protocol OverviewInteractorPaginationConfigProtocol {
     var firstPageIndex: Int { get }
     var resultsPerPage: Int { get }
-    
+
     func pageToFetchAfter(page: Int, numberOfPages: Int) -> Int?
 }

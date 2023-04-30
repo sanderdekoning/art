@@ -26,12 +26,12 @@ import UIKit
                 item: art
             )
         }
-        
+
         diffable = DiffableDataSource(
             collectionView: collectionView,
             cellProvider: cellProvider
         )
-        
+
         let supplementaryProvider: DiffableDataSource.SupplementaryViewProvider = {
             collectionView, elementKind, indexPath in
 
@@ -46,7 +46,7 @@ import UIKit
         }
 
         diffable.supplementaryViewProvider = supplementaryProvider
-        
+
         collectionView.dataSource = diffable
     }
 }
@@ -58,18 +58,18 @@ extension OverviewViewDataSource {
     ) async {
         await diffable.apply(dataSourceSnapshot, animatingDifferences: animated)
     }
-    
+
     func snapshot() -> NSDiffableDataSourceSnapshot<String, ArtPage> {
         diffable.snapshot()
     }
-    
+
     func artPage(for indexPath: IndexPath) -> ArtPage? {
         diffable.itemIdentifier(for: indexPath)
     }
-    
+
     func artPageIsLastItem(artPage: ArtPage) -> Bool {
         let artPages = snapshot().itemIdentifiers
-        
+
         guard let lastPage = artPages.last else {
             // Defaulting to true if the current index is not in the snapshot
             return true
