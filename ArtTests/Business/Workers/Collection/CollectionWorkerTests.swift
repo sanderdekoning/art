@@ -33,7 +33,7 @@ final class CollectionWorkerTests: XCTestCase {
 
         let response = URLProtocolMock.MockURLResponse(
             response: urlResponse,
-            data: CollectionResponseMock.collection
+            data: try CollectionResponseMock.collection
         )
         
         URLProtocolMock.requestHandler = { _ in response }
@@ -58,7 +58,7 @@ final class CollectionWorkerTests: XCTestCase {
 
         let response = URLProtocolMock.MockURLResponse(
             response: httpResponse,
-            data: CollectionResponseMock.collection
+            data: try CollectionResponseMock.collection
         )
         
         URLProtocolMock.requestHandler = { _ in response }
@@ -81,7 +81,7 @@ final class CollectionWorkerTests: XCTestCase {
 
         let response = URLProtocolMock.MockURLResponse(
             response: httpResponse,
-            data: CollectionResponseMock.collection
+            data: try CollectionResponseMock.collection
         )
         
         URLProtocolMock.requestHandler = { _ in response }

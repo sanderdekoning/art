@@ -16,6 +16,8 @@ final class CollectionResponseMock {
     }
     
     static var collection: Data {
-        try! .init(contentsOf: collectionURL)
+        get throws {
+            try .init(contentsOf: collectionURL)
+        }
     }
 }
