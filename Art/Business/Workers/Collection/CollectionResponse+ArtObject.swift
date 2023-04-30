@@ -29,6 +29,7 @@ extension CollectionResponse.ArtObject {
         let api: URL
         let web: URL
 
+        // swiftlint:disable:next nesting
         enum CodingKeys: String, CodingKey {
             case api = "self"
             case web
