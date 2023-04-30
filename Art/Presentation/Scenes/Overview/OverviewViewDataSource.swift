@@ -32,8 +32,7 @@ import UIKit
             cellProvider: cellProvider
         )
 
-        let supplementaryProvider: DiffableDataSource.SupplementaryViewProvider = {
-            collectionView, elementKind, indexPath in
+        diffable.supplementaryViewProvider = { collectionView, elementKind, indexPath in
 
             guard elementKind == UICollectionView.elementKindSectionHeader else {
                 return nil
@@ -44,8 +43,6 @@ import UIKit
                 for: indexPath
             )
         }
-
-        diffable.supplementaryViewProvider = supplementaryProvider
 
         collectionView.dataSource = diffable
     }
