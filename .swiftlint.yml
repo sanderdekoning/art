@@ -1,5 +1,19 @@
+analyzer_rules:
+  - unused_declaration
+  - unused_import
 disabled_rules:
   - todo
+opt_in_rules:
+  - empty_count
+  - empty_string
+  - file_name
+  - first_where
+  - modifier_order
+  - prohibited_interface_builder
+  - toggle_bool
+  - trailing_closure
+  - unused_capture_list
+  - unused_closure_parameter
 line_length: 100
 file_length:
   warning: 150
