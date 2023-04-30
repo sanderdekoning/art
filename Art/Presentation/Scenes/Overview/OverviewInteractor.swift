@@ -45,10 +45,15 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     func refresh() async throws {
         await collectionService.statusStore.removeAll()
 
-        _ = try await collectionService.fetch(request: initialRequest)
+        let request = initialRequest
+        _ = try await collectionService.fetch(request: request)
         await presenter.present(responses: collectionService.statusStore.responses)
 
         presenter.removeLoadingActivityView()
+
+        // Check for next page on refresh; the hash of the initial request results are possibly
+        // identical to existing items; thus can not trigger any cell setup -> next page fetch
+        try await fetchNextPageIfNeeded(afterPage: request.page)
     }
 
     func willSetupCell(for artPage: ArtPage) async throws {
