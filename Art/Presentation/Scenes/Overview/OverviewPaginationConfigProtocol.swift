@@ -1,5 +1,5 @@
 //
-//  OverviewInteractorPaginationConfigProtocol.swift
+//  OverviewPaginationConfigProtocol.swift
 //  Art
 //
 //  Created by Sander de Koning on 25/04/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol OverviewInteractorPaginationConfigProtocol {
+protocol OverviewPaginationConfigProtocol {
     var firstPageIndex: Int { get }
     var resultsPerPage: Int { get }
 

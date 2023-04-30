@@ -19,7 +19,7 @@ import UIKit
             worker: collectionWorker
         )
         let imageWorker = ImageWorker.sharedDefaultThumbnail
-        let paginationConfig = OverviewInteractorPaginationConfig()
+        let paginationConfig = OverviewPaginationConfig()
 
         let interactor = OverviewInteractor(
             presenter: presenter,

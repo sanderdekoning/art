@@ -36,7 +36,7 @@
 		C535324329F7B27300316727 /* DetailPresenterOutputProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324229F7B27300316727 /* DetailPresenterOutputProtocol.swift */; };
 		C535324529F7B28300316727 /* DetailRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324429F7B28300316727 /* DetailRouterProtocol.swift */; };
 		C535324729F7B29B00316727 /* OverviewInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324629F7B29B00316727 /* OverviewInteractorProtocol.swift */; };
-		C535324929F7B2B400316727 /* OverviewInteractorPaginationConfigProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324829F7B2B400316727 /* OverviewInteractorPaginationConfigProtocol.swift */; };
+		C535324929F7B2B400316727 /* OverviewPaginationConfigProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324829F7B2B400316727 /* OverviewPaginationConfigProtocol.swift */; };
 		C535324B29F7B2C300316727 /* OverviewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324A29F7B2C300316727 /* OverviewPresenterProtocol.swift */; };
 		C535324D29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324C29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift */; };
 		C535324F29F7B2F400316727 /* OverviewRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535324E29F7B2F400316727 /* OverviewRouterProtocol.swift */; };
@@ -49,7 +49,7 @@
 		C5D8362829F281B100FEE5D6 /* ImageWorkerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */; };
 		C5D8362A29F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */; };
 		C5D8362E29F4026E00FEE5D6 /* OverviewViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362D29F4026E00FEE5D6 /* OverviewViewDataSource.swift */; };
-		C5D8363029F42D9E00FEE5D6 /* OverviewInteractorPaginationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362F29F42D9E00FEE5D6 /* OverviewInteractorPaginationConfig.swift */; };
+		C5D8363029F42D9E00FEE5D6 /* OverviewPaginationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362F29F42D9E00FEE5D6 /* OverviewPaginationConfig.swift */; };
 		C5D8363229F43FE300FEE5D6 /* OverviewViewCellLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363129F43FE300FEE5D6 /* OverviewViewCellLoadingView.swift */; };
 		C5D8363A29F5BA2800FEE5D6 /* OverviewViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363929F5BA2800FEE5D6 /* OverviewViewHeader.swift */; };
 		C5D8363C29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8363B29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift */; };
@@ -110,7 +110,7 @@
 		C535324229F7B27300316727 /* DetailPresenterOutputProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenterOutputProtocol.swift; sourceTree = "<group>"; };
 		C535324429F7B28300316727 /* DetailRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouterProtocol.swift; sourceTree = "<group>"; };
 		C535324629F7B29B00316727 /* OverviewInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewInteractorProtocol.swift; sourceTree = "<group>"; };
-		C535324829F7B2B400316727 /* OverviewInteractorPaginationConfigProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewInteractorPaginationConfigProtocol.swift; sourceTree = "<group>"; };
+		C535324829F7B2B400316727 /* OverviewPaginationConfigProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPaginationConfigProtocol.swift; sourceTree = "<group>"; };
 		C535324A29F7B2C300316727 /* OverviewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPresenterProtocol.swift; sourceTree = "<group>"; };
 		C535324C29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPresenterOutputProtocol.swift; sourceTree = "<group>"; };
 		C535324E29F7B2F400316727 /* OverviewRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewRouterProtocol.swift; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 		C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorkerError.swift; sourceTree = "<group>"; };
 		C5D8362929F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Art.swift"; sourceTree = "<group>"; };
 		C5D8362D29F4026E00FEE5D6 /* OverviewViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewDataSource.swift; sourceTree = "<group>"; };
-		C5D8362F29F42D9E00FEE5D6 /* OverviewInteractorPaginationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewInteractorPaginationConfig.swift; sourceTree = "<group>"; };
+		C5D8362F29F42D9E00FEE5D6 /* OverviewPaginationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPaginationConfig.swift; sourceTree = "<group>"; };
 		C5D8363129F43FE300FEE5D6 /* OverviewViewCellLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewCellLoadingView.swift; sourceTree = "<group>"; };
 		C5D8363929F5BA2800FEE5D6 /* OverviewViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewHeader.swift; sourceTree = "<group>"; };
 		C5D8363B29F5E2D400FEE5D6 /* OverviewViewCellArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewCellArtView.swift; sourceTree = "<group>"; };
@@ -242,8 +242,8 @@
 				C50A1D4129F0754000C6AB99 /* OverviewConfigurator.swift */,
 				C50A1D3D29F0719A00C6AB99 /* OverviewInteractor.swift */,
 				C535324629F7B29B00316727 /* OverviewInteractorProtocol.swift */,
-				C5D8362F29F42D9E00FEE5D6 /* OverviewInteractorPaginationConfig.swift */,
-				C535324829F7B2B400316727 /* OverviewInteractorPaginationConfigProtocol.swift */,
+				C5D8362F29F42D9E00FEE5D6 /* OverviewPaginationConfig.swift */,
+				C535324829F7B2B400316727 /* OverviewPaginationConfigProtocol.swift */,
 				C50A1D3F29F071AB00C6AB99 /* OverviewPresenter.swift */,
 				C535324A29F7B2C300316727 /* OverviewPresenterProtocol.swift */,
 				C535324C29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift */,
@@ -538,14 +538,14 @@
 				C50A1D4029F071AB00C6AB99 /* OverviewPresenter.swift in Sources */,
 				C5D8363229F43FE300FEE5D6 /* OverviewViewCellLoadingView.swift in Sources */,
 				C52680CB29FD9AC3006DD7B4 /* CollectionPageResponse.swift in Sources */,
-				C5D8363029F42D9E00FEE5D6 /* OverviewInteractorPaginationConfig.swift in Sources */,
+				C5D8363029F42D9E00FEE5D6 /* OverviewPaginationConfig.swift in Sources */,
 				C5D8362829F281B100FEE5D6 /* ImageWorkerError.swift in Sources */,
 				C50A1D5A29F1888E00C6AB99 /* OverviewViewCell.swift in Sources */,
 				C573114829FD7268000EC5D6 /* TaskStatusStore.swift in Sources */,
 				C5D8363A29F5BA2800FEE5D6 /* OverviewViewHeader.swift in Sources */,
 				C5D8364129F67E4500FEE5D6 /* DetailInteractor.swift in Sources */,
 				C50A1D3E29F0719A00C6AB99 /* OverviewInteractor.swift in Sources */,
-				C535324929F7B2B400316727 /* OverviewInteractorPaginationConfigProtocol.swift in Sources */,
+				C535324929F7B2B400316727 /* OverviewPaginationConfigProtocol.swift in Sources */,
 				C5D8362129F1BBBF00FEE5D6 /* ImageWorker.swift in Sources */,
 				C573114A29FD7279000EC5D6 /* TaskStatus.swift in Sources */,
 				C5D8364329F67E4E00FEE5D6 /* DetailConfigurator.swift in Sources */,
