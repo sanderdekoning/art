@@ -12,7 +12,8 @@ class OverviewViewController: UIViewController {
     var interactor: OverviewInteractor?
     var router: OverviewRouter?
 
-    private lazy var cellRegistration = OverviewViewDataSource.CellRegistration { [weak self] cell, _, artPage in
+    private lazy var cellRegistration =
+    OverviewViewDataSource.CellRegistration { [weak self] cell, _, artPage in
         let cellTask = Task(priority: .userInitiated) { [weak cell] in
             guard let self, let cell else {
                 return
@@ -40,7 +41,8 @@ class OverviewViewController: UIViewController {
         }
     }
 
-    private lazy var sectionHeaderProvider = OverviewViewDataSource.HeaderViewRegistration(
+    private lazy var sectionHeaderProvider =
+    UICollectionView.SupplementaryRegistration<OverviewViewHeader>(
         elementKind: UICollectionView.elementKindSectionHeader
     ) { [weak self] headerView, _, indexPath in
         let dataSourceSnapshot = self?.dataSource?.snapshot()
@@ -56,7 +58,7 @@ class OverviewViewController: UIViewController {
         return OverviewViewDataSource(
             collectionView: overviewView,
             cellRegistration: cellRegistration,
-            supplementaryViewRegistration: sectionHeaderProvider
+            headerViewRegistration: sectionHeaderProvider
         )
     }()
 

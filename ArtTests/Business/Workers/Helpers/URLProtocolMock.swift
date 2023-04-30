@@ -27,7 +27,11 @@ class URLProtocolMock: URLProtocol {
 
         do {
             let response = try handler(request)
-            client?.urlProtocol(self, didReceive: response.response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(
+                self,
+                didReceive: response.response,
+                cacheStoragePolicy: .notAllowed
+            )
             client?.urlProtocol(self, didLoad: response.data)
             client?.urlProtocolDidFinishLoading(self)
         } catch {

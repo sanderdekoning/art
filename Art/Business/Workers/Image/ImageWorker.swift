@@ -65,7 +65,10 @@ private extension ImageWorker {
         URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
     }
 
-    func createAndCacheThumbnail(from request: URLRequest, image: UIImage) async throws -> UIImage? {
+    func createAndCacheThumbnail(
+        from request: URLRequest,
+        image: UIImage
+    ) async throws -> UIImage? {
         if let cached = await cachedThumbnail(for: request) {
             return cached
         }

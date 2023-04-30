@@ -12,12 +12,11 @@ import UIKit
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<String, ArtPage>
 
     typealias CellRegistration = UICollectionView.CellRegistration<OverviewViewCell, ArtPage>
-    typealias HeaderViewRegistration = UICollectionView.SupplementaryRegistration<OverviewViewHeader>
 
     init(
         collectionView: UICollectionView,
         cellRegistration: CellRegistration,
-        supplementaryViewRegistration: HeaderViewRegistration
+        headerViewRegistration: UICollectionView.SupplementaryRegistration<OverviewViewHeader>
     ) {
         let cellProvider: DiffableDataSource.CellProvider = { collectionView, indexPath, art in
             collectionView.dequeueConfiguredReusableCell(
@@ -39,7 +38,7 @@ import UIKit
             }
 
             return collectionView.dequeueConfiguredReusableSupplementary(
-                using: supplementaryViewRegistration,
+                using: headerViewRegistration,
                 for: indexPath
             )
         }
