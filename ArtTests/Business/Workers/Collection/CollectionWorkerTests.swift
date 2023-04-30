@@ -22,6 +22,7 @@ final class CollectionWorkerTests: XCTestCase {
         sut = nil
     }
 
+    @MainActor
     func testCollection_nonHTTPURLResponse_shouldThrowUnexpectedResponseError() async throws {
         let url = try request.url
         let urlResponse = URLResponse(
@@ -48,6 +49,7 @@ final class CollectionWorkerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testCollection_statusCode200_shouldReturnExpectedPageAndObjects() async throws {
         let httpResponse = try XCTUnwrap(HTTPURLResponse(
             url: try request.url,
@@ -71,6 +73,7 @@ final class CollectionWorkerTests: XCTestCase {
         XCTAssertEqual(collection.response.artObjects[42].id, "en-KOG-MP-2-0258")
     }
 
+    @MainActor
     func testCollection_statusCode400_shouldThrowUnexpectedStatusCode400Error() async throws {
         let httpResponse = try XCTUnwrap(HTTPURLResponse(
             url: try request.url,

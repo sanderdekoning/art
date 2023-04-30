@@ -8,7 +8,7 @@
 import Foundation
 
 class URLProtocolMock: URLProtocol {
-    static var requestHandler: ((URLRequest) throws -> MockURLResponse)?
+    @MainActor static var requestHandler: ((URLRequest) throws -> MockURLResponse)?
 
     override class func canInit(with request: URLRequest) -> Bool {
         true
@@ -20,6 +20,7 @@ class URLProtocolMock: URLProtocol {
 
     override func stopLoading() {  }
 
+    @MainActor
     override func startLoading() {
         guard let handler = URLProtocolMock.requestHandler else {
             return
