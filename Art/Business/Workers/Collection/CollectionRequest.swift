@@ -13,7 +13,7 @@ struct CollectionRequest: Hashable {
 
     private var urlQueryItems: [URLQueryItem] {
         [
-            API(culture: .en).authorizationURLQueryItem,
+            API(language: .english).authorizationURLQueryItem,
             URLQueryItem(name: "s", value: "artist"),
             URLQueryItem(name: "imgonly", value: String(true)),
             URLQueryItem(name: "ps", value: String(resultsPerPage)),
@@ -23,7 +23,7 @@ struct CollectionRequest: Hashable {
 
     var url: URL {
         get throws {
-            var url = API(culture: .en).collectionURL
+            var url = API(language: .english).collectionURL
 
             guard #available(iOS 16.0, *) else {
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: false)

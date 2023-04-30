@@ -15,10 +15,10 @@ struct API {
         Config.apiBaseURL
     }
 
-    let culture: Culture
+    let language: Language
 
     var cultureURL: URL {
-        guard let url = URL(string: "\(culture)/", relativeTo: baseURL) else {
+        guard let url = URL(string: "\(language.rawValue)/", relativeTo: baseURL) else {
             // TODO: consider using optionals handling unexpected API culture url
             fatalError()
         }
@@ -41,8 +41,8 @@ struct API {
 }
 
 extension API {
-    enum Culture: String {
-        case en
-        case nl
+    enum Language: String {
+        case english = "en"
+        case dutch = "nl"
     }
 }
