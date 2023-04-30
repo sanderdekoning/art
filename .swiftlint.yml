@@ -4,6 +4,7 @@ analyzer_rules:
 disabled_rules:
   - todo
 opt_in_rules:
+  - attributes
   - empty_count
   - empty_string
   - file_name

@@ -7,7 +7,8 @@
 
 import UIKit
 
-@MainActor class OverviewConfigurator {
+@MainActor
+class OverviewConfigurator {
     static func configureScene(viewController: OverviewViewController) {
         let view = OverviewView()
         let presenter = OverviewPresenter(output: viewController)

@@ -7,7 +7,8 @@
 
 import UIKit
 
-@MainActor class DetailConfigurator {
+@MainActor
+class DetailConfigurator {
     static func configureScene(
         viewController: DetailViewController,
         art: Art,
