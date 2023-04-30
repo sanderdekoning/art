@@ -50,7 +50,6 @@ At this time of writing only the collection worker is fully tested. In the curre
 
 ## Todo
 * More unit tests and screenshot/UI automation tests
-* Implement a linter
 * Configurable retries of (network) tasks
 
 # Screenshots
