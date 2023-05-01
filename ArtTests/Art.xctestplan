@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "84E47FEE-7F6E-4AF9-96EF-03697F2DED98",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Art.xcodeproj",
+      "identifier" : "C50A1D0429F06A4C00C6AB99",
+      "name" : "Art"
+    },
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Art.xcodeproj",
+        "identifier" : "C50A1D1A29F06A4D00C6AB99",
+        "name" : "ArtTests"
+      }
+    }
+  ],
+  "version" : 1
+}

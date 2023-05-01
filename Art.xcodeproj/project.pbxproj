@@ -28,6 +28,7 @@
 		C52680C529FD7FA3006DD7B4 /* CollectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52680C429FD7FA3006DD7B4 /* CollectionService.swift */; };
 		C52680C729FD7FBA006DD7B4 /* CollectionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52680C629FD7FBA006DD7B4 /* CollectionServiceProtocol.swift */; };
 		C52680CB29FD9AC3006DD7B4 /* CollectionPageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52680CA29FD9AC3006DD7B4 /* CollectionPageResponse.swift */; };
+		C526810529FFDF05006DD7B4 /* TaskStatusStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C526810429FFDF05006DD7B4 /* TaskStatusStoreTests.swift */; };
 		C535323529F7B1DD00316727 /* ImageWorkerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535323429F7B1DD00316727 /* ImageWorkerProtocol.swift */; };
 		C535323729F7B1F400316727 /* ImageRequestCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535323629F7B1F400316727 /* ImageRequestCacheProtocol.swift */; };
 		C535323929F7B20200316727 /* CollectionWorkerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C535323829F7B20200316727 /* CollectionWorkerProtocol.swift */; };
@@ -102,6 +103,8 @@
 		C52680C429FD7FA3006DD7B4 /* CollectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionService.swift; sourceTree = "<group>"; };
 		C52680C629FD7FBA006DD7B4 /* CollectionServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionServiceProtocol.swift; sourceTree = "<group>"; };
 		C52680CA29FD9AC3006DD7B4 /* CollectionPageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPageResponse.swift; sourceTree = "<group>"; };
+		C526810429FFDF05006DD7B4 /* TaskStatusStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStatusStoreTests.swift; sourceTree = "<group>"; };
+		C526810629FFEB3F006DD7B4 /* Art.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Art.xctestplan; sourceTree = "<group>"; };
 		C535323429F7B1DD00316727 /* ImageWorkerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorkerProtocol.swift; sourceTree = "<group>"; };
 		C535323629F7B1F400316727 /* ImageRequestCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequestCacheProtocol.swift; sourceTree = "<group>"; };
 		C535323829F7B20200316727 /* CollectionWorkerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionWorkerProtocol.swift; sourceTree = "<group>"; };
@@ -192,6 +195,7 @@
 		C50A1D1E29F06A4D00C6AB99 /* ArtTests */ = {
 			isa = PBXGroup;
 			children = (
+				C526810629FFEB3F006DD7B4 /* Art.xctestplan */,
 				C5D8365129F6CCCB00FEE5D6 /* Business */,
 			);
 			path = ArtTests;
@@ -333,6 +337,22 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		C526810229FFDEDA006DD7B4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C526810329FFDEDE006DD7B4 /* Shared */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C526810329FFDEDE006DD7B4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C526810429FFDF05006DD7B4 /* TaskStatusStoreTests.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		C5D8362229F2817700FEE5D6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +391,7 @@
 		C5D8365129F6CCCB00FEE5D6 /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				C526810229FFDEDA006DD7B4 /* Services */,
 				C5D8365229F6CCD200FEE5D6 /* Workers */,
 			);
 			path = Business;
@@ -586,6 +607,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5D8365C29F6CDEC00FEE5D6 /* CollectionResponseMock.swift in Sources */,
+				C526810529FFDF05006DD7B4 /* TaskStatusStoreTests.swift in Sources */,
 				C5D8365729F6CD5000FEE5D6 /* URLSession+Mocked.swift in Sources */,
 				C50A1D2029F06A4D00C6AB99 /* CollectionWorkerTests.swift in Sources */,
 				C5D8365529F6CD3400FEE5D6 /* URLProtocolMock.swift in Sources */,

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@testable import Art
 
 final class CollectionResponseMock {
     private static var collectionURL: URL {
@@ -18,6 +19,12 @@ final class CollectionResponseMock {
     static var collection: Data {
         get throws {
             try .init(contentsOf: collectionURL)
+        }
+    }
+
+    static var response: CollectionResponse {
+        get throws {
+            try JSONDecoder().decode(CollectionResponse.self, from: collection)
         }
     }
 }
