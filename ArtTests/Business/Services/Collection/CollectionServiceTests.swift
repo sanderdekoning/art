@@ -6,30 +6,145 @@
 //
 
 import XCTest
+@testable import Art
 
+@MainActor
 final class CollectionServiceTests: XCTestCase {
+    var sut: CollectionService!
+    var statusStore: TaskStatusStore<CollectionRequest, CollectionPageResponse>!
+    var worker: CollectionWorkerMock!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        executionTimeAllowance = 5
+
+        statusStore = TaskStatusStore<CollectionRequest, CollectionPageResponse>()
+        worker = CollectionWorkerMock()
+        sut = CollectionService(statusStore: statusStore, worker: worker)
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testFetch_storeStatusNil_shouldFetchFromWorker() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+        let response = try CollectionPageResponse(
+            page: 1,
+            response: CollectionResponseMock.response
+        )
+
+        let expectation = XCTestExpectation(description: "Fetched from worker")
+        expectation.assertForOverFulfill = true
+
+        worker.collectionStub = { _ in
+            expectation.fulfill()
+            return response
+        }
+
+        _ = try await sut.fetch(request: request)
+        await fulfillment(of: [expectation])
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testFetch_storeStatusNil_shouldSetStatusInProgressInStore() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+        let response = try CollectionPageResponse(
+            page: 1,
+            response: CollectionResponseMock.response
+        )
+
+        let expectation = XCTestExpectation(description: "Task status equals in progress")
+        expectation.assertForOverFulfill = true
+
+        worker.collectionStub = { [unowned self] _ in
+            let status = await sut.statusStore.status(for: request)
+
+            if case .inProgress = status {
+                expectation.fulfill()
+            }
+
+            return response
+        }
+
+        _ = try await sut.fetch(request: request)
+
+        await fulfillment(of: [expectation])
+    }
+
+    func testFetch_storeStatusInProgress_shouldNotFetchFromWorker() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+        let task = Task<CollectionPageResponse, Error> {
+            try CollectionPageResponse(
+                page: 1,
+                response: CollectionResponseMock.response
+            )
+        }
+        await sut.statusStore.set(request: request, status: .inProgress(task))
+
+        worker.collectionStub = nil
+        _ = try await sut.fetch(request: request)
+    }
+
+    func testFetch_storeStatusNil_shouldSetStatusFinishedInStore() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+        let response = try CollectionPageResponse(
+            page: 1,
+            response: CollectionResponseMock.response
+        )
+
+        worker.collectionStub = { _ in
+            response
+        }
+        _ = try await sut.fetch(request: request)
+
+        let status = await sut.statusStore.status(for: request)
+
+        let expectation = XCTestExpectation(description: "Task status equals finished")
+        if case .finished = status {
+            expectation.fulfill()
+        }
+
+        await fulfillment(of: [expectation])
+    }
+
+    func testFetch_storeStatusFinished_shouldNotFetchFromWorker() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+        let response = try CollectionPageResponse(
+            page: 1,
+            response: CollectionResponseMock.response
+        )
+
+        await sut.statusStore.set(request: request, status: .finished(response))
+        worker.collectionStub = nil
+        _ = try await sut.fetch(request: request)
+    }
+
+    func testFetch_storeStatusNil_fetchError_shouldThrowError() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+
+        worker.collectionStub = { _ in
+            throw StubError.anyError
+        }
+
+        let task = Task<CollectionPageResponse, Error> {
+            try await sut.fetch(request: request)
+        }
+        let result = await task.result
+
+        XCTAssertThrowsError(try result.get()) { error in
+            XCTAssertEqual(error as? StubError, StubError.anyError)
         }
     }
 
+    func testFetch_storeStatusInProgress_fetchError_shouldRemoveStoreStatus() async throws {
+        let request = CollectionRequest(resultsPerPage: 50, page: 1)
+
+        worker.collectionStub = { _ in
+            throw StubError.anyError
+        }
+
+        _ = try? await sut.fetch(request: request)
+
+        let status = await sut.statusStore.status(for: request)
+        XCTAssertNil(status)
+    }
 }
