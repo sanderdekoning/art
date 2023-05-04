@@ -7,11 +7,14 @@
 
 import Foundation
 
-actor CollectionService: CollectionServiceProtocol {
-    let statusStore: TaskStore
+actor CollectionService: TaskServiceProtocol {
+    let statusStore: any TaskStatusStoreProtocol<CollectionRequest, CollectionPageResponse>
     private let worker: CollectionWorkerProtocol
 
-    init(statusStore: TaskStore, worker: CollectionWorkerProtocol) {
+    init(
+        statusStore: some TaskStatusStoreProtocol<CollectionRequest, CollectionPageResponse>,
+        worker: CollectionWorkerProtocol
+    ) {
         self.statusStore = statusStore
         self.worker = worker
     }
@@ -30,12 +33,12 @@ actor CollectionService: CollectionServiceProtocol {
             try await worker.collection(for: request)
         }
 
-        await statusStore.set(request: request, status: .inProgress(task))
+        await statusStore.set(identifier: request, status: .inProgress(task))
 
         do {
             let pageResponse = try await task.value
 
-            await statusStore.set(request: request, status: .finished(pageResponse))
+            await statusStore.set(identifier: request, status: .finished(pageResponse))
 
             return pageResponse
         } catch {

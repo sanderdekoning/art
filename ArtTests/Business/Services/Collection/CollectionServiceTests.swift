@@ -78,7 +78,7 @@ final class CollectionServiceTests: XCTestCase {
                 response: CollectionResponseMock.response
             )
         }
-        await sut.statusStore.set(request: request, status: .inProgress(task))
+        await sut.statusStore.set(identifier: request, status: .inProgress(task))
 
         worker.collectionStub = nil
         _ = try await sut.fetch(request: request)
@@ -113,7 +113,7 @@ final class CollectionServiceTests: XCTestCase {
             response: CollectionResponseMock.response
         )
 
-        await sut.statusStore.set(request: request, status: .finished(response))
+        await sut.statusStore.set(identifier: request, status: .finished(response))
         worker.collectionStub = nil
         _ = try await sut.fetch(request: request)
     }

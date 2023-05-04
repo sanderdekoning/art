@@ -10,13 +10,16 @@ import Foundation
 class OverviewInteractor {
     let presenter: OverviewPresenterProtocol
 
-    private let collectionService: CollectionServiceProtocol
+    private let collectionService: any TaskServiceProtocol<
+        CollectionRequest,
+        CollectionPageResponse
+    >
     private let imageWorker: ImageWorkerProtocol
     private let paginationConfig: OverviewPaginationConfigProtocol
 
     init(
         presenter: any OverviewPresenterProtocol,
-        collectionService: any CollectionServiceProtocol,
+        collectionService: some TaskServiceProtocol<CollectionRequest, CollectionPageResponse>,
         imageWorker: any ImageWorkerProtocol,
         paginationConfig: any OverviewPaginationConfigProtocol
     ) {
@@ -34,7 +37,7 @@ extension OverviewInteractor: OverviewInteractorProtocol {
                 presenter.willLoadInitialData()
                 _ = try await collectionService.fetch(request: initialRequest)
             }
-            await presenter.didLoadInitialData(responses: collectionService.statusStore.responses)
+            await presenter.didLoadInitialData(responses: collectionService.statusStore.allFinished)
         } catch {
             presenter.failedLoadInitialData(with: error)
 
@@ -47,7 +50,7 @@ extension OverviewInteractor: OverviewInteractorProtocol {
 
         let request = initialRequest
         _ = try await collectionService.fetch(request: request)
-        await presenter.present(responses: collectionService.statusStore.responses)
+        await presenter.present(responses: collectionService.statusStore.allFinished)
 
         presenter.removeLoadingActivityView()
 
@@ -90,19 +93,19 @@ private extension OverviewInteractor {
 
     var maxPageResponse: Int? {
         get async {
-            await collectionService.statusStore.responses.map(\.page).max()
+            await collectionService.statusStore.allFinished.map(\.page).max()
         }
     }
 
     var maxResponseTotalCount: Int? {
         get async {
             // Get the largest total count from all the responses
-            await collectionService.statusStore.responses.map(\.response.count).max()
+            await collectionService.statusStore.allFinished.map(\.response.count).max()
         }
     }
 
     func shouldFetch(request: CollectionRequest) async -> Bool {
-        let didRequest = await collectionService.statusStore.didRequest(request: request)
+        let didRequest = await collectionService.statusStore.hasStatus(for: request)
         return didRequest == false
     }
 
@@ -129,7 +132,7 @@ private extension OverviewInteractor {
         presenter.showLoadingActivityView()
 
         _ = try await collectionService.fetch(request: nextPageRequest)
-        await presenter.present(responses: collectionService.statusStore.responses)
+        await presenter.present(responses: collectionService.statusStore.allFinished)
 
         await updateActivityViews()
     }

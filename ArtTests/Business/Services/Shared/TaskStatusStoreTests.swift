@@ -1,5 +1,5 @@
 //
-//  TaskStatusStore.swift
+//  TaskStatusStoreTests.swift
 //  ArtTests
 //
 //  Created by Sander de Koning on 01/05/2023.
@@ -22,25 +22,25 @@ final class TaskStatusStoreTests: XCTestCase {
         sut = nil
     }
 
-    func testDidRequest_withNoStatuses_shouldReturnFalse() async throws {
-        let didRequest = await sut.didRequest(request: request)
+    func testHasStatus_withNoStatuses_shouldReturnFalse() async throws {
+        let didRequest = await sut.hasStatus(for: request)
         XCTAssertFalse(didRequest)
     }
 
-    func testDidRequest_withInProgressStatus_shouldReturnTrue() async throws {
+    func testHasStatus_withInProgressStatus_shouldReturnTrue() async throws {
         let task = Task<CollectionResponse, Error> {
             try CollectionResponseMock.response
         }
-        await sut.set(request: request, status: .inProgress(task))
-        let didRequest = await sut.didRequest(request: request)
+        await sut.set(identifier: request, status: .inProgress(task))
+        let didRequest = await sut.hasStatus(for: request)
         XCTAssertTrue(didRequest)
     }
 
-    func testStatusForRequest_statusInProgress_shouldReturnInProgress() async throws {
+    func testStatusForIdentifier_statusInProgress_shouldReturnInProgress() async throws {
         let task = Task<CollectionResponse, Error> {
             return try CollectionResponseMock.response
         }
-        await sut.set(request: request, status: .inProgress(task))
+        await sut.set(identifier: request, status: .inProgress(task))
         let status = await sut.status(for: request)
         let expectation = XCTestExpectation(description: "Task status equals in progress")
         if case .inProgress = status {
@@ -49,9 +49,9 @@ final class TaskStatusStoreTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    func testStatusForRequest_statusFinished_shouldReturnFinishedResponse() async throws {
+    func testStatusForIdentifier_statusFinished_shouldReturnFinished() async throws {
         let response = try CollectionResponseMock.response
-        await sut.set(request: request, status: .finished(response))
+        await sut.set(identifier: request, status: .finished(response))
         let status = await sut.status(for: request)
         let expectation = XCTestExpectation(description: "Task status equals finished")
         if case .finished = status {
@@ -64,52 +64,52 @@ final class TaskStatusStoreTests: XCTestCase {
         let task = Task<CollectionResponse, Error> {
             try CollectionResponseMock.response
         }
-        await sut.set(request: request, status: .inProgress(task))
+        await sut.set(identifier: request, status: .inProgress(task))
         let hasInProgress = await sut.hasInProgress
         XCTAssertTrue(hasInProgress)
     }
 
     func testHasInProgress_statusFinished_shouldReturnFalse() async throws {
         let response = try CollectionResponseMock.response
-        await sut.set(request: request, status: .finished(response))
+        await sut.set(identifier: request, status: .finished(response))
         let hasInProgress = await sut.hasInProgress
         XCTAssertFalse(hasInProgress)
     }
 
-    func testResponses_noStatuses_shouldReturnEmptyArray() async throws {
-        let responses = await sut.responses
-        XCTAssertTrue(responses.isEmpty)
+    func testAllFinished_noStatuses_shouldReturnEmptyArray() async throws {
+        let allFinished = await sut.allFinished
+        XCTAssertTrue(allFinished.isEmpty)
     }
 
     func testResponses_statusInProgress_shouldReturnEmptyArray() async throws {
         let task = Task<CollectionResponse, Error> {
             try CollectionResponseMock.response
         }
-        await sut.set(request: request, status: .inProgress(task))
-        let responses = await sut.responses
-        XCTAssertTrue(responses.isEmpty)
+        await sut.set(identifier: request, status: .inProgress(task))
+        let allFinished = await sut.allFinished
+        XCTAssertTrue(allFinished.isEmpty)
     }
 
     func testResponses_statusFinished_shouldReturnArrayWithResponse() async throws {
         let response = try CollectionResponseMock.response
-        await sut.set(request: request, status: .finished(response))
-        let responses = await sut.responses
-        XCTAssertFalse(responses.isEmpty)
+        await sut.set(identifier: request, status: .finished(response))
+        let allFinished = await sut.allFinished
+        XCTAssertFalse(allFinished.isEmpty)
     }
 
     func testRemoveStatus_withStatusFinished_responsesShouldReturnEmptyArray() async throws {
         let response = try CollectionResponseMock.response
-        await sut.set(request: request, status: .finished(response))
+        await sut.set(identifier: request, status: .finished(response))
         await sut.removeStatus(for: request)
-        let responses = await sut.responses
-        XCTAssertTrue(responses.isEmpty)
+        let allFinished = await sut.allFinished
+        XCTAssertTrue(allFinished.isEmpty)
     }
 
     func testRemoveAll_withStatusFinished_responsesShouldReturnEmptyArray() async throws {
         let response = try CollectionResponseMock.response
-        await sut.set(request: request, status: .finished(response))
+        await sut.set(identifier: request, status: .finished(response))
         await sut.removeAll()
-        let responses = await sut.responses
-        XCTAssertTrue(responses.isEmpty)
+        let allFinished = await sut.allFinished
+        XCTAssertTrue(allFinished.isEmpty)
     }
 }

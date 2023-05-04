@@ -7,24 +7,24 @@
 
 import Foundation
 
-actor TaskStatusStore<Request: Hashable, Response: Sendable> {
-    private var statuses = [Request: TaskStatus<Response>]()
+actor TaskStatusStore<Identifier: Hashable, Value: Sendable>: TaskStatusStoreProtocol {
+    private var statuses = [Identifier: TaskStatus<Value>]()
 
-    func set(request: Request, status: TaskStatus<Response>) {
-        statuses.updateValue(status, forKey: request)
+    func set(identifier: Identifier, status: TaskStatus<Value>) {
+        statuses.updateValue(status, forKey: identifier)
     }
 
-    func didRequest(request: Request) -> Bool {
-        statuses.keys.contains(request)
+    func hasStatus(for identifier: Identifier) -> Bool {
+        statuses.keys.contains(identifier)
     }
 
-    func status(for request: Request) -> TaskStatus<Response>? {
-        statuses[request]
+    func status(for identifier: Identifier) -> TaskStatus<Value>? {
+        statuses[identifier]
     }
 
     var hasInProgress: Bool {
-        statuses.values.contains { responseStatus in
-            guard case .inProgress = responseStatus else {
+        statuses.values.contains { status in
+            guard case .inProgress = status else {
                 return false
             }
 
@@ -32,10 +32,10 @@ actor TaskStatusStore<Request: Hashable, Response: Sendable> {
         }
     }
 
-    var responses: [Response] {
-        statuses.values.compactMap { value in
-            if case .finished(let pageResponse) = value {
-                return pageResponse
+    var allFinished: [Value] {
+        statuses.values.compactMap { status in
+            if case .finished(let value) = status {
+                return value
             }
 
             return nil
@@ -46,7 +46,7 @@ actor TaskStatusStore<Request: Hashable, Response: Sendable> {
         statuses.removeAll()
     }
 
-    func removeStatus(for request: Request) {
-        statuses.removeValue(forKey: request)
+    func removeStatus(for identifier: Identifier) {
+        statuses.removeValue(forKey: identifier)
     }
 }
