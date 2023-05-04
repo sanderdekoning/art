@@ -18,10 +18,10 @@ class OverviewInteractor {
     private let paginationConfig: OverviewPaginationConfigProtocol
 
     init(
-        presenter: any OverviewPresenterProtocol,
+        presenter: some OverviewPresenterProtocol,
         collectionService: some TaskServiceProtocol<CollectionRequest, CollectionPageResponse>,
-        imageWorker: any ImageWorkerProtocol,
-        paginationConfig: any OverviewPaginationConfigProtocol
+        imageWorker: some ImageWorkerProtocol,
+        paginationConfig: some OverviewPaginationConfigProtocol
     ) {
         self.presenter = presenter
         self.collectionService = collectionService

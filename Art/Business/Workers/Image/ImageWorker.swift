@@ -14,7 +14,7 @@ class ImageWorker {
 
     init(
         session: URLSession,
-        thumbnailCache: any ImageRequestCacheProtocol,
+        thumbnailCache: some ImageRequestCacheProtocol,
         thumbnailSize: CGSize
     ) {
         self.session = session

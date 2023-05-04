@@ -15,8 +15,8 @@ class DetailInteractor {
 
     init(
         art: Art,
-        presenter: any DetailPresenterProtocol,
-        imageWorker: any ImageWorkerProtocol
+        presenter: some DetailPresenterProtocol,
+        imageWorker: some ImageWorkerProtocol
     ) {
         self.art = art
         self.presenter = presenter

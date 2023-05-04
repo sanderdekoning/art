@@ -10,7 +10,7 @@ import UIKit
 class DetailPresenter {
     weak var output: DetailPresenterOutputProtocol?
 
-    init(output: any DetailPresenterOutputProtocol) {
+    init(output: some DetailPresenterOutputProtocol) {
         self.output = output
     }
 }

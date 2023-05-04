@@ -12,7 +12,7 @@ class OverviewPresenter {
 
     private let collectionGroupKeyPath: KeyPath<Art, String> = \.principalOrFirstMaker
 
-    init(output: any OverviewPresenterOutputProtocol) {
+    init(output: some OverviewPresenterOutputProtocol) {
         self.output = output
     }
 }
@@ -27,7 +27,7 @@ extension OverviewPresenter: OverviewPresenterProtocol {
         output?.willLoadInitialData()
     }
 
-    func didLoadInitialData(responses: any Collection<CollectionPageResponse>) async {
+    func didLoadInitialData(responses: some Collection<CollectionPageResponse>) async {
         let dataSourceSnapshot = await dataSourceSnapshot(for: responses)
         output?.didLoadInitialData(dataSourceSnapshot: dataSourceSnapshot)
     }
@@ -44,14 +44,14 @@ extension OverviewPresenter: OverviewPresenterProtocol {
         output?.removeLoadingActivityView()
     }
 
-    func present(responses: any Collection<CollectionPageResponse>) async {
+    func present(responses: some Collection<CollectionPageResponse>) async {
         let dataSourceSnapshot = await dataSourceSnapshot(for: responses)
         await output?.display(dataSourceSnapshot: dataSourceSnapshot)
     }
 }
 
 private extension OverviewPresenter {
-    func sortedArtByPage(responses: any Collection<CollectionPageResponse>) async -> [ArtPage] {
+    func sortedArtByPage(responses: some Collection<CollectionPageResponse>) async -> [ArtPage] {
         let artPages = responses.sorted {
             $0.page < $1.page
         }.map { pageResponse in
@@ -82,7 +82,7 @@ private extension OverviewPresenter {
     }
 
     func dataSourceSnapshot(
-        for responses: any Collection<CollectionPageResponse>
+        for responses: some Collection<CollectionPageResponse>
     ) async -> NSDiffableDataSourceSnapshot<String, ArtPage> {
         let sortedArtByPage = await sortedArtByPage(responses: responses)
         let dataSourceSnapshot = dataSourceSnapshot(

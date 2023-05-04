@@ -11,10 +11,10 @@ protocol OverviewPresenterProtocol: AnyObject {
     func setup(cell: OverviewViewCell, with art: Art, thumbnail: UIImage) async throws
 
     func willLoadInitialData()
-    func didLoadInitialData(responses: any Collection<CollectionPageResponse>) async
+    func didLoadInitialData(responses: some Collection<CollectionPageResponse>) async
     func failedLoadInitialData(with error: Error)
 
-    func present(responses: any Collection<CollectionPageResponse>) async
+    func present(responses: some Collection<CollectionPageResponse>) async
 
     func showLoadingActivityView()
     func removeLoadingActivityView()

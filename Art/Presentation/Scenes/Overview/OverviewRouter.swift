@@ -12,7 +12,7 @@ class OverviewRouter: OverviewRouterProtocol {
 
     let imageWorker: ImageWorkerProtocol
 
-    init(imageWorker: any ImageWorkerProtocol) {
+    init(imageWorker: some ImageWorkerProtocol) {
         self.imageWorker = imageWorker
     }
 
