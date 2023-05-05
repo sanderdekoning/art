@@ -32,14 +32,10 @@ class DetailView: UIView {
         return label
     }()
 
-    init(thumbnailImage: UIImage, title: String) {
+    init() {
         super.init(frame: .zero)
 
-        setupViews(image: thumbnailImage, title: title)
-    }
-
-    func updateImage(to image: UIImage) {
-        imageView.image = image
+        setupViews()
     }
 
     @available(*, unavailable)
@@ -47,15 +43,13 @@ class DetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViews(image: UIImage?, title: String) {
+    private func setupViews() {
         backgroundColor = .secondarySystemBackground
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = image
         addSubview(imageView)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = title
         addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -69,5 +63,12 @@ class DetailView: UIView {
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -4),
             titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+extension DetailView {
+    func apply(viewModel: DetailViewModel) {
+        imageView.image = viewModel.image
+        titleLabel.text = viewModel.title
     }
 }

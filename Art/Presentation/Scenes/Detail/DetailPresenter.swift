@@ -8,7 +8,7 @@
 import UIKit
 
 struct DetailPresenter {
-    private var router: DetailRouterProtocol
+    private let router: DetailRouterProtocol
     private weak var output: DetailPresenterOutputProtocol?
 
     init(router: some DetailRouterProtocol, output: some DetailPresenterOutputProtocol) {
@@ -18,8 +18,15 @@ struct DetailPresenter {
 }
 
 extension DetailPresenter: DetailPresenterProtocol {
-    func show(image: UIImage) async {
+    func didLoadArt(art: Art, image: UIImage) async {
         let preparedImage = await image.preparedForDisplay
-        output?.show(image: preparedImage ?? image)
+
+        output?.apply(
+            viewModel: DetailViewModel(image: preparedImage ?? image, title: art.longTitle)
+        )
+    }
+
+    func failedLoadArt(with error: Error) {
+        // TODO: determine load art error
     }
 }

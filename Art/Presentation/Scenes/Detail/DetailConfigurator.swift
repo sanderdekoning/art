@@ -14,8 +14,6 @@ struct DetailConfigurator {
         art: Art,
         thumbnailImage: UIImage
     ) {
-        viewController.detailView = DetailView(thumbnailImage: thumbnailImage, title: art.title)
-
         viewController.interactor = DetailInteractor(
             art: art,
             presenter: DetailPresenter(

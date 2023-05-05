@@ -8,5 +8,6 @@
 import UIKit
 
 protocol DetailPresenterProtocol {
-    func show(image: UIImage) async
+    func didLoadArt(art: Art, image: UIImage) async
+    func failedLoadArt(with error: Error)
 }

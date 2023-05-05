@@ -8,5 +8,5 @@
 import Foundation
 
 protocol DetailInteractorProtocol {
-    func loadArt() async throws
+    func loadArt() async
 }

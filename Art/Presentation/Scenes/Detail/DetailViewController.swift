@@ -8,36 +8,39 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    var detailView: DetailView?
+    private weak var detailView: DetailView?
     var interactor: DetailInteractor?
 
     override func loadView() {
+        let detailView = DetailView()
         view = detailView
+
+        self.detailView = detailView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setNeedsUpdateOfHomeIndicatorAutoHidden()
-
-        Task {
-            do {
-                try await interactor?.loadArt()
-            } catch {
-                // TODO: handle load art error
-            }
-        }
+        setupViews()
     }
 
     override var prefersHomeIndicatorAutoHidden: Bool {
         true
     }
+
+    private func setupViews() {
+        setNeedsUpdateOfHomeIndicatorAutoHidden()
+
+        Task {
+            await interactor?.loadArt()
+        }
+    }
 }
 
 extension DetailViewController: DetailPresenterOutputProtocol {
-    nonisolated func show(image: UIImage) {
+    nonisolated func apply(viewModel: DetailViewModel) {
         Task { @MainActor in
-            detailView?.updateImage(to: image)
+            detailView?.apply(viewModel: viewModel)
         }
     }
 }

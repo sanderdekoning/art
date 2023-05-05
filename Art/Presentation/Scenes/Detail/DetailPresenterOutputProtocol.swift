@@ -8,5 +8,5 @@
 import UIKit
 
 protocol DetailPresenterOutputProtocol: AnyObject {
-    func show(image: UIImage)
+    func apply(viewModel: DetailViewModel)
 }

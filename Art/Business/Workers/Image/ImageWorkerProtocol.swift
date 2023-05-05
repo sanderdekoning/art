@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ImageWorkerProtocol {
+protocol ImageWorkerProtocol: Sendable {
     func image(
         from url: URL,
         prefersThumbnail: Bool
