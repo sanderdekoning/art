@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ImageWorker {
-    let session: URLSession
-    let thumbnailCache: ImageRequestCacheProtocol
-    let thumbnailSize: CGSize
+struct ImageWorker {
+    private let session: URLSession
+    private let thumbnailCache: ImageRequestCacheProtocol
+    private let thumbnailSize: CGSize
 
     init(
         session: URLSession,

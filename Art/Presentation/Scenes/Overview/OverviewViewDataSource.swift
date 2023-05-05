@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-class OverviewViewDataSource {
+struct OverviewViewDataSource {
     private let diffable: DiffableDataSource
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<String, ArtPage>
 

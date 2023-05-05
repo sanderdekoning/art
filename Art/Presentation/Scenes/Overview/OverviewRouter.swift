@@ -7,27 +7,22 @@
 
 import UIKit
 
-class OverviewRouter: OverviewRouterProtocol {
-    weak var navigationController: UINavigationController?
+struct OverviewRouter: OverviewRouterProtocol {
+    private weak var navigationController: UINavigationController?
 
-    let imageWorker: ImageWorkerProtocol
-
-    init(imageWorker: some ImageWorkerProtocol) {
-        self.imageWorker = imageWorker
+    init(navigationController: UINavigationController?) {
+        self.navigationController = navigationController
     }
 
     @MainActor
-    func showDetail(for art: Art) async {
-        guard let thumbnailImage = await imageWorker.cachedThumbnail(from: art.webImage.url) else {
-            return
-        }
-
+    func showDetail(for art: Art, thumbnail: UIImage) async {
         let detailViewController = DetailViewController()
         DetailConfigurator.configureScene(
             viewController: detailViewController,
             art: art,
-            thumbnailImage: thumbnailImage
+            thumbnailImage: thumbnail
         )
+
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

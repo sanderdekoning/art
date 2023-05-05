@@ -7,9 +7,8 @@
 
 import Foundation
 
-class OverviewInteractor {
-    let presenter: OverviewPresenterProtocol
-
+struct OverviewInteractor {
+    private let presenter: OverviewPresenterProtocol
     private let collectionService: any TaskServiceProtocol<
         CollectionRequest,
         CollectionPageResponse
@@ -80,6 +79,15 @@ extension OverviewInteractor: OverviewInteractorProtocol {
         try Task.checkCancellation()
 
         try await presenter.setup(cell: cell, with: art, thumbnail: thumbnail)
+    }
+
+    func showDetail(for artPage: ArtPage) async {
+        let thumbnail = await imageWorker.cachedThumbnail(from: artPage.art.webImage.url)
+        guard let thumbnail else {
+            return
+        }
+
+        await presenter.showDetail(for: artPage.art, thumbnail: thumbnail)
     }
 }
 

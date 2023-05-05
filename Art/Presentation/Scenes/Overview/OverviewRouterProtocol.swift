@@ -8,8 +8,6 @@
 import UIKit
 
 protocol OverviewRouterProtocol {
-    var navigationController: UINavigationController? { get }
-
     @MainActor
-    func showDetail(for art: Art) async
+    func showDetail(for art: Art, thumbnail: UIImage) async
 }

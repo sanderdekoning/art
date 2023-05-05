@@ -10,7 +10,6 @@ import UIKit
 class OverviewViewController: UIViewController {
     var overviewView: OverviewView?
     var interactor: OverviewInteractor?
-    var router: OverviewRouter?
 
     private lazy var cellRegistration =
     OverviewViewDataSource.CellRegistration { [weak self] cell, _, artPage in
@@ -90,7 +89,7 @@ extension OverviewViewController: UICollectionViewDelegate {
         }
 
         Task {
-            await router?.showDetail(for: artPage.art)
+            await interactor?.showDetail(for: artPage)
         }
     }
 }

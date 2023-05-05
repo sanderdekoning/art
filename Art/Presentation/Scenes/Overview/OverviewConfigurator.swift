@@ -8,32 +8,21 @@
 import UIKit
 
 @MainActor
-class OverviewConfigurator {
+struct OverviewConfigurator {
     static func configureScene(viewController: OverviewViewController) {
-        let view = OverviewView()
-        let presenter = OverviewPresenter(output: viewController)
+        viewController.overviewView = OverviewView()
 
-        let collectionWorker = CollectionWorker(session: .shared)
-        let statusStore = TaskStatusStore<CollectionRequest, CollectionPageResponse>()
-        let collectionService = CollectionService(
-            statusStore: statusStore,
-            worker: collectionWorker
+        viewController.interactor = OverviewInteractor(
+            presenter: OverviewPresenter(
+                router: OverviewRouter(navigationController: viewController.navigationController),
+                output: viewController
+            ),
+            collectionService: CollectionService(
+                statusStore: TaskStatusStore<CollectionRequest, CollectionPageResponse>(),
+                worker: CollectionWorker(session: .shared)
+            ),
+            imageWorker: SharedImageWorker.defaultThumbnails,
+            paginationConfig: OverviewPaginationConfig()
         )
-        let imageWorker = ImageWorker.sharedDefaultThumbnail
-        let paginationConfig = OverviewPaginationConfig()
-
-        let interactor = OverviewInteractor(
-            presenter: presenter,
-            collectionService: collectionService,
-            imageWorker: imageWorker,
-            paginationConfig: paginationConfig
-        )
-
-        let router = OverviewRouter(imageWorker: imageWorker)
-        router.navigationController = viewController.navigationController
-
-        viewController.overviewView = view
-        viewController.router = router
-        viewController.interactor = interactor
     }
 }

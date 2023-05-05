@@ -7,6 +7,6 @@
 
 import UIKit
 
-class DetailRouter: DetailRouterProtocol {
+struct DetailRouter: DetailRouterProtocol {
     weak var navigationController: UINavigationController?
 }

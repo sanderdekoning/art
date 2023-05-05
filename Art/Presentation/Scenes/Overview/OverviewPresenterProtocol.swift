@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol OverviewPresenterProtocol: AnyObject {
+protocol OverviewPresenterProtocol {
     func setup(cell: OverviewViewCell, with art: Art, thumbnail: UIImage) async throws
 
     func willLoadInitialData()
@@ -18,4 +18,6 @@ protocol OverviewPresenterProtocol: AnyObject {
 
     func showLoadingActivityView()
     func removeLoadingActivityView()
+
+    func showDetail(for art: Art, thumbnail: UIImage) async
 }

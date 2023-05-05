@@ -7,10 +7,12 @@
 
 import UIKit
 
-class DetailPresenter {
-    weak var output: DetailPresenterOutputProtocol?
+struct DetailPresenter {
+    private var router: DetailRouterProtocol
+    private weak var output: DetailPresenterOutputProtocol?
 
-    init(output: some DetailPresenterOutputProtocol) {
+    init(router: some DetailRouterProtocol, output: some DetailPresenterOutputProtocol) {
+        self.router = router
         self.output = output
     }
 }

@@ -8,23 +8,21 @@
 import UIKit
 
 @MainActor
-class DetailConfigurator {
+struct DetailConfigurator {
     static func configureScene(
         viewController: DetailViewController,
         art: Art,
         thumbnailImage: UIImage
     ) {
-        let presenter = DetailPresenter(output: viewController)
-        let imageWorker = ImageWorker.sharedDefaultThumbnail
-        let interactor = DetailInteractor(art: art, presenter: presenter, imageWorker: imageWorker)
+        viewController.detailView = DetailView(thumbnailImage: thumbnailImage, title: art.title)
 
-        let view = DetailView(thumbnailImage: thumbnailImage, title: art.title)
-
-        let router = DetailRouter()
-        router.navigationController = viewController.navigationController
-
-        viewController.detailView = view
-        viewController.router = router
-        viewController.interactor = interactor
+        viewController.interactor = DetailInteractor(
+            art: art,
+            presenter: DetailPresenter(
+                router: DetailRouter(navigationController: viewController.navigationController),
+                output: viewController
+            ),
+            imageWorker: SharedImageWorker.defaultThumbnails
+        )
     }
 }

@@ -7,9 +7,8 @@
 
 import Foundation
 
-class DetailInteractor {
-    var art: Art
-
+struct DetailInteractor {
+    private let art: Art
     private let presenter: DetailPresenterProtocol
     private let imageWorker: ImageWorkerProtocol
 

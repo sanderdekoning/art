@@ -7,12 +7,14 @@
 
 import UIKit
 
-class OverviewPresenter {
-    weak var output: OverviewPresenterOutputProtocol?
+struct OverviewPresenter {
+    private weak var output: OverviewPresenterOutputProtocol?
 
+    private var router: OverviewRouterProtocol
     private let collectionGroupKeyPath: KeyPath<Art, String> = \.principalOrFirstMaker
 
-    init(output: some OverviewPresenterOutputProtocol) {
+    init(router: some OverviewRouterProtocol, output: some OverviewPresenterOutputProtocol) {
+        self.router = router
         self.output = output
     }
 }
@@ -47,6 +49,10 @@ extension OverviewPresenter: OverviewPresenterProtocol {
     func present(responses: some Collection<CollectionPageResponse>) async {
         let dataSourceSnapshot = await dataSourceSnapshot(for: responses)
         await output?.display(dataSourceSnapshot: dataSourceSnapshot)
+    }
+
+    func showDetail(for art: Art, thumbnail: UIImage) async {
+        await router.showDetail(for: art, thumbnail: thumbnail)
     }
 }
 

@@ -10,7 +10,6 @@ import UIKit
 class DetailViewController: UIViewController {
     var detailView: DetailView?
     var interactor: DetailInteractor?
-    var router: DetailRouter?
 
     override func loadView() {
         view = detailView
