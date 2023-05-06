@@ -8,14 +8,15 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    private weak var detailView: DetailView?
+    private var detailView: DetailView? {
+        view as? DetailView
+    }
+
     var interactor: DetailInteractor?
 
     override func loadView() {
         let detailView = DetailView()
         view = detailView
-
-        self.detailView = detailView
     }
 
     override func viewDidLoad() {

@@ -10,8 +10,6 @@ import UIKit
 @MainActor
 struct OverviewConfigurator {
     static func configureScene(viewController: OverviewViewController) {
-        viewController.overviewView = OverviewView()
-
         viewController.interactor = OverviewInteractor(
             presenter: OverviewPresenter(
                 router: OverviewRouter(navigationController: viewController.navigationController),

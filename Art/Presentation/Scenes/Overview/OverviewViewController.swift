@@ -8,7 +8,10 @@
 import UIKit
 
 class OverviewViewController: UIViewController {
-    var overviewView: OverviewView?
+    private var overviewView: OverviewView? {
+        view as? OverviewView
+    }
+
     var interactor: OverviewInteractor?
 
     private lazy var cellRegistration =
@@ -62,9 +65,10 @@ class OverviewViewController: UIViewController {
     }()
 
     override func loadView() {
-        view = overviewView
+        let overviewView = OverviewView()
+        overviewView.delegate = self
 
-        overviewView?.delegate = self
+        view = overviewView
     }
 
     override func viewDidLoad() {
