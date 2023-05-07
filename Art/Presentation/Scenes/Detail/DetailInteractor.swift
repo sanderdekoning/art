@@ -26,7 +26,16 @@ struct DetailInteractor {
 extension DetailInteractor: DetailInteractorProtocol {
     func loadArt() async {
         do {
-            let image = try await imageWorker.image(from: art.webImage.url, prefersThumbnail: false)
+            // Present an existing cached thumbnail
+            if let thumbnail = await imageWorker.cachedThumbnail(from: art.webImage.url) {
+                await presenter.didLoadArt(art: art, image: thumbnail)
+            }
+
+            // Request and present the art image
+            let image = try await imageWorker.image(
+                from: art.webImage.url,
+                prefersThumbnail: false
+            )
             await presenter.didLoadArt(art: art, image: image)
         } catch {
             presenter.failedLoadArt(with: error)
