@@ -21,7 +21,7 @@ enum OverviewConfigurator {
             ),
             imageService: ImageService(
                 worker: ImageWorker(session: .shared),
-                thumbnailCache: SharedCache.defaultURLRequestThumbnail,
+                thumbnailCache: SharedURLImageCache.defaultThumbnail,
                 thumbnailSize: CGSize(width: 1200, height: 1200)
             ),
             paginationConfig: OverviewPaginationConfig()

@@ -49,9 +49,9 @@
 		C56B8B952A07F838002F5E8C /* ImageServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B8B942A07F838002F5E8C /* ImageServiceProtocol.swift */; };
 		C56B8B972A080278002F5E8C /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B8B962A080278002F5E8C /* CacheProtocol.swift */; };
 		C56B8B992A0802B2002F5E8C /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B8B982A0802B2002F5E8C /* Cache.swift */; };
-		C56B8B9B2A080428002F5E8C /* SharedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B8B9A2A080428002F5E8C /* SharedCache.swift */; };
 		C573114829FD7268000EC5D6 /* TaskStatusStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C573114729FD7268000EC5D6 /* TaskStatusStoreProtocol.swift */; };
 		C573114A29FD7279000EC5D6 /* TaskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C573114929FD7279000EC5D6 /* TaskStatus.swift */; };
+		C5BBC8032A08314900086537 /* SharedURLImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BBC8022A08314800086537 /* SharedURLImageCache.swift */; };
 		C5D8361D29F19BBC00FEE5D6 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8361C29F19BBC00FEE5D6 /* API.swift */; };
 		C5D8362129F1BBBF00FEE5D6 /* ImageWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */; };
 		C5D8362829F281B100FEE5D6 /* ImageWorkerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */; };
@@ -132,9 +132,9 @@
 		C56B8B942A07F838002F5E8C /* ImageServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageServiceProtocol.swift; sourceTree = "<group>"; };
 		C56B8B962A080278002F5E8C /* CacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
 		C56B8B982A0802B2002F5E8C /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
-		C56B8B9A2A080428002F5E8C /* SharedCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCache.swift; sourceTree = "<group>"; };
 		C573114729FD7268000EC5D6 /* TaskStatusStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStatusStoreProtocol.swift; sourceTree = "<group>"; };
 		C573114929FD7279000EC5D6 /* TaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStatus.swift; sourceTree = "<group>"; };
+		C5BBC8022A08314800086537 /* SharedURLImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedURLImageCache.swift; sourceTree = "<group>"; };
 		C5D8361C29F19BBC00FEE5D6 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		C5D8362029F1BBBF00FEE5D6 /* ImageWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorker.swift; sourceTree = "<group>"; };
 		C5D8362729F281B100FEE5D6 /* ImageWorkerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWorkerError.swift; sourceTree = "<group>"; };
@@ -347,7 +347,7 @@
 				C52680C629FD7FBA006DD7B4 /* TaskServiceProtocol.swift */,
 				C56B8B982A0802B2002F5E8C /* Cache.swift */,
 				C56B8B962A080278002F5E8C /* CacheProtocol.swift */,
-				C56B8B9A2A080428002F5E8C /* SharedCache.swift */,
+				C5BBC8022A08314800086537 /* SharedURLImageCache.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -595,7 +595,6 @@
 			files = (
 				C535323F29F7B25400316727 /* DetailInteractorProtocol.swift in Sources */,
 				C5D8362A29F284EF00FEE5D6 /* UICollectionViewLayout+Art.swift in Sources */,
-				C56B8B9B2A080428002F5E8C /* SharedCache.swift in Sources */,
 				C535324D29F7B2DD00316727 /* OverviewPresenterOutputProtocol.swift in Sources */,
 				C52680C529FD7FA3006DD7B4 /* CollectionService.swift in Sources */,
 				C5D8364729F67E6500FEE5D6 /* DetailRouter.swift in Sources */,
@@ -640,6 +639,7 @@
 				C5D8362E29F4026E00FEE5D6 /* OverviewViewDataSource.swift in Sources */,
 				C50A1D5429F1646300C6AB99 /* CollectionWorkerError.swift in Sources */,
 				C52680C729FD7FBA006DD7B4 /* TaskServiceProtocol.swift in Sources */,
+				C5BBC8032A08314900086537 /* SharedURLImageCache.swift in Sources */,
 				C50A1D4429F0757E00C6AB99 /* OverviewView.swift in Sources */,
 				C50A1D5029F15E8F00C6AB99 /* CollectionRequest.swift in Sources */,
 				C56B8B972A080278002F5E8C /* CacheProtocol.swift in Sources */,
