@@ -42,10 +42,6 @@ extension OverviewViewCell {
         backgroundView = OverviewViewCellLoadingView()
     }
 
-    func removeLoadingActivityView() {
-        reset()
-    }
-
     func setArtView(for art: Art, image: UIImage) {
         reset()
 
