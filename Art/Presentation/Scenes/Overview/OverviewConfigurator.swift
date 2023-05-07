@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-struct OverviewConfigurator {
+enum OverviewConfigurator {
     static func configureScene(viewController: OverviewViewController) {
         viewController.interactor = OverviewInteractor(
             presenter: OverviewPresenter(

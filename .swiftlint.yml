@@ -15,6 +15,7 @@ opt_in_rules:
   - trailing_closure
   - unused_capture_list
   - unused_closure_parameter
+  - convenience_type
 line_length: 100
 file_length:
   warning: 200

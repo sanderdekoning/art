@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-struct DetailConfigurator {
+enum DetailConfigurator {
     static func configureScene(
         viewController: DetailViewController,
         art: Art,

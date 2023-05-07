@@ -7,6 +7,6 @@
 
 import UIKit
 
-class SharedCache {
+enum SharedCache {
     static let defaultURLRequestThumbnail = Cache<URLRequest, UIImage>(countLimit: 500)
 }

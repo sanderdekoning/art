@@ -8,6 +8,7 @@
 import Foundation
 @testable import Art
 
+// swiftlint:disable:next convenience_type
 final class CollectionResponseMock {
     private static var collectionURL: URL {
         Bundle(for: self).url(
