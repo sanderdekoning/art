@@ -19,7 +19,11 @@ struct OverviewConfigurator {
                 statusStore: TaskStatusStore<CollectionRequest, CollectionPageResponse>(),
                 worker: CollectionWorker(session: .shared)
             ),
-            imageWorker: SharedImageWorker.defaultThumbnails,
+            imageService: ImageService(
+                worker: ImageWorker(session: .shared),
+                thumbnailCache: SharedCache.defaultURLRequestThumbnail,
+                thumbnailSize: CGSize(width: 1200, height: 1200)
+            ),
             paginationConfig: OverviewPaginationConfig()
         )
     }

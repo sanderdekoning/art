@@ -13,18 +13,18 @@ struct OverviewInteractor {
         CollectionRequest,
         CollectionPageResponse
     >
-    private let imageWorker: ImageWorkerProtocol
+    private let imageService: ImageServiceProtocol
     private let paginationConfig: OverviewPaginationConfigProtocol
 
     init(
         presenter: some OverviewPresenterProtocol,
         collectionService: some TaskServiceProtocol<CollectionRequest, CollectionPageResponse>,
-        imageWorker: some ImageWorkerProtocol,
+        imageService: some ImageServiceProtocol,
         paginationConfig: some OverviewPaginationConfigProtocol
     ) {
         self.presenter = presenter
         self.collectionService = collectionService
-        self.imageWorker = imageWorker
+        self.imageService = imageService
         self.paginationConfig = paginationConfig
     }
 }
@@ -71,7 +71,7 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     }
 
     func setup(cell: OverviewViewCell, with art: Art) async throws {
-        let thumbnail = try await imageWorker.image(
+        let thumbnail = try await imageService.image(
             from: art.webImage.url,
             prefersThumbnail: true
         )
@@ -82,7 +82,7 @@ extension OverviewInteractor: OverviewInteractorProtocol {
     }
 
     func showDetail(for artPage: ArtPage) async {
-        let thumbnail = await imageWorker.cachedThumbnail(from: artPage.art.webImage.url)
+        let thumbnail = await imageService.cachedThumbnail(for: artPage.art.webImage.url)
         guard let thumbnail else {
             return
         }

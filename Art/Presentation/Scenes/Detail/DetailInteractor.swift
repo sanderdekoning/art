@@ -10,16 +10,16 @@ import Foundation
 struct DetailInteractor {
     private let art: Art
     private let presenter: DetailPresenterProtocol
-    private let imageWorker: ImageWorkerProtocol
+    private let imageService: ImageServiceProtocol
 
     init(
         art: Art,
         presenter: some DetailPresenterProtocol,
-        imageWorker: some ImageWorkerProtocol
+        imageService: some ImageServiceProtocol
     ) {
         self.art = art
         self.presenter = presenter
-        self.imageWorker = imageWorker
+        self.imageService = imageService
     }
 }
 
@@ -27,12 +27,12 @@ extension DetailInteractor: DetailInteractorProtocol {
     func loadArt() async {
         do {
             // Present an existing cached thumbnail
-            if let thumbnail = await imageWorker.cachedThumbnail(from: art.webImage.url) {
+            if let thumbnail = await imageService.cachedThumbnail(for: art.webImage.url) {
                 await presenter.didLoadArt(art: art, image: thumbnail)
             }
 
             // Request and present the art image
-            let image = try await imageWorker.image(
+            let image = try await imageService.image(
                 from: art.webImage.url,
                 prefersThumbnail: false
             )

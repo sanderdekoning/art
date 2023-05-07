@@ -20,7 +20,11 @@ struct DetailConfigurator {
                 router: DetailRouter(navigationController: viewController.navigationController),
                 output: viewController
             ),
-            imageWorker: SharedImageWorker.defaultThumbnails
+            imageService: ImageService(
+                worker: ImageWorker(session: .shared),
+                thumbnailCache: SharedCache.defaultURLRequestThumbnail,
+                thumbnailSize: CGSize(width: 1200, height: 1200)
+            )
         )
     }
 }
